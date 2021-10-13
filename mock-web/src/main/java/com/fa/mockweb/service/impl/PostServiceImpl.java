@@ -13,11 +13,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.fa.mockweb.utils.RestPageHelper;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,12 +37,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fa.mockweb.config.RestAPI;
-import com.fa.mockweb.model.ArticleRequest;
+import com.fa.mockweb.model.request.ArticleRequest;
 import com.fa.mockweb.model.Post;
 import com.fa.mockweb.model.PostInstruction;
-import com.fa.mockweb.model.PostRequest;
+import com.fa.mockweb.model.request.PostRequest;
 import com.fa.mockweb.service.PostService;
-import com.fa.mockweb.utils.RestPageHelper;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -77,8 +78,7 @@ public class PostServiceImpl implements PostService {
 	
 	
 	@Override
-	public RestPageHelper<Post> fetchPostByArticleId(Long articleId, 
-			String keyword, Pageable pageable, HttpSession session) {
+	public Page<Post> fetchPostByArticleId(Long articleId, String keyword, Pageable pageable, HttpSession session) {
 		
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
@@ -108,17 +108,16 @@ public class PostServiceImpl implements PostService {
 		// Build URI
 		URI uri = builderUri.build().encode().toUri();
 	
-		ParameterizedTypeReference<RestPageHelper<Post>> responseType = 
-				new ParameterizedTypeReference<RestPageHelper<Post>>() {};
+		ParameterizedTypeReference<RestPageHelper<Post>> responseType =
+				new ParameterizedTypeReference<>() {};
 		
 		try {
-			ResponseEntity<RestPageHelper<Post>> result = 
+			ResponseEntity<RestPageHelper<Post>> result =
 					restTemplate.exchange(uri, HttpMethod.GET, requestEntity, responseType);
-			
+
 			RestPageHelper<Post> posts = result.getBody();
 			return posts;
 		} catch (HttpClientErrorException e) {
-			
 			return null;
 		}
 	}
@@ -178,7 +177,7 @@ public class PostServiceImpl implements PostService {
 
 	
 	@Override
-	public RestPageHelper<PostInstruction> fetchPostsByParentArticle(Long parentId, Pageable pageable) {
+	public Page<PostInstruction> fetchPostsByParentArticle(Long parentId, Pageable pageable) {
 
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
@@ -200,21 +199,18 @@ public class PostServiceImpl implements PostService {
 
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 
-		ParameterizedTypeReference<RestPageHelper<PostInstruction>> responseType = 
-				new ParameterizedTypeReference<RestPageHelper<PostInstruction>>() {};
+		ParameterizedTypeReference<RestPageHelper<PostInstruction>> responseType =
+				new ParameterizedTypeReference<>() {};
 	
 		try {
-			ResponseEntity<RestPageHelper<PostInstruction>> result = 
+			ResponseEntity<RestPageHelper<PostInstruction>> result =
 					restTemplate.exchange(uri, HttpMethod.GET, entity, responseType);
-			
+
 			RestPageHelper<PostInstruction> posts = result.getBody();
 			return posts;
 		} catch (HttpClientErrorException e) {
-			
 			return null;
 		}
-		
-
 	}
 
 	

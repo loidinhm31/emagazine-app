@@ -2,6 +2,7 @@ package com.fa.mockweb.controller.admin;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -23,7 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fa.mockweb.model.ArticleDetails;
 import com.fa.mockweb.model.ArticleInstructionWithFullParent;
-import com.fa.mockweb.model.ArticleRequest;
+import com.fa.mockweb.model.request.ArticleRequest;
 import com.fa.mockweb.service.ArticleService;
 
 @Controller
@@ -87,12 +88,11 @@ public class AdminArticleController {
 		List<ArticleInstructionWithFullParent> articles = articleService.fetchArticles();
 		// add a null parent into list
 		ArticleInstructionWithFullParent nullArticle = new ArticleInstructionWithFullParent(); 
+		nullArticle.setId(Long.valueOf(0));
 		nullArticle.setName("Empty Parent");
 		articles.add(0, nullArticle);
-		
-		
+
 		if (!articleId.isPresent()) { // add a new article
-			
 			theModel.addAttribute("pageTitle", "Create A New Article");
 			theModel.addAttribute("title", "New Article");
 			theModel.addAttribute("theArticle", new ArticleRequest());
@@ -102,28 +102,41 @@ public class AdminArticleController {
 		} else {				// edit an article
 
 			ArticleDetails currArticle = articleService.fetchArticle(articleId.get());
-			
-			// Then, remove current article from option list
-			articles.removeIf(article -> article.getId() == currArticle.getId());
-			
-			Long parentId = null;
-			if (currArticle.getParentArticle() != null) {
-				 parentId = currArticle.getParentArticle().getId();
-			}
-			
-			ArticleRequest theArticle = 
-					new ArticleRequest(currArticle.getId(),
-										currArticle.getName(),
-										currArticle.isRoot(),
-										parentId);
+//
+//			// Then, remove current article from option list
+//			articles.removeIf(article -> article.getId() == currArticle.getId());
+//
+//			Long parentId = null;
+//			if (currArticle.getParentArticle() != null) {
+//				 parentId = currArticle.getParentArticle().getId();
+//			}
+//
+//			ArticleRequest theArticle =
+//					new ArticleRequest(currArticle.getId(),
+//										currArticle.getName(),
+//										currArticle.isRoot(),
+//										parentId);
+			ArticleRequest theArticle =
+					articles.stream()
+							.map(a -> {
+								Long parentId;
+								if (currArticle.getParentArticle() != null) {
+									parentId = currArticle.getParentArticle().getId();
+								}
+								a.set(parentId);
+								return a;
+							})
+							.filter(a -> a.getId().equals(articleId.get()))
+							.flatMap()
+							.collect(Collectors.reducing((a, b) -> null)).get();
 			
 			theModel.addAttribute("pageTitle", "Modify " + theArticle.getName());
 			theModel.addAttribute("title", "Article Detail");
 			theModel.addAttribute("theArticle", theArticle);
-			theModel.addAttribute("articles", articles);
-			
-			return "admin/article-form";
+
 		}
+		theModel.addAttribute("articles", articles);
+		return "admin/article-form";
 
 	}
 

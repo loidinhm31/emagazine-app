@@ -13,4 +13,6 @@ $('.multi-level-dropdown .dropdown').on("hidden.bs.dropdown", function() {
 $('.btn-delete').click(function() {
 			return confirm('Do you want to delete this article?');	
 });
-
+$('.datepicker').datepicker({
+    startDate: '-3d'
+});

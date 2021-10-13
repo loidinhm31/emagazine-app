@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fa.mockweb.model.ArticleDetails;
 import com.fa.mockweb.model.Comment;
-import com.fa.mockweb.model.CommentRequest;
+import com.fa.mockweb.model.request.CommentRequest;
 import com.fa.mockweb.model.Post;
 import com.fa.mockweb.service.ArticleService;
 import com.fa.mockweb.service.CommentService;

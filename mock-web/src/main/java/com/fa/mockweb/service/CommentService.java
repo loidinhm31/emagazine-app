@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fa.mockweb.model.Comment;
 import com.fa.mockweb.model.CommentForListView;
-import com.fa.mockweb.model.CommentRequest;
+import com.fa.mockweb.model.request.CommentRequest;
 
 public interface CommentService {
 	void saveComment(CommentRequest theComment);

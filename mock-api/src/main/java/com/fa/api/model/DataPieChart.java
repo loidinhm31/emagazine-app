@@ -1,4 +1,4 @@
-package com.fa.mockweb.model;
+package com.fa.api.model;
 
 public class DataPieChart {
 	private String name;

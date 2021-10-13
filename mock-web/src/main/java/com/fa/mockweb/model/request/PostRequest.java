@@ -1,4 +1,4 @@
-package com.fa.mockweb.model;
+package com.fa.mockweb.model.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,7 +17,7 @@ public class PostRequest {
 	private String shortDescription;
 	
 	@NotBlank(message="Please fill out this field")
-	@Size(max=50, message="Content cannot blank")
+	@Size(min=50, message="Content is too short")
 	private String content;
 	
 	@NotNull

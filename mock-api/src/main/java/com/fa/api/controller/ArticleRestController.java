@@ -101,8 +101,5 @@ public class ArticleRestController {
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public void deleteArticle(@PathVariable(value = "id") Long id) {
 		articleService.delete(id);
-
 	}
-	
-	
 }

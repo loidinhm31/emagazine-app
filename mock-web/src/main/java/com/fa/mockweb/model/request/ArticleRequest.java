@@ -1,4 +1,4 @@
-package com.fa.mockweb.model;
+package com.fa.mockweb.model.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

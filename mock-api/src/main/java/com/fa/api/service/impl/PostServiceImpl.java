@@ -5,6 +5,8 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,7 +17,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fa.api.entity.Article;
 import com.fa.api.entity.Comment;
 import com.fa.api.entity.Post;
+import com.fa.api.model.DataPieChart;
 import com.fa.api.model.PostDetailsDTO;
 import com.fa.api.model.PostInstructionDTO;
 import com.fa.api.model.PostRequestDTO;
@@ -31,7 +36,6 @@ import com.fa.api.repository.CommentRepository;
 import com.fa.api.repository.PostRepository;
 import com.fa.api.service.PostService;
 import com.fa.api.utils.ObjectMapperUtils;
-import com.fa.api.utils.RestPageHelper;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -86,23 +90,18 @@ public class PostServiceImpl implements PostService {
 		List<Long> idOfArticles = new ArrayList<>();
 		idOfArticles = getIdOfChildArticles(idOfArticles, theArticle);
 		idOfArticles.add(theArticle.getId());
-		for (Long id : idOfArticles) {
-			System.out.println(id);
-		}
 		
 		// Get pageable from repository
 		Page<Post> posts = 
 			postRepository.findByArticleIdInAndMultipleConditions(idOfArticles, 
 					keyword, PageRequest.of(page, size));
 		
-		List<PostDetailsDTO> postJsons = new ArrayList<>();
+		List<PostDetailsDTO> postJsons;
 		if (posts != null && posts.hasContent()) {
 			postJsons = ObjectMapperUtils.mapAll(posts.getContent(), PostDetailsDTO.class);
-			
-			System.out.println("size: " + postJsons.size());
-			
+
 			// Convert page for request by page helper
-			Page<PostDetailsDTO> postPage = new RestPageHelper<PostDetailsDTO>(postJsons, posts.getPageable(),
+			Page<PostDetailsDTO> postPage = new PageImpl<>(postJsons, posts.getPageable(),
 					posts.getTotalElements());
 
 			return postPage;
@@ -134,9 +133,7 @@ public class PostServiceImpl implements PostService {
 
 				map.put(theArticle.get().getName(), postInstructions);
 			}
-
 		}
-
 		return map;
 	}
 
@@ -168,7 +165,6 @@ public class PostServiceImpl implements PostService {
 
 			for (Article child : childArticles) {
 				List<Post> tempPosts = postRepository.findFirst3ByArticleIdOrderByDateCreate(child.getId());
-
 				posts.addAll(tempPosts);
 			}
 
@@ -176,9 +172,7 @@ public class PostServiceImpl implements PostService {
 				List<PostInstructionDTO> postJsons = ObjectMapperUtils.mapAll(posts, PostInstructionDTO.class);
 				return postJsons;
 			}
-
 		}
-
 		return null;
 	}
 
@@ -206,7 +200,7 @@ public class PostServiceImpl implements PostService {
 				postJsons = ObjectMapperUtils.mapAll(posts.getContent(), PostDetailsDTO.class);
 
 				// Convert page for request by page helper
-				Page<PostDetailsDTO> postPage = new RestPageHelper<PostDetailsDTO>(postJsons, posts.getPageable(),
+				Page<PostDetailsDTO> postPage = new PageImpl<>(postJsons, posts.getPageable(),
 						posts.getTotalElements());
 
 				return postPage;
@@ -283,18 +277,42 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<PostDetailsDTO> findByDateCreateBetween(Date startDate, Date endDate) {
+	public List<DataPieChart> getDataPieChart(Date startDate,Date endDate) throws ParseException {
+		
+		
+	
 		List<Post> posts = postRepository.findByDateCreateGreaterThanEqualAndDateCreateLessThanEqual(startDate, endDate);
 		
 		if (!posts.isEmpty()) {
 			List<PostDetailsDTO> postJsons = ObjectMapperUtils.mapAll(posts, PostDetailsDTO.class);
 
-			return postJsons;
+			Map<String,Integer> mapData = getDataForPieChart(postJsons);
+			List<DataPieChart> listData = new ArrayList<DataPieChart>();
+			for (Map.Entry<String, Integer> entry : mapData.entrySet()) {
+				listData.add(new DataPieChart(entry.getKey(), entry.getValue()));
+			}
+			return listData;
 		}
 
 		return null;
 	}
-	
+	private Map<String,Integer> getDataForPieChart(List<PostDetailsDTO> postJsons) {
+		Map<String,Integer> mapData = new LinkedHashMap<String, Integer>();
+		
+		for (PostDetailsDTO post : postJsons) {
+			String article = post.getArticle().getName();
+			if(mapData.get(article) ==null) {
+				mapData.put(article, 1);
+			}else {
+				mapData.put(article,mapData.get(article)+1);
+				
+			}
+		}
+		
+		return mapData;
+	}
+
+
 	@Override
 	public void delete(Long id) {
 		
@@ -305,6 +323,67 @@ public class PostServiceImpl implements PostService {
 		}
 
 		
-	}	
+	}
 
+	@Override
+	public Map<String, Integer> getColumnChartData() {
+		Date endDate= new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -6);
+		Date startDate = cal.getTime();
+		
+		
+		try {
+			List<Post> posts = postRepository.findByDateCreateGreaterThanEqualAndDateCreateLessThanEqual(startDate, endDate);
+			
+			Map<String, Integer> map = new LinkedHashMap<String, Integer>();
+			SimpleDateFormat formater = new SimpleDateFormat("MMM");
+			for (Post post : posts) {
+				Calendar temp = Calendar.getInstance();
+				temp.setTimeInMillis(post.getDateCreate().getTime());
+				if(map.get(formater.format(temp.getTime())) ==null) {
+					map.put(formater.format(temp.getTime()), 1);
+				}else {
+					map.put(formater.format(temp.getTime()),map.get(formater.format(temp.getTime()))+1);
+					
+				}
+			}
+			
+			return map;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}	
+	
+	public List<Date> getListMonth(){
+		List<Date> list = new ArrayList<Date>();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.MONTH, -1);
+		for (int i = 0; i < 6; i++) {
+			list.add( cal.getTime());
+		}
+		return list;
+	}
+	
+	public boolean checkInMonth(Date givenDate,Date checkMonth) {
+		//Create 2 instances of Calendar
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
+
+		//set the given date in one of the instance and current date in the other
+		cal1.setTime(givenDate);
+		cal2.setTime(checkMonth);
+
+		//now compare the dates using methods on Calendar
+		if(cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)) {
+		    if(cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH)) {
+		        // the date falls in current month
+		    	return true;
+		    }
+		}
+		return false;
+	}
+	
+	
 }

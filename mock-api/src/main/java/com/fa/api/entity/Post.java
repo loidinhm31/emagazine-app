@@ -25,7 +25,7 @@ public class Post {
 	@Column(name="id")	
 	private Long id;
 	
-	@Column(name="title")
+	@Column(name="title", columnDefinition = "NVARCHAR(50)")
 	private String title;
 	
 	@Column(name="thumbnail")
@@ -34,7 +34,7 @@ public class Post {
 	@Column(name="short_description")
 	private String shortDescription;
 	
-	@Column(name="content", columnDefinition="TEXT")
+	@Column(name="content", columnDefinition = "LONGTEXT")
 	private String content;
 	
 	@Column(name="date_create", updatable = false, insertable = true)

@@ -1,4 +1,4 @@
-package com.fa.mockweb.model;
+package com.fa.mockweb.model.request;
 
 public class CommentRequest {
 	

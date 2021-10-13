@@ -5,13 +5,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fa.mockweb.model.Post;
 import com.fa.mockweb.model.PostInstruction;
-import com.fa.mockweb.model.PostRequest;
-import com.fa.mockweb.utils.RestPageHelper;
+import com.fa.mockweb.model.request.PostRequest;
 
 
 
@@ -30,7 +30,7 @@ public interface PostService {
 
 	Post fetchPostsById(Long id);
 		
-	RestPageHelper<PostInstruction> fetchPostsByParentArticle(Long parentId, Pageable pageable);
+	Page<PostInstruction> fetchPostsByParentArticle(Long parentId, Pageable pageable);
 	
 
 	boolean saveOrUpdate(PostRequest post, HttpSession session);
@@ -42,7 +42,7 @@ public interface PostService {
 	List<PostInstruction> fetchPostByComment(HttpSession session);
 
 
-	RestPageHelper<Post> fetchPostByArticleId(Long articleId, String keyword, Pageable pageable, 
+	Page<Post> fetchPostByArticleId(Long articleId, String keyword, Pageable pageable,
 			HttpSession session);
 
 }

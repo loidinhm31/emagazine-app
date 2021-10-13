@@ -21,7 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fa.mockweb.config.RestAPI;
 import com.fa.mockweb.model.Comment;
 import com.fa.mockweb.model.CommentForListView;
-import com.fa.mockweb.model.CommentRequest;
+import com.fa.mockweb.model.request.CommentRequest;
 import com.fa.mockweb.service.CommentService;
 
 @Service

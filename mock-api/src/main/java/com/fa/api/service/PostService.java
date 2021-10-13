@@ -1,5 +1,6 @@
 package com.fa.api.service;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fa.api.model.DataPieChart;
 import com.fa.api.model.PostDetailsDTO;
 import com.fa.api.model.PostInstructionDTO;
 import com.fa.api.model.PostRequestDTO;
@@ -31,7 +33,9 @@ public interface PostService {
 
 	List<PostInstructionDTO> findTopPostByComment();
 	
-	List<PostDetailsDTO> findByDateCreateBetween(Date startDate,Date endDate);
+	List<DataPieChart> getDataPieChart(Date startDate,Date endDate)  throws ParseException;
 	
-	void delete(Long id); 
+	void delete(Long id);
+
+	Map<String, Integer> getColumnChartData(); 
 }

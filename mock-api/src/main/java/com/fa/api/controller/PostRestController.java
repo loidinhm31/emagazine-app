@@ -1,5 +1,7 @@
 package com.fa.api.controller;
 
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fa.api.model.DataPieChart;
 import com.fa.api.model.PostDetailsDTO;
 import com.fa.api.model.PostInstructionDTO;
 import com.fa.api.model.PostRequestDTO;
 import com.fa.api.rest.exception.ObjectNotFoundException;
 import com.fa.api.service.PostService;
-
 
 @RestController
 @RequestMapping("/posts")
@@ -45,7 +47,6 @@ public class PostRestController {
 		return postJson;
 	}
 
-	
 	@GetMapping
 	public List<PostDetailsDTO> getPostByArticle(@RequestParam("article-id") Long id) {
 		List<PostDetailsDTO> postJsons = postService.findByArticleId(id);
@@ -56,7 +57,6 @@ public class PostRestController {
 
 		return postJsons;
 	}
-	
 	
 	@GetMapping("/details")
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -72,17 +72,12 @@ public class PostRestController {
 		if (listPost.isEmpty()) {
 			throw new ObjectNotFoundException("Not available post(s) for article id: " + id);
 		}
-		
 		return listPost;
 	}
 	
-	
 	@GetMapping("/top")
-	public Map<String,List<PostInstructionDTO>> getTopPostOfAll() {
-		
-		Map<String, List<PostInstructionDTO>> map = 
-				postService.findTopPostOfAllChildArticles();
-		
+	public Map<String, List<PostInstructionDTO>> getTopPostOfAll() {
+		Map<String, List<PostInstructionDTO>> map = postService.findTopPostOfAllChildArticles();
 		if (map.isEmpty()) {
 			throw new ObjectNotFoundException("Not found top posts of all");
 		}
@@ -102,7 +97,6 @@ public class PostRestController {
 		return postJsons;
 	}
 
-	
 	@GetMapping("/parent")
 	public Page<PostDetailsDTO> getPostsByParentArticleId(
 			@RequestParam("parent-id") Long articleId,
@@ -118,11 +112,7 @@ public class PostRestController {
 		
 		return postJsons;
 	}
-	
-	
-	
-	
-	
+
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public PostRequestDTO saveOrUpdatePost(@RequestBody PostRequestDTO postRequest) {
@@ -131,27 +121,64 @@ public class PostRestController {
 		return postRequest;
 	}
 	
-	
 	@PostMapping("/thumbnails/upload")
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<String> uploadFileImage(@RequestParam("thumbnail") MultipartFile multipartFile) {
-		
 		String imageUploadedPath = postService.uploadImageFile(multipartFile);
 		return ResponseEntity.status(HttpStatus.CREATED).body(imageUploadedPath);
 
 	}
-	
-	
+
 	@GetMapping("/comments/censor")
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	public List<PostInstructionDTO> getTopPostsOfRecentComment() {
 		List<PostInstructionDTO> postJsons = postService.findTopPostByComment();
-		
+
 		if (postJsons.isEmpty()) {
 			throw new ObjectNotFoundException("Not found posts by recent comment");
 		}
-		
+
 		return postJsons;
+	}
+
+	@GetMapping("/piechart/data/month")
+	public List<DataPieChart> getDataLastMonth() {
+
+		try {
+			Date endDate = new Date();
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.MONTH, -1);
+			Date startDate = cal.getTime();
+			List<DataPieChart> listData = postService.getDataPieChart(startDate, endDate);
+			return listData;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@GetMapping("/piechart/data/half-year")
+	public List<DataPieChart> getDataLast6Month() {
+
+		try {
+			Date endDate = new Date();
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.MONTH, -6);
+			Date startDate = cal.getTime();
+			List<DataPieChart> listData = postService.getDataPieChart(startDate, endDate);
+			return listData;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@GetMapping("/column-chart/data/half-year")
+	public Map<String, Integer> getColumnChartDataLast6Month() {
+
+		Map<String, Integer> map = postService.getColumnChartData();
+
+		return map;
 	}
 	
 
@@ -162,15 +189,4 @@ public class PostRestController {
 		postService.delete(id);
 
 	}
-	
-	
-	@GetMapping("/piechart/data")
-	public List<PostDetailsDTO> getPost(){
-		Date startDate = new Date();
-		startDate.setYear(2020);
-		List<PostDetailsDTO> listPost = postService.findByDateCreateBetween(new Date(2020, 8, 17), new Date(2022,8,11));
-		return listPost;
-
-	}
-	
 }

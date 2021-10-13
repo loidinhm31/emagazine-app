@@ -19,7 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fa.mockweb.config.RestAPI;
-import com.fa.mockweb.model.LoginRequest;
+import com.fa.mockweb.model.request.LoginRequest;
 import com.fa.mockweb.security.model.CustomUserDetails;
 import com.fa.mockweb.security.model.User;
 import com.fa.mockweb.service.LoginService;
@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService{
 
 	@Override
 	public String excecuteLogin(LoginRequest loginRequest) {
-		String url = RestAPI.HOST + "/login";
+		String url = RestAPI.URL + "/login";
 		
 		HttpHeaders header = new HttpHeaders();
 		header.setContentType(MediaType.APPLICATION_JSON);

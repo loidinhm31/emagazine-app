@@ -1,6 +1,6 @@
 package com.fa.mockweb.service;
 
-import com.fa.mockweb.model.LoginRequest;
+import com.fa.mockweb.model.request.LoginRequest;
 
 public interface LoginService {
 

@@ -28,7 +28,7 @@ public class Article {
 	@Column(name="name", nullable=false)
 	private String name;
 	
-	@Column(name="is_root")
+	@Column(name="is_root", columnDefinition="boolean default false")
 	private boolean isRoot;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

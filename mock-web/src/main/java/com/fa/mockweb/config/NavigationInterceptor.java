@@ -22,9 +22,9 @@ public class NavigationInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-//		List<ArticleDetails> mainArticles = articleService.fetchMainArticles();
-//
-//		request.setAttribute("articles", mainArticles);
+		List<ArticleDetails> mainArticles = articleService.fetchMainArticles();
+		
+		request.setAttribute("articles", mainArticles);
 		
 		
 		return true;

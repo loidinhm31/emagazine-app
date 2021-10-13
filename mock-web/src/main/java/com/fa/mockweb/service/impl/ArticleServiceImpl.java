@@ -22,7 +22,7 @@ import com.fa.mockweb.config.RestAPI;
 import com.fa.mockweb.model.ArticleDetails;
 import com.fa.mockweb.model.ArticleInstruction;
 import com.fa.mockweb.model.ArticleInstructionWithFullParent;
-import com.fa.mockweb.model.ArticleRequest;
+import com.fa.mockweb.model.request.ArticleRequest;
 import com.fa.mockweb.service.ArticleService;
 
 @Service

@@ -44,11 +44,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         	.sessionManagement()
         		.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // stateless for jwt
         	.and()
-        		.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
-        		.addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
-        	.authorizeRequests()
-        		.antMatchers("/api/**").permitAll();
-                
+                .authorizeRequests()
+        		.antMatchers("/api/**").authenticated()
+        .and()
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+                .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class);
     }
 
     @Override

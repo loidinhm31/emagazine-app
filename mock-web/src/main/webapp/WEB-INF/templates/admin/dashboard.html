@@ -9,10 +9,10 @@
 		<div class="container">
 			<div class="row" style="margin-top: 50px;">
 				<div id="containerPieChart"
-					style="width: 350px; height: 250px; margin: 0 auto"></div>
+					style="width: 450px; height: 350px; margin: 0 auto"></div>
 				<div class="hr-vertical"></div>
 				<div id="containerPieChart2"
-					style="width: 350px; height: 250px; margin: 0 auto"></div>
+					style="width: 450px; height: 350px; margin: 0 auto"></div>
 			</div>
 			<hr style="margin: 50px" />
 			<div id="containerColumnChart"
@@ -47,6 +47,48 @@
 		series.push(seriesObject);
 		drawPieChart(series);
 		
+		var mapHalfYear = [[${mapPieChartHalfYear}]];
+		var series2 = [];
+		
+		var seriesObject2 = {
+				name: 'Post Number',
+				colorByPoint: true,
+				data : mapHalfYear 
+		};
+		series2.push(seriesObject2);
+		drawPieChartHalfYear(series2);
+		
+		function drawPieChartHalfYear(series){
+			Highcharts.chart('containerPieChart2', {
+				chart : {
+					type : 'pie',
+					options3d : {
+						enabled : true,
+						alpha : 50,
+						beta : 0
+					}
+				},
+				title : {
+					text : "Article's Post last half year"
+				},
+				tooltip : {
+					pointFormat : '{series.name}: <b>{point.y}</b>'
+				},
+				plotOptions : {
+					pie : {
+						allowPointSelect : true,
+						cursor : 'pointer',
+						depth : 35,
+						dataLabels : {
+							enabled : true,
+							format : '{point.name}'
+						}
+					}
+				},
+				series : series
+			});
+		}
+		
 	function drawPieChart(series){
 		Highcharts.chart('containerPieChart', {
 			chart : {
@@ -58,7 +100,7 @@
 				}
 			},
 			title : {
-				text : 'Hot Article'
+				text : "Article's Post In Last Month"
 			},
 			tooltip : {
 				pointFormat : '{series.name}: <b>{point.y}</b>'
@@ -86,7 +128,7 @@
 		text: 'Post summary'
 		},
 		subtitle: {
-		text: 'All post in the last 5 month'
+		text: 'All post in the last 6 month'
 		},
 		xAxis: {
 		categories: [[${postCount.keySet()}]],
@@ -94,7 +136,7 @@
 		},
 		yAxis: {
 		min: 0,
-		max:100,
+		max: 30,
 		title: {
 		text: 'Number'
 		}
@@ -102,7 +144,7 @@
 		tooltip: {
 		headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
 		pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		'<td style="padding:0"><b>{point.y:.1f} K</b></td></tr>',
+		'<td style="padding:0"><b>{point.y} </b></td></tr>',
 		footerFormat: '</table>',
 		shared: true,
 		useHTML: true

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,6 @@ import com.fa.mockweb.model.Post;
 import com.fa.mockweb.model.PostInstruction;
 import com.fa.mockweb.service.ArticleService;
 import com.fa.mockweb.service.PostService;
-import com.fa.mockweb.utils.RestPageHelper;
 
 @Controller
 public class PageController {
@@ -52,7 +52,7 @@ public class PageController {
 			int currentPage = page.orElse(1);
 			int pageSize = size.orElse(5);
 			
-			RestPageHelper<PostInstruction> postInstructions = postService.fetchPostsByParentArticle(currArticle.getId(),
+			Page<PostInstruction> postInstructions = postService.fetchPostsByParentArticle(currArticle.getId(),
 					PageRequest.of(currentPage, pageSize));
 
 			theModel.addAttribute("postIntros", postInstructions);
