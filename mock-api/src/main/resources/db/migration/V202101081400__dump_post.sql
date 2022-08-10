@@ -1,15 +1,15 @@
--- CREATE TABLE IF NOT EXISTS `posts`
--- (id BIGINT NOT NULL AUTO_INCREMENT,
--- title VARCHAR(255) NULL,
--- thumbnail VARCHAR(255) NULL,
--- short_description TEXT NULL,
--- content TEXT NULL,
--- article_id BIGINT NOT NULL,
--- date_create date NOT NULL,
---
--- PRIMARY KEY (id),
--- CONSTRAINT `fk_posts_articles` FOREIGN KEY (article_id) REFERENCES articles(id)
--- ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT charset=latin1;
+CREATE TABLE IF NOT EXISTS `posts`
+(id BIGINT NOT NULL AUTO_INCREMENT,
+title VARCHAR(255) NULL,
+thumbnail VARCHAR(255) NULL,
+short_description TEXT NULL,
+content TEXT NULL,
+article_id BIGINT NOT NULL,
+date_create date NOT NULL,
+
+PRIMARY KEY (id),
+CONSTRAINT `fk_posts_articles` FOREIGN KEY (article_id) REFERENCES articles(id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT charset=latin1;
 
 
 --
