@@ -34,126 +34,125 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/admin/post")
 public class AdminPostController {
 
-	@Autowired
-	private ArticleService articleService;
-	
-	@Autowired
-	private PostService postService;
-	
-	
-	@GetMapping(value={"/{id}", ""})
-	public String showPostManagementView(Model theModel,
-			@PathVariable("id") Optional<Long> articleId,
-			@RequestParam("page") Optional<Integer> page,
-			@RequestParam("size") Optional<Integer> size,
-			@RequestParam(required = false) String keyword,
-			HttpServletRequest request) {
-		
-		Long currId = null;
-		
-		if (!articleId.isPresent()) {
-			List<ArticleInstruction> articles = articleService.fetchSimpleMainArticle();
-			
-			// Get the first article
-			currId = articles.get(0).getId();
-		} else {
-			currId = articleId.get();
-		}
-		
-		// Pagination
-		int currentPage = page.orElse(1);
-		int pageSize = size.orElse(15);
+    @Autowired
+    private ArticleService articleService;
 
-		Page<Post> posts =
-				postService.fetchPostByArticleId(currId, keyword, PageRequest.of(currentPage, pageSize), request.getSession());
-		
-		if (posts != null) {
-			int totalPages = posts.getTotalPages();
-			
-			if (totalPages > 0) {
-				List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-				theModel.addAttribute("pageNumbers", pageNumbers);
-			}
-		} 
-		
-		
-		theModel.addAttribute("pageTitle", "Post Management");
-		theModel.addAttribute("listPost", posts);
-		theModel.addAttribute("currId", currId);
-		theModel.addAttribute("activeCss", "post");
-		return "admin/post";
-	}
-	
-	
-	@GetMapping("/form")
-	public String showPostForm(@RequestParam(value = "post-id", required = false) Long postId,
-			Model theModel) {
-		
-		List<ArticleInstructionWithFullParent> articles = articleService.fetchArticles();
-		theModel.addAttribute("articles", articles);
-		
-		if(postId == null) { // add a new post
-			
-			theModel.addAttribute("postRequest", new PostRequest());
-			theModel.addAttribute("pageTitle", "Post Detail");
-			
-			return "admin/post-form";
-			
-		} else {		// edit a post
-			
-			Post currPost = postService.fetchPostsById(postId);
-			
-			PostRequest thePost = new PostRequest(currPost.getId(),
-												currPost.getTitle(),
-												currPost.getThumbnail(),
-												currPost.getShortDescription(),
-												currPost.getContent(),
-												currPost.getArticle().getId());
-			
-			theModel.addAttribute("pageTitle", "Post Detail");
-			theModel.addAttribute("postRequest", thePost);
-			
-			return "admin/post-form";
-		}
-	}
-	
-	
-	@PostMapping("/submit")
-	public String saveOrUpdatePost(@Valid @ModelAttribute("postRequest") PostRequest thePost,
-			BindingResult bindingResult,
-			@RequestParam("file-upload") MultipartFile multipartFile,
-			HttpServletRequest request) {
-		
-		if (bindingResult.hasErrors()) {
-			return "admin/post-form";
-		}
+    @Autowired
+    private PostService postService;
 
-		HttpSession session = request.getSession();
-		
-		if (!multipartFile.isEmpty()) {
-			// POST image first and get server path
-			String thumbnailName = postService.uploadImage(multipartFile, session);
-			
-			// Set thumbnail path 
-			thePost.setThumbnail(thumbnailName);
-		}
-		postService.saveOrUpdate(thePost, session);
 
-		return "redirect:/admin/post";
-	}
-	
-	
-	@GetMapping("/delete/{id}")
-	public String deletePost(@PathVariable("id") Long postId, 
-			Model theModel,
-			RedirectAttributes redirectAttributes,
-			HttpServletRequest request) {
-		
-		boolean isDelete = postService.deleteById(postId, request.getSession());
-		
-		redirectAttributes.addFlashAttribute("isDelete", false);
-	
-		return "redirect:/admin/post";
-	}
-	
+    @GetMapping(value = {"/{id}", ""})
+    public String showPostManagementView(Model theModel,
+                                         @PathVariable("id") Optional<Long> articleId,
+                                         @RequestParam("page") Optional<Integer> page,
+                                         @RequestParam("size") Optional<Integer> size,
+                                         @RequestParam(required = false) String keyword,
+                                         HttpServletRequest request) {
+
+        Long currId = null;
+
+        if (articleId.isEmpty()) {
+            List<ArticleInstruction> articles = articleService.fetchSimpleMainArticle();
+
+            // Get the first article
+            currId = articles.get(0).getId();
+        } else {
+            currId = articleId.get();
+        }
+
+        // Pagination
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(15);
+
+        Page<Post> posts =
+                postService.fetchPostByArticleId(currId, keyword, PageRequest.of(currentPage, pageSize), request.getSession());
+
+        if (posts != null) {
+            int totalPages = posts.getTotalPages();
+
+            if (totalPages > 0) {
+                List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+                theModel.addAttribute("pageNumbers", pageNumbers);
+            }
+        }
+
+        theModel.addAttribute("pageTitle", "Post Management");
+        theModel.addAttribute("listPost", posts);
+        theModel.addAttribute("currId", currId);
+        theModel.addAttribute("activeCss", "post");
+        return "admin/post";
+    }
+
+
+    @GetMapping("/form")
+    public String showPostForm(@RequestParam(value = "post-id", required = false) Long postId,
+                               Model theModel) {
+
+        List<ArticleInstructionWithFullParent> articles = articleService.fetchArticles();
+        theModel.addAttribute("articles", articles);
+
+        if (postId == null) { // add a new post
+
+            theModel.addAttribute("postRequest", new PostRequest());
+            theModel.addAttribute("pageTitle", "Post Detail");
+
+            return "admin/post-form";
+
+        } else {        // edit a post
+
+            Post currPost = postService.fetchPostsById(postId);
+
+            PostRequest thePost = new PostRequest(currPost.getId(),
+                    currPost.getTitle(),
+                    currPost.getThumbnail(),
+                    currPost.getShortDescription(),
+                    currPost.getContent(),
+                    currPost.getArticle().getId());
+
+            theModel.addAttribute("pageTitle", "Post Detail");
+            theModel.addAttribute("postRequest", thePost);
+
+            return "admin/post-form";
+        }
+    }
+
+
+    @PostMapping("/submit")
+    public String saveOrUpdatePost(@Valid @ModelAttribute("postRequest") PostRequest thePost,
+                                   BindingResult bindingResult,
+                                   @RequestParam("file-upload") MultipartFile multipartFile,
+                                   HttpServletRequest request) {
+
+        if (bindingResult.hasErrors()) {
+            return "admin/post-form";
+        }
+
+        HttpSession session = request.getSession();
+
+        if (!multipartFile.isEmpty()) {
+            // POST image first and get server path
+            String thumbnailName = postService.uploadImage(multipartFile, session);
+
+            // Set thumbnail path
+            thePost.setThumbnail(thumbnailName);
+        }
+        postService.saveOrUpdate(thePost, session);
+
+        return "redirect:/admin/post";
+    }
+
+
+    @GetMapping("/delete/{id}")
+    public String deletePost(@PathVariable("id") Long postId,
+                             Model theModel,
+                             RedirectAttributes redirectAttributes,
+                             HttpServletRequest request) {
+
+        boolean isDelete = postService.deleteById(postId, request.getSession());
+
+        redirectAttributes.addFlashAttribute("isDelete", false);
+
+        return "redirect:/admin/post";
+    }
+
 }

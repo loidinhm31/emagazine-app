@@ -3,71 +3,71 @@ package com.emagazine.api.model;
 import java.util.Date;
 
 public class CommentDTO {
-	
-	private Long id;
-	
-	private String username;
-	
-	private String userEmail;
-	
-	private String content;
-	
-	private Date dateCreate;
-	
-	private PostDetailsDTO post;
-	
-	
-	public CommentDTO() {
-		
-	}
 
-	public Long getId() {
-		return id;
-	}
+    private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private String username;
 
-	public String getUsername() {
-		return username;
-	}
+    private String userEmail;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    private String content;
 
-	public String getUserEmail() {
-		return userEmail;
-	}
+    private Date dateCreate;
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
+    private PostDetailsDTO post;
 
-	public String getContent() {
-		return content;
-	}
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public CommentDTO() {
 
-	public Date getDateCreate() {
-		return dateCreate;
-	}
+    }
 
-	public void setDateCreate(Date dateCreate) {
-		this.dateCreate = dateCreate;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setPost(PostDetailsDTO post) {
-		this.post = post;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Long getPostId() {
-		return post.getId();
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public void setPost(PostDetailsDTO post) {
+        this.post = post;
+    }
+
+    public Long getPostId() {
+        return post.getId();
+    }
+
+
 }

@@ -4,22 +4,22 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class SpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-	@Override
-	protected Class<?>[] getRootConfigClasses() {
-		
-		return null;
-	}
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
 
-	@Override
-	protected Class<?>[] getServletConfigClasses() {
-		
-		return new Class[] { EMagazineAppMvcConfig.class };
-	}
+        return null;
+    }
 
-	@Override
-	protected String[] getServletMappings() {
-		
-		return new String[] { "/" };
-	}
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+
+        return new Class[]{EMagazineAppMvcConfig.class};
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+
+        return new String[]{"/"};
+    }
 
 }

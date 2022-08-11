@@ -7,109 +7,109 @@ import com.emagazine.web.config.RestAPI;
 
 public class Post {
 
-	private Long id;
+    private Long id;
 
-	private String title;
+    private String title;
 
-	private String thumbnail;
+    private String thumbnail;
 
-	private String shortDescription;
+    private String shortDescription;
 
-	private String content;
-	
-	private Date dateCreate;
-	
-	private Date dateUpdate;
+    private String content;
 
-	private ArticleInstructionWithFullParent article;
+    private Date dateCreate;
 
+    private Date dateUpdate;
 
-	public Post() {
-	
-	}
+    private ArticleInstructionWithFullParent article;
 
 
-	public Long getId() {
-		return id;
-	}
+    public Post() {
+
+    }
 
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
 
-	public String getTitle() {
-		return title;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getThumbnail() {
-		if (thumbnail != null && !thumbnail.startsWith("http")) {
-			String URL = RestAPI.HOST + File.separator + thumbnail;
-			return URL;
-		}
-			
-		return thumbnail;
-	}
-
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
-	}
+    public String getTitle() {
+        return title;
+    }
 
 
-	public String getShortDescription() {
-		return shortDescription;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getThumbnail() {
+        if (thumbnail != null && !thumbnail.startsWith("http")) {
+            String URL = RestAPI.HOST + File.separator + thumbnail;
+            return URL;
+        }
+
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 
 
-	public void setShortDescription(String shortDescription) {
-		this.shortDescription = shortDescription;
-	}
+    public String getShortDescription() {
+        return shortDescription;
+    }
 
 
-	public String getContent() {
-		return content;
-	}
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
 
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getContent() {
+        return content;
+    }
 
 
-	public Date getDateCreate() {
-		return dateCreate;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
 
-	public void setDateCreate(Date dateCreate) {
-		this.dateCreate = dateCreate;
-	}
+    public Date getDateCreate() {
+        return dateCreate;
+    }
 
 
-	public Date getDateUpdate() {
-		return dateUpdate;
-	}
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
 
 
-	public void setDateUpdate(Date dateUpdate) {
-		this.dateUpdate = dateUpdate;
-	}
+    public Date getDateUpdate() {
+        return dateUpdate;
+    }
 
 
-	public ArticleInstructionWithFullParent getArticle() {
-		return article;
-	}
+    public void setDateUpdate(Date dateUpdate) {
+        this.dateUpdate = dateUpdate;
+    }
 
 
-	public void setArticle(ArticleInstructionWithFullParent article) {
-		this.article = article;
-	}
+    public ArticleInstructionWithFullParent getArticle() {
+        return article;
+    }
 
-	
+
+    public void setArticle(ArticleInstructionWithFullParent article) {
+        this.article = article;
+    }
+
+
 }

@@ -26,94 +26,94 @@ import org.thymeleaf.templatemode.TemplateMode;
 @ComponentScan(basePackages = "com.emagazine.web")
 public class EMagazineAppMvcConfig implements WebMvcConfigurer {
 
-	@Autowired
-	private ApplicationContext applicationContext;
-	
-	@Autowired
-	private NavigationInterceptor navInterceptor;
-	
-	@Bean
-	public SpringResourceTemplateResolver templateResolver() {
-		// SpringResourceTemplateResolver automatically integrates with Spring's own
-		// resource resolution infrastructure, which is highly recommended.
-		SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-		templateResolver.setApplicationContext(this.applicationContext);
-		templateResolver.setPrefix("/WEB-INF/templates/");
-		templateResolver.setSuffix(".html");
-		// HTML is the default value, added here for the sake of clarity.
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		// Template cache is true by default. Set to false if you want
-		// templates to be automatically updated when modified.
-		templateResolver.setCacheable(false);
-		return templateResolver;
-	}
+    @Autowired
+    private ApplicationContext applicationContext;
 
-	@Bean
-	public SpringTemplateEngine templateEngine() {
-		// SpringTemplateEngine automatically applies SpringStandardDialect and
-		// enables Spring's own MessageSource message resolution mechanisms.
-		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+    @Autowired
+    private NavigationInterceptor navInterceptor;
+
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        // SpringResourceTemplateResolver automatically integrates with Spring's own
+        // resource resolution infrastructure, which is highly recommended.
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setApplicationContext(this.applicationContext);
+        templateResolver.setPrefix("/WEB-INF/templates/");
+        templateResolver.setSuffix(".html");
+        // HTML is the default value, added here for the sake of clarity.
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        // Template cache is true by default. Set to false if you want
+        // templates to be automatically updated when modified.
+        templateResolver.setCacheable(false);
+        return templateResolver;
+    }
+
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        // SpringTemplateEngine automatically applies SpringStandardDialect and
+        // enables Spring's own MessageSource message resolution mechanisms.
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 //		templateEngine.addTemplateResolver(urlTemplateResolver());
-		templateEngine.addTemplateResolver(templateResolver());
+        templateEngine.addTemplateResolver(templateResolver());
 
-		// Enabling the SpringEL compiler with Spring 4.2.4 or newer can
-		// speed up execution in most scenarios, but might be incompatible
-		// with specific cases when expressions in one template are reused
-		// across different data types, so this flag is "false" by default
-		// for safer backwards compatibility.
-		templateEngine.setEnableSpringELCompiler(true);
-		
-		templateEngine.addDialect(new SpringSecurityDialect());
-		return templateEngine;
-	}
+        // Enabling the SpringEL compiler with Spring 4.2.4 or newer can
+        // speed up execution in most scenarios, but might be incompatible
+        // with specific cases when expressions in one template are reused
+        // across different data types, so this flag is "false" by default
+        // for safer backwards compatibility.
+        templateEngine.setEnableSpringELCompiler(true);
 
-	@Bean
-	public ViewResolver viewResolver() {
-		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-		viewResolver.setTemplateEngine(templateEngine());
-		viewResolver.setCharacterEncoding("UTF-8");
-		return viewResolver;
-	}
+        templateEngine.addDialect(new SpringSecurityDialect());
+        return templateEngine;
+    }
 
-	@Bean
-	public RestTemplate restTemplate() {
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-		return restTemplate;
-	}
-	
-	
-	@Bean
-	public CommonsMultipartResolver multipartResolver()  {
-		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-	    return multipartResolver;
-	}
+    @Bean
+    public ViewResolver viewResolver() {
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setCharacterEncoding("UTF-8");
+        return viewResolver;
+    }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    @Bean
+    public RestTemplate restTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+        return restTemplate;
+    }
 
-		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 
-		registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/static/css/");
-		
-		registry.addResourceHandler("/img/**").addResourceLocations("/WEB-INF/static/img/");
-		
-		registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/static/js/");
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        return multipartResolver;
+    }
 
-		registry.addResourceHandler("/libs/**").addResourceLocations("/WEB-INF/libs/");
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-	}
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 
-	// Set welcome file
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("/index.html");
-	}
+        registry.addResourceHandler("/css/**").addResourceLocations("/WEB-INF/static/css/");
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-	
-		registry.addInterceptor(navInterceptor);
-	}
+        registry.addResourceHandler("/img/**").addResourceLocations("/WEB-INF/static/img/");
+
+        registry.addResourceHandler("/js/**").addResourceLocations("/WEB-INF/static/js/");
+
+        registry.addResourceHandler("/libs/**").addResourceLocations("/WEB-INF/libs/");
+
+    }
+
+    // Set welcome file
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("/index.html");
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+
+        registry.addInterceptor(navInterceptor);
+    }
 }

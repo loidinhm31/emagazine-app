@@ -10,25 +10,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller	
+@Controller
 public class HomeController {
-	
-	@Autowired
-	private PostService postService;
-	
-	
-	@RequestMapping("/home")
-	public String showHome(Model theModel) {		
-		
-		Map<String, List<PostInstruction>> postMap = postService.fetchHomePosts();
-		
-		theModel.addAttribute("title", "Home");
 
-		theModel.addAttribute("postMap", postMap);
-		
-		return "client/home";
-	}
-	
-	
-	
+    @Autowired
+    private PostService postService;
+
+
+    @RequestMapping("/home")
+    public String showHome(Model theModel) {
+
+        Map<String, List<PostInstruction>> postMap = postService.fetchHomePosts();
+
+        theModel.addAttribute("title", "Home");
+
+        theModel.addAttribute("postMap", postMap);
+
+        return "client/home";
+    }
+
+
 }

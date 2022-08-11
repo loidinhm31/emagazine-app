@@ -63,7 +63,7 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
             String username = (String) body.get("name");
 
             @SuppressWarnings("unchecked")
-			var authorities =  (List<Map<String, String>>) body.get("authorities");
+            var authorities = (List<Map<String, String>>) body.get("authorities");
 
             Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
                     .map(m -> new SimpleGrantedAuthority(m.get("authority")))

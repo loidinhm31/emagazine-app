@@ -2,75 +2,78 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="admin/admin-fragments:: head"></head>
 <body>
-	<main>
-		<div th:replace="admin/admin-fragments :: navbar-admin"></div>
+<main>
+    <div th:replace="admin/admin-fragments :: navbar-admin"></div>
 
 
-		<div class="container-fluid mt-3">
-			<div class="row">
-				<div class="col col-md-2 pr-1">
-					<div th:replace="admin/admin-fragments :: post"></div>
-				</div>
-				<div class="col col-sm-10">
-					<div class="content">
-						<div class="d-flex justify-content-between">
-							<h2 th:text="${title}"></h2>
-							<form th:if="${currId == null}" class="form-inline" th:action="@{/admin/comment}">
-								<input class="form-control mr-sm-2" name="keyword" type="search"
-									placeholder="Search" aria-label="Search">
-								<button class="btn btn-outline-success my-2 my-sm-0"
-									type="submit">Search</button>
-							</form>
-							<form th:if="${currId != null}" class="form-inline" th:action="@{/admin/comment/{id}/post(id=${currId})}">
-								<input class="form-control mr-sm-2" name="keyword" type="search"
-									placeholder="Search" aria-label="Search">
-								<button class="btn btn-outline-success my-2 my-sm-0"
-									type="submit">Search</button>
-							</form>
-						</div>
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col col-md-2 pr-1">
+                <div th:replace="admin/admin-fragments :: post"></div>
+            </div>
+            <div class="col col-sm-10">
+                <div class="content">
+                    <div class="d-flex justify-content-between">
+                        <h2 th:text="${title}"></h2>
+                        <form th:if="${currId == null}" class="form-inline" th:action="@{/admin/comment}">
+                            <input class="form-control mr-sm-2" name="keyword" type="search"
+                                   placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0"
+                                    type="submit">Search
+                            </button>
+                        </form>
+                        <form th:if="${currId != null}" class="form-inline"
+                              th:action="@{/admin/comment/{id}/post(id=${currId})}">
+                            <input class="form-control mr-sm-2" name="keyword" type="search"
+                                   placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0"
+                                    type="submit">Search
+                            </button>
+                        </form>
+                    </div>
 
 
-						<table th:if="${comments != null}"
-							class="table table-bordered table-fixed mt-3">
+                    <table th:if="${comments != null}"
+                           class="table table-bordered table-fixed mt-3">
 
-							<thead>
-								<tr>
-									<th scope="col">Post Title</th>
-									<th scope="col">Date Create</th>
-									<th scope="col">Username</th>
-									<th scope="col">User Email</th>
-									<th scope="col">Action</th>
-								</tr>
-							</thead>
-							<tbody th:each="comment: ${comments}">
-								<tr>
-									<td>
-										<a th:text="${comment.post.title}" 
-											th:href="@{/post(id=${comment.post.id})}"
-											target="_blank"
-										>Link to the post</a>
-									</td>
-									<td
-										th:text="${#dates.format(comment.dateCreate,'EEE, dd-MMM-yyyy, HH:mm:ss')}"></td>
-									<td th:text="${comment.username}"></td>
-									<td th:text="${comment.userEmail}"></td> 
-									<td><a class="btn btn-info btn-sm"
-										th:href="@{/admin/comment/{id}(id=${comment.id})}"> Detail
-									</a> <a class="btn btn-danger btn-sm"
-										th:href="@{/admin/comment/delete/{id}(id=${comment.id})}">Delete
-									</a></td> 
-								</tr>
-							</tbody>
-						</table>
+                        <thead>
+                        <tr>
+                            <th scope="col">Post Title</th>
+                            <th scope="col">Date Create</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">User Email</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="comment: ${comments}">
+                        <tr>
+                            <td>
+                                <a th:text="${comment.post.title}"
+                                   th:href="@{/post(id=${comment.post.id})}"
+                                   target="_blank"
+                                >Link to the post</a>
+                            </td>
+                            <td
+                                    th:text="${#dates.format(comment.dateCreate,'EEE, dd-MMM-yyyy, HH:mm:ss')}"></td>
+                            <td th:text="${comment.username}"></td>
+                            <td th:text="${comment.userEmail}"></td>
+                            <td><a class="btn btn-info btn-sm"
+                                   th:href="@{/admin/comment/{id}(id=${comment.id})}"> Detail
+                            </a> <a class="btn btn-danger btn-sm"
+                                    th:href="@{/admin/comment/delete/{id}(id=${comment.id})}">Delete
+                            </a></td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-						<h5 th:if="${comments == null}"
-							style="color: red; text-align: center;">Not found any
-							comment!</h5>
-					</div>
-				</div>
-			</div>
-		</div>
+                    <h5 th:if="${comments == null}"
+                        style="color: red; text-align: center;">Not found any
+                        comment!</h5>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	</main>
+</main>
 </body>
 </html>

@@ -24,82 +24,81 @@ import com.emagazine.api.model.ArticleRequestDTO;
 @RestController
 @RequestMapping("/articles")
 public class ArticleRestController {
-	
-	@Autowired
-	private ArticleService articleService;
-	
-	
-	@GetMapping("/heads")
-	public List<ArticleDetailsDTO> getMainArticles() {
-		
-		List<ArticleDetailsDTO> articles = articleService.findMainArticles();
-		
-		return articles;
-	}
-	
-	
-	@GetMapping("heads/instructions")
-	public List<ArticleInstructionDTO> getSimpleMainArtilces() {
-		
-		List<ArticleInstructionDTO> articles = articleService.findSimpleMainArticles();
-		
-		return articles;
-	}
 
-	
-	@GetMapping("/instructions/{id}")
-	public ArticleInstructionWithParentIdDTO getArticleInstructionWithParentId(@PathVariable Long id) {
-		ArticleInstructionWithParentIdDTO theArticle = articleService.findByIdForInstruction(id);
-		
-		if (theArticle == null) {
-			throw new ObjectNotFoundException("Not found article");
-		}
-		
-		return theArticle;
-	}
-	
-	
-	@GetMapping("/{id}")
-	public ArticleDetailsDTO getArticle(@PathVariable Long id) {
-		ArticleDetailsDTO theArticle = articleService.findById(id);
-		
-		if (theArticle == null) {
-			throw new ObjectNotFoundException("Not found article");
-		}
-		
-		return theArticle;
-	}
-	
-	
-	@GetMapping
-	public List<ArticleInstructionWithFullParentDTO> getAllArticles() {
-		return articleService.findAllArticles();
-	}
-	
-	
-	
-	@GetMapping("/childs/{id}")
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	public List<ArticleInstructionWithFullParentDTO> getChildArticle(
-			@PathVariable Long id,
-			@RequestParam(required = false) String keyword) {
-		return articleService.findAllChildsById(id, keyword);
-	}
-	
-		
-	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	public ArticleRequestDTO saveOrUpdateArticle(@RequestBody ArticleRequestDTO articleRequest) {
-		
-		articleService.save(articleRequest);
-		
-		return articleRequest;
-	}
-	
-	
-	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	public void deleteArticle(@PathVariable(value = "id") Long id) {
-		articleService.delete(id);
-	}
+    @Autowired
+    private ArticleService articleService;
+
+
+    @GetMapping("/heads")
+    public List<ArticleDetailsDTO> getMainArticles() {
+
+        List<ArticleDetailsDTO> articles = articleService.findMainArticles();
+
+        return articles;
+    }
+
+
+    @GetMapping("heads/instructions")
+    public List<ArticleInstructionDTO> getSimpleMainArtilces() {
+
+        List<ArticleInstructionDTO> articles = articleService.findSimpleMainArticles();
+
+        return articles;
+    }
+
+
+    @GetMapping("/instructions/{id}")
+    public ArticleInstructionWithParentIdDTO getArticleInstructionWithParentId(@PathVariable Long id) {
+        ArticleInstructionWithParentIdDTO theArticle = articleService.findByIdForInstruction(id);
+
+        if (theArticle == null) {
+            throw new ObjectNotFoundException("Not found article");
+        }
+
+        return theArticle;
+    }
+
+
+    @GetMapping("/{id}")
+    public ArticleDetailsDTO getArticle(@PathVariable Long id) {
+        ArticleDetailsDTO theArticle = articleService.findById(id);
+
+        if (theArticle == null) {
+            throw new ObjectNotFoundException("Not found article");
+        }
+
+        return theArticle;
+    }
+
+
+    @GetMapping
+    public List<ArticleInstructionWithFullParentDTO> getAllArticles() {
+        return articleService.findAllArticles();
+    }
+
+
+    @GetMapping("/childs/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public List<ArticleInstructionWithFullParentDTO> getChildArticle(
+            @PathVariable Long id,
+            @RequestParam(required = false) String keyword) {
+        return articleService.findAllChildsById(id, keyword);
+    }
+
+
+    @RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ArticleRequestDTO saveOrUpdateArticle(@RequestBody ArticleRequestDTO articleRequest) {
+
+        articleService.save(articleRequest);
+
+        return articleRequest;
+    }
+
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public void deleteArticle(@PathVariable(value = "id") Long id) {
+        articleService.delete(id);
+    }
 }

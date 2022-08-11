@@ -11,22 +11,22 @@ import com.emagazine.web.model.request.ArticleRequest;
 
 
 public interface ArticleService {
-	
-	List<ArticleDetails> fetchMainArticles();
-		
-	ArticleDetails fetchArticle(Long id);
-	
-	List<ArticleInstructionWithFullParent> fetchArticles();
-	
-	boolean saveOrUpdate(ArticleRequest theArticle, HttpSession sesssion);
-	
-	List<ArticleInstruction> fetchSimpleMainArticle();
 
-	boolean deleteById(Long id, HttpSession session);
-	
+    List<ArticleDetails> fetchMainArticles();
+
+    ArticleDetails fetchArticle(Long id);
+
+    List<ArticleInstructionWithFullParent> fetchArticles();
+
+    boolean saveOrUpdate(ArticleRequest theArticle, HttpSession sesssion);
+
+    List<ArticleInstruction> fetchSimpleMainArticle();
+
+    boolean deleteById(Long id, HttpSession session);
+
 //	ArticleInstructionWithFullParent fetchSimpleArticleWithParent(Long id);
-	
+
 //	ArticleRequest fetchArticleForRequest(Long id);
-	
-	List<ArticleInstructionWithFullParent> fetchAllChildsByArticleId(Long id,String keyword, HttpSession session);
+
+    List<ArticleInstructionWithFullParent> fetchAllChildsByArticleId(Long id, String keyword, HttpSession session);
 }

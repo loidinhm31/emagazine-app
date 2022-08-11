@@ -15,27 +15,27 @@ import com.emagazine.api.model.PostRequestDTO;
 
 public interface PostService {
 
-	PostDetailsDTO findById(Long id);
+    PostDetailsDTO findById(Long id);
 
-	List<PostDetailsDTO> findByArticleId(Long articleId);
+    List<PostDetailsDTO> findByArticleId(Long articleId);
 
-	Map<String, List<PostInstructionDTO>> findTopPostOfAllChildArticles();
+    Map<String, List<PostInstructionDTO>> findTopPostOfAllChildArticles();
 
-	List<PostInstructionDTO> findTop3PostsOfEachChildByParentArticleId(Long articleId);
+    List<PostInstructionDTO> findTop3PostsOfEachChildByParentArticleId(Long articleId);
 
-	Page<PostDetailsDTO> findByParentArticleId(Long articleId, int page, int size);
+    Page<PostDetailsDTO> findByParentArticleId(Long articleId, int page, int size);
 
-	Page<PostDetailsDTO> findAllPostsIncludeChildsByArticleId(Long articleId,  int page, int size, String keyword);
-	
-	void save(PostRequestDTO postRequest);
-	
-	String uploadImageFile(MultipartFile multipartFile);
+    Page<PostDetailsDTO> findAllPostsIncludeChildsByArticleId(Long articleId, int page, int size, String keyword);
 
-	List<PostInstructionDTO> findTopPostByComment();
-	
-	List<DataPieChart> getDataPieChart(Date startDate,Date endDate)  throws ParseException;
-	
-	void delete(Long id);
+    void save(PostRequestDTO postRequest);
 
-	Map<String, Integer> getColumnChartData(); 
+    String uploadImageFile(MultipartFile multipartFile);
+
+    List<PostInstructionDTO> findTopPostByComment();
+
+    List<DataPieChart> getDataPieChart(Date startDate, Date endDate) throws ParseException;
+
+    void delete(Long id);
+
+    Map<String, Integer> getColumnChartData();
 }

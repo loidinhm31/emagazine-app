@@ -18,85 +18,85 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "articles")
 public class Article {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
-	private Long id;
 
-	
-	@Column(name="name", nullable=false)
-	private String name;
-	
-	@Column(name="is_root", columnDefinition="boolean default false")
-	private boolean isRoot;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_id")
-	private Article parentArticle;
-
-	@OneToMany(mappedBy="parentArticle", fetch = FetchType.LAZY)
-	private List<Article> childArticles;
-	
-	@OneToMany(mappedBy="article", 
-			cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
-	private Set<Post> posts;
-
-	public Article() {
-
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
 
-	public String getName() {
-		return name;
-	}
+    @Column(name = "name", nullable = false)
+    private String name;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public boolean isRoot() {
-		return isRoot;
-	}
+    @Column(name = "is_root", columnDefinition = "boolean default false")
+    private boolean isRoot;
 
-	public void setRoot(boolean isRoot) {
-		this.isRoot = isRoot;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Article parentArticle;
 
-	public Article getParentArticle() {
-		return parentArticle;
-	}
+    @OneToMany(mappedBy = "parentArticle", fetch = FetchType.LAZY)
+    private List<Article> childArticles;
 
-	public void setParentArticle(Article parentArticle) {
-		this.parentArticle = parentArticle;
-	}
+    @OneToMany(mappedBy = "article",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    private Set<Post> posts;
 
-	public List<Article> getChildArticles() {
-		return childArticles;
-	}
+    public Article() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 
-	public void setChildArticles(List<Article> childArticles) {
-		this.childArticles = childArticles;
-	}
+    public String getName() {
+        return name;
+    }
 
-	
-	public Set<Post> getPosts() {
-		return posts;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	
-	public void setPosts(Set<Post> posts) {
-		this.posts = posts;
-	}
+    public boolean isRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(boolean isRoot) {
+        this.isRoot = isRoot;
+    }
+
+    public Article getParentArticle() {
+        return parentArticle;
+    }
+
+    public void setParentArticle(Article parentArticle) {
+        this.parentArticle = parentArticle;
+    }
+
+    public List<Article> getChildArticles() {
+        return childArticles;
+    }
+
+
+    public void setChildArticles(List<Article> childArticles) {
+        this.childArticles = childArticles;
+    }
+
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
 
 }
 

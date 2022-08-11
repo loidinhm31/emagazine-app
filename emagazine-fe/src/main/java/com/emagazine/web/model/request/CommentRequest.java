@@ -1,60 +1,58 @@
 package com.emagazine.web.model.request;
 
 public class CommentRequest {
-	
-	private String username;
-	
-	private String userEmail;
-	
-	private String content;
-	
-	private Long postId;
 
-	public CommentRequest() {
+    private String username;
 
-	}
+    private String userEmail;
 
-	public CommentRequest(String username, String userEmail, String content, Long postId) {
-		this.username = username;
-		this.userEmail = userEmail;
-		this.content = content;
-		this.postId = postId;
-	}
+    private String content;
 
-	
-	
+    private Long postId;
 
-	public String getUsername() {
-		return username;
-	}
+    public CommentRequest() {
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    }
 
-	public String getUserEmail() {
-		return userEmail;
-	}
+    public CommentRequest(String username, String userEmail, String content, Long postId) {
+        this.username = username;
+        this.userEmail = userEmail;
+        this.content = content;
+        this.postId = postId;
+    }
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
 
-	public String getContent() {
-		return content;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public Long getPostId() {
-		return postId;
-	}
+    public String getUserEmail() {
+        return userEmail;
+    }
 
-	public void setPostId(Long postId) {
-		this.postId = postId;
-	}
-	
-	
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Long postId) {
+        this.postId = postId;
+    }
+
+
 }

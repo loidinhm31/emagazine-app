@@ -1,4 +1,5 @@
 package com.emagazine.api.entity;
+
 import java.util.Date;
 import java.util.Set;
 
@@ -17,118 +18,118 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name="posts")
+@Table(name = "posts")
 public class Post {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")	
-	private Long id;
-	
-	@Column(name="title", columnDefinition = "NVARCHAR(50)")
-	private String title;
-	
-	@Column(name="thumbnail")
-	private String thumbnail;
-	
-	@Column(name="short_description")
-	private String shortDescription;
-	
-	@Column(name="content", columnDefinition = "LONGTEXT")
-	private String content;
-	
-	@Column(name="date_create", updatable = false, insertable = true)
-	@CreationTimestamp
-	private Date dateCreate;
-	
-	@Column(name="date_update")
-	@UpdateTimestamp
-	private Date dateUpdate;
-	
-	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-						CascadeType.DETACH, CascadeType.REFRESH})
-	@JoinColumn(name="article_id", nullable=false)
-	private Article article;
-	
-	@OneToMany(mappedBy="post")
-	private Set<Comment> comments;
-	
-	
-	public Post() {
-		
-	}
 
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "title", columnDefinition = "NVARCHAR(50)")
+    private String title;
 
-	public String getTitle() {
-		return title;
-	}
+    @Column(name = "thumbnail")
+    private String thumbnail;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    @Column(name = "short_description")
+    private String shortDescription;
 
-	public String getThumbnail() {
-		return thumbnail;
-	}
+    @Column(name = "content", columnDefinition = "LONGTEXT")
+    private String content;
 
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
-	}
+    @Column(name = "date_create", updatable = false, insertable = true)
+    @CreationTimestamp
+    private Date dateCreate;
 
-	public String getShortDescription() {
-		return shortDescription;
-	}
+    @Column(name = "date_update")
+    @UpdateTimestamp
+    private Date dateUpdate;
 
-	public void setShortDescription(String shortDescription) {
-		this.shortDescription = shortDescription;
-	}
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "article_id", nullable = false)
+    private Article article;
 
-	public String getContent() {
-		return content;
-	}
+    @OneToMany(mappedBy = "post")
+    private Set<Comment> comments;
 
-	public void setContent(String content) {
-		this.content = content;
-	}
 
-	public Date getDateCreate() {
-		return dateCreate;
-	}
+    public Post() {
 
-	public void setDateCreate(Date dateCreate) {
-		this.dateCreate = dateCreate;
-	}
-	
-	public Date getDateUpdate() {
-		return dateUpdate;
-	}
+    }
 
-	public void setDateUpdate(Date dateUpdate) {
-		this.dateUpdate = dateUpdate;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Article getArticle() {
-		return article;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setArticle(Article article) {
-		this.article = article;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public Set<Comment> getComments() {
-		return comments;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setComments(Set<Comment> comments) {
-		this.comments = comments;
-	}
-	
-	
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public Date getDateUpdate() {
+        return dateUpdate;
+    }
+
+    public void setDateUpdate(Date dateUpdate) {
+        this.dateUpdate = dateUpdate;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+
 }

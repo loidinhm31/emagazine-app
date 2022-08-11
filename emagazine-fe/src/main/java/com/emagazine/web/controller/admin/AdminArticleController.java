@@ -28,92 +28,91 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/admin/article")
 public class AdminArticleController {
-	
-	@Autowired
-	private ArticleService articleService;
-	
-	
-	// Convert trim input strings,
-	// remove leading and trailing whitespace
-	@InitBinder
-	public void initBinder(WebDataBinder dataBinder) {
-		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
 
-		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
-	}
+    @Autowired
+    private ArticleService articleService;
 
-	
 
-	@GetMapping
-	public String showAllArticles(Model model) {
-		String title = "All Articles";
+    // Convert trim input strings,
+    // remove leading and trailing whitespace
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
 
-		List<ArticleInstructionWithFullParent> childArticles =
-				articleService.fetchArticles();
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
 
-		model.addAttribute("pageTitle", "Article Management");
-		model.addAttribute("childArticles", childArticles);
-		model.addAttribute("title", title);
-		model.addAttribute("activeCss", "article");
-		return "admin/article";
-	}
 
-	
-	@GetMapping("/{id}")
-	public String showArticle(@RequestParam(required = false) String keyword,
-			@PathVariable("id") Long articleId, Model model, HttpServletRequest request) {
+    @GetMapping
+    public String showAllArticles(Model model) {
+        String title = "All Articles";
 
-		List<ArticleInstructionWithFullParent> childArticles = 
-				articleService.fetchAllChildsByArticleId(articleId, keyword, request.getSession());
-		
-		// Get name of the current article
-		if (!childArticles.isEmpty()) {
-			String title = childArticles.get(0).getParentArticle().getName() + "'s Child Categories";
-			model.addAttribute("title", title);
-		}
-				
-		model.addAttribute("pageTitle", "Article Management");
-		model.addAttribute("childArticles", childArticles);	
-		model.addAttribute("id", articleId);
-		return "admin/article";
-	}
+        List<ArticleInstructionWithFullParent> childArticles =
+                articleService.fetchArticles();
 
-	
-	@GetMapping(value={"/detail", "/detail/{id}"})
-	public String showArticleForm(@PathVariable("id") Optional<Long> articleId, 
-									Model theModel) {
-		
-		List<ArticleInstructionWithFullParent> articles = articleService.fetchArticles();
-		// add a null parent into list
-		ArticleInstructionWithFullParent nullArticle = new ArticleInstructionWithFullParent(); 
-		nullArticle.setId(0L);
-		nullArticle.setName("Empty Parent");
-		articles.add(0, nullArticle);
+        model.addAttribute("pageTitle", "Article Management");
+        model.addAttribute("childArticles", childArticles);
+        model.addAttribute("title", title);
+        model.addAttribute("activeCss", "article");
+        return "admin/article";
+    }
 
-		if (articleId.isEmpty()) { // add a new article
-			theModel.addAttribute("pageTitle", "Create A New Article");
-			theModel.addAttribute("title", "New Article");
-			theModel.addAttribute("theArticle", new ArticleRequest());
-			theModel.addAttribute("articles", articles);
-			
-			return "admin/article-form";
-		} else {				// edit an article
 
-			ArticleDetails currArticle = articleService.fetchArticle(articleId.get());
+    @GetMapping("/{id}")
+    public String showArticle(@RequestParam(required = false) String keyword,
+                              @PathVariable("id") Long articleId, Model model, HttpServletRequest request) {
 
-			// Then, remove current article from option list
-			articles.removeIf(article -> article.getId() == currArticle.getId());
+        List<ArticleInstructionWithFullParent> childArticles =
+                articleService.fetchAllChildsByArticleId(articleId, keyword, request.getSession());
 
-			Long parentId = null;
-			if (currArticle.getParentArticle() != null) {
-				 parentId = currArticle.getParentArticle().getId();
-			}
+        // Get name of the current article
+        if (!childArticles.isEmpty()) {
+            String title = childArticles.get(0).getParentArticle().getName() + "'s Child Categories";
+            model.addAttribute("title", title);
+        }
 
-			ArticleRequest theArticle =
-					new ArticleRequest(currArticle.getId(),
-										currArticle.getName(),
-										currArticle.isRoot(),
-										parentId);
+        model.addAttribute("pageTitle", "Article Management");
+        model.addAttribute("childArticles", childArticles);
+        model.addAttribute("id", articleId);
+        return "admin/article";
+    }
+
+
+    @GetMapping(value = {"/detail", "/detail/{id}"})
+    public String showArticleForm(@PathVariable("id") Optional<Long> articleId,
+                                  Model theModel) {
+
+        List<ArticleInstructionWithFullParent> articles = articleService.fetchArticles();
+        // add a null parent into list
+        ArticleInstructionWithFullParent nullArticle = new ArticleInstructionWithFullParent();
+        nullArticle.setId(0L);
+        nullArticle.setName("Empty Parent");
+        articles.add(0, nullArticle);
+
+        if (articleId.isEmpty()) { // add a new article
+            theModel.addAttribute("pageTitle", "Create A New Article");
+            theModel.addAttribute("title", "New Article");
+            theModel.addAttribute("theArticle", new ArticleRequest());
+            theModel.addAttribute("articles", articles);
+
+            return "admin/article-form";
+        } else {                // edit an article
+
+            ArticleDetails currArticle = articleService.fetchArticle(articleId.get());
+
+            // Then, remove current article from option list
+            articles.removeIf(article -> article.getId() == currArticle.getId());
+
+            Long parentId = null;
+            if (currArticle.getParentArticle() != null) {
+                parentId = currArticle.getParentArticle().getId();
+            }
+
+            ArticleRequest theArticle =
+                    new ArticleRequest(currArticle.getId(),
+                            currArticle.getName(),
+                            currArticle.isRoot(),
+                            parentId);
 //			ArticleRequest theArticle =
 //					articles.stream()
 //							.map(a -> {
@@ -127,51 +126,51 @@ public class AdminArticleController {
 //							.filter(a -> a.getId().equals(articleId.get()))
 //							.flatMap()
 //							.collect(Collectors.reducing((a, b) -> null)).get();
-			
-			theModel.addAttribute("pageTitle", "Modify " + theArticle.getName());
-			theModel.addAttribute("title", "Article Detail");
-			theModel.addAttribute("theArticle", theArticle);
 
-		}
-		theModel.addAttribute("articles", articles);
-		return "admin/article-form";
+            theModel.addAttribute("pageTitle", "Modify " + theArticle.getName());
+            theModel.addAttribute("title", "Article Detail");
+            theModel.addAttribute("theArticle", theArticle);
 
-	}
+        }
+        theModel.addAttribute("articles", articles);
+        return "admin/article-form";
 
-	
-	@PostMapping("/submit")
-	public String saveOrUpdateArticle(@Valid @ModelAttribute("theArticle") ArticleRequest theArticle,
-			BindingResult bindingResult,
-			Model theModel,
-			HttpServletRequest request) {
-		
-		if (bindingResult.hasErrors()) {
-			
-			return "admin/article-form";
-		}
-		
-		articleService.saveOrUpdate(theArticle, request.getSession());
-		
-		if(theArticle.getId() != null) {
-			return "redirect:/admin/article/detail?article-id=" + theArticle.getId();
-			
-		}
+    }
 
-		return "redirect:/admin/article";
-	}
-	
-	
-	@GetMapping("/delete/{id}")
-	public String deleteArtilce(@PathVariable("id") Long articleId, 
-			Model theModel,
-			RedirectAttributes redirectAttributes,
-			HttpServletRequest request) {
-		
-		boolean isDelete = articleService.deleteById(articleId, request.getSession());
-		
-		redirectAttributes.addFlashAttribute("isDelete", false);
-	
-		return "redirect:/admin/article";
-	}
+
+    @PostMapping("/submit")
+    public String saveOrUpdateArticle(@Valid @ModelAttribute("theArticle") ArticleRequest theArticle,
+                                      BindingResult bindingResult,
+                                      Model theModel,
+                                      HttpServletRequest request) {
+
+        if (bindingResult.hasErrors()) {
+
+            return "admin/article-form";
+        }
+
+        articleService.saveOrUpdate(theArticle, request.getSession());
+
+        if (theArticle.getId() != null) {
+            return "redirect:/admin/article/detail?article-id=" + theArticle.getId();
+
+        }
+
+        return "redirect:/admin/article";
+    }
+
+
+    @GetMapping("/delete/{id}")
+    public String deleteArtilce(@PathVariable("id") Long articleId,
+                                Model theModel,
+                                RedirectAttributes redirectAttributes,
+                                HttpServletRequest request) {
+
+        boolean isDelete = articleService.deleteById(articleId, request.getSession());
+
+        redirectAttributes.addFlashAttribute("isDelete", false);
+
+        return "redirect:/admin/article";
+    }
 
 }

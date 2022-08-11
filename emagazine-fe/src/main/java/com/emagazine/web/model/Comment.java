@@ -3,55 +3,52 @@ package com.emagazine.web.model;
 import java.util.Date;
 
 public class Comment {
-	private String username;
-	
-	private String userEmail;
-	
-	private String content;
-	
-	private Date dateCreate;
+    private String username;
 
-	public Comment() {
-		
-	}
+    private String userEmail;
 
-	
+    private String content;
 
-	public String getUsername() {
-		return username;
-	}
+    private Date dateCreate;
+
+    public Comment() {
+
+    }
 
 
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
+    public String getUsername() {
+        return username;
+    }
 
 
-	public String getUserEmail() {
-		return userEmail;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
 
-	public String getContent() {
-		return content;
-	}
+    public String getUserEmail() {
+        return userEmail;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
-	public Date getDateCreate() {
-		return dateCreate;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setDateCreate(Date dateCreate) {
-		this.dateCreate = dateCreate;
-	}
-	
-	
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+
 }

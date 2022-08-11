@@ -18,91 +18,91 @@ import com.emagazine.api.utils.ObjectMapperUtils;
 
 @Service
 public class CommentServiceImpl implements CommentService {
-	
-	@Autowired
-	private CommentRepository commentRepository;
 
-	@Autowired
-	private PostRepository postRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
-	@Override
-	public CommentDTO findById(Long id) {
-		Optional<Comment> comment = commentRepository.findById(id);
+    @Autowired
+    private PostRepository postRepository;
 
-		if (comment.isPresent()) {
-			CommentDTO commentPOJO = ObjectMapperUtils.map(comment.get(), CommentDTO.class);
+    @Override
+    public CommentDTO findById(Long id) {
+        Optional<Comment> comment = commentRepository.findById(id);
 
-			return commentPOJO;
-		}
+        if (comment.isPresent()) {
+            CommentDTO commentPOJO = ObjectMapperUtils.map(comment.get(), CommentDTO.class);
 
-		return null;
-	}
+            return commentPOJO;
+        }
 
-	
-	@Override
-	public List<CommentDTO> findByPostId(Long postId) {
+        return null;
+    }
 
-		List<Comment> comments = commentRepository.findByPostIdOrderByDateCreate(postId);
 
-		if (!comments.isEmpty()) {
-			List<CommentDTO> commentDTOs = ObjectMapperUtils.mapAll(comments, CommentDTO.class);
+    @Override
+    public List<CommentDTO> findByPostId(Long postId) {
 
-			return commentDTOs;
-		}
+        List<Comment> comments = commentRepository.findByPostIdOrderByDateCreate(postId);
 
-		return null;
-	}
+        if (!comments.isEmpty()) {
+            List<CommentDTO> commentDTOs = ObjectMapperUtils.mapAll(comments, CommentDTO.class);
 
-	
-	@Override
-	public void save(CommentRequestDTO commentDTO) {
-		// Get the post for Comment Entity to insert into database
-		Optional<Post> thePost = postRepository.findById(commentDTO.getPostId());
+            return commentDTOs;
+        }
 
-		if (thePost.isPresent()) {
+        return null;
+    }
 
-			Comment theComment = new Comment();
-			theComment.setId(commentDTO.getId());
-			theComment.setUsername(commentDTO.getUsername());
-			theComment.setUserEmail(commentDTO.getUserEmail());
-			theComment.setContent(commentDTO.getContent());
-			theComment.setPost(thePost.get());
 
-			commentRepository.save(theComment);
-		}
+    @Override
+    public void save(CommentRequestDTO commentDTO) {
+        // Get the post for Comment Entity to insert into database
+        Optional<Post> thePost = postRepository.findById(commentDTO.getPostId());
 
-	}
+        if (thePost.isPresent()) {
 
-	
-	@Override
-	public List<CommentForListViewDTO> findAll(String keyword) {
+            Comment theComment = new Comment();
+            theComment.setId(commentDTO.getId());
+            theComment.setUsername(commentDTO.getUsername());
+            theComment.setUserEmail(commentDTO.getUserEmail());
+            theComment.setContent(commentDTO.getContent());
+            theComment.setPost(thePost.get());
 
-		List<Comment> comments = commentRepository.findByContentContainingIgnoreCaseOrderByDateCreateDesc(keyword);
+            commentRepository.save(theComment);
+        }
 
-		List<CommentForListViewDTO> commentDTOs = ObjectMapperUtils.mapAll(comments, CommentForListViewDTO.class);
+    }
 
-		return commentDTOs;
-	}
 
-	
-	@Override
-	public void delete(Long id) {
-		commentRepository.deleteById(id);
-	}
+    @Override
+    public List<CommentForListViewDTO> findAll(String keyword) {
 
-	
-	@Override
-	public List<CommentForListViewDTO> findByPostIdForAdmin(Long postId, String keyword) {
-		if(keyword == null) {
-			keyword = "";
-		}
-		List<Comment> comments = commentRepository.findByPostIdAndContentContainingIgnoreCaseOrderByDateCreateDesc(postId, keyword.trim());
+        List<Comment> comments = commentRepository.findByContentContainingIgnoreCaseOrderByDateCreateDesc(keyword);
 
-		List<CommentForListViewDTO> commentDTOs = ObjectMapperUtils.mapAll(comments, CommentForListViewDTO.class);
-		
-		
-		System.out.println(commentDTOs.toString());
-		return commentDTOs;
-	}
+        List<CommentForListViewDTO> commentDTOs = ObjectMapperUtils.mapAll(comments, CommentForListViewDTO.class);
+
+        return commentDTOs;
+    }
+
+
+    @Override
+    public void delete(Long id) {
+        commentRepository.deleteById(id);
+    }
+
+
+    @Override
+    public List<CommentForListViewDTO> findByPostIdForAdmin(Long postId, String keyword) {
+        if (keyword == null) {
+            keyword = "";
+        }
+        List<Comment> comments = commentRepository.findByPostIdAndContentContainingIgnoreCaseOrderByDateCreateDesc(postId, keyword.trim());
+
+        List<CommentForListViewDTO> commentDTOs = ObjectMapperUtils.mapAll(comments, CommentForListViewDTO.class);
+
+
+        System.out.println(commentDTOs.toString());
+        return commentDTOs;
+    }
 
 }

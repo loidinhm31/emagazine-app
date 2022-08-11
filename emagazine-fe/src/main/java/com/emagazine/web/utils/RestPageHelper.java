@@ -13,19 +13,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class RestPageHelper<T> extends PageImpl<T> {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public RestPageHelper(@JsonProperty("content") List<T> content,
-    		@JsonProperty("number") int number,
-            @JsonProperty("size") int size,
-            @JsonProperty("totalElements") Long totalElements,
-            @JsonProperty("pageable") JsonNode pageable,
-            @JsonProperty("last") boolean last,
-            @JsonProperty("totalPages") int totalPages,
-            @JsonProperty("sort") JsonNode sort,
-            @JsonProperty("first") boolean first,
-            @JsonProperty("numberOfElements") int numberOfElements) {
+                          @JsonProperty("number") int number,
+                          @JsonProperty("size") int size,
+                          @JsonProperty("totalElements") Long totalElements,
+                          @JsonProperty("pageable") JsonNode pageable,
+                          @JsonProperty("last") boolean last,
+                          @JsonProperty("totalPages") int totalPages,
+                          @JsonProperty("sort") JsonNode sort,
+                          @JsonProperty("first") boolean first,
+                          @JsonProperty("numberOfElements") int numberOfElements) {
         super(content, PageRequest.of(number, size), totalElements);
     }
 

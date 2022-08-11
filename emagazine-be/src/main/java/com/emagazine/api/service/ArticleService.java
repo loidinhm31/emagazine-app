@@ -9,22 +9,22 @@ import com.emagazine.api.model.ArticleInstructionWithParentIdDTO;
 import com.emagazine.api.model.ArticleRequestDTO;
 
 public interface ArticleService {
-	
-	List<ArticleDetailsDTO> findMainArticles();
-	
-	ArticleDetailsDTO findById(Long id);	
-	
-	List<ArticleInstructionWithFullParentDTO> findAllArticles();
 
-	void save(ArticleRequestDTO articleRequest);
+    List<ArticleDetailsDTO> findMainArticles();
 
-	List<ArticleInstructionDTO> findSimpleMainArticles();
+    ArticleDetailsDTO findById(Long id);
 
-	ArticleInstructionWithParentIdDTO findByIdForInstruction(Long id);
-	
-	List<ArticleInstructionWithFullParentDTO> findAllChildsById(Long id, String keyword);
-	
-	void delete(Long id);
-	
+    List<ArticleInstructionWithFullParentDTO> findAllArticles();
+
+    void save(ArticleRequestDTO articleRequest);
+
+    List<ArticleInstructionDTO> findSimpleMainArticles();
+
+    ArticleInstructionWithParentIdDTO findByIdForInstruction(Long id);
+
+    List<ArticleInstructionWithFullParentDTO> findAllChildsById(Long id, String keyword);
+
+    void delete(Long id);
+
 
 }

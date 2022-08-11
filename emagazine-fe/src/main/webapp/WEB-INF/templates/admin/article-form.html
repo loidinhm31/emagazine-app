@@ -2,67 +2,67 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="admin/admin-fragments :: head"></head>
 <body>
-	<div th:replace="admin/admin-fragments :: navbar-admin"></div>
-	<div class="container mt-3">
-		<h2 th:text="${title}"></h2>
-		
-		<form th:action="@{/admin/article/submit}" th:object="${theArticle}" method="POST">
-			<div class="form-group row">
-				<label for="articleId" class="col-sm-2 col-form-label col-form-label-sm">
-					Article ID: 	
-				</label>
-			 	<input type="text" class="form-control col-sm-4" th:field="*{id}" id="articleId" readonly>
-			</div>
-			<div class="form-group row">
-				<label for="articleName" class="col-sm-2 col-form-label col-form-label-sm">
-					Name: 	
-				</label> 
-				
-				<input
-					type="text" class="form-control col-sm-4" 
-					th:field="*{name}" id="articleName">
-				
-				<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-					class="mx-2 text-danger">Incorrect Name</p>
-			</div>
-			
-			<div class="form-group row">
-				<label for="root" class="col-sm-2 col-form-label col-form-label-sm">
-					Root Article: </label>
-				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="radio"
-						th:field="*{root}" value="true">
-					<label class="form-check-label">True</label>
-				</div>
-				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="radio"
-					 th:field="*{root}" value="false">
-					<label class="form-check-label">False</label>
-				</div>
-			</div> 
+<div th:replace="admin/admin-fragments :: navbar-admin"></div>
+<div class="container mt-3">
+    <h2 th:text="${title}"></h2>
+
+    <form th:action="@{/admin/article/submit}" th:object="${theArticle}" method="POST">
+        <div class="form-group row">
+            <label for="articleId" class="col-sm-2 col-form-label col-form-label-sm">
+                Article ID:
+            </label>
+            <input type="text" class="form-control col-sm-4" th:field="*{id}" id="articleId" readonly>
+        </div>
+        <div class="form-group row">
+            <label for="articleName" class="col-sm-2 col-form-label col-form-label-sm">
+                Name:
+            </label>
+
+            <input
+                    type="text" class="form-control col-sm-4"
+                    th:field="*{name}" id="articleName">
+
+            <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+               class="mx-2 text-danger">Incorrect Name</p>
+        </div>
+
+        <div class="form-group row">
+            <label for="root" class="col-sm-2 col-form-label col-form-label-sm">
+                Root Article: </label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                       th:field="*{root}" value="true">
+                <label class="form-check-label">True</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                       th:field="*{root}" value="false">
+                <label class="form-check-label">False</label>
+            </div>
+        </div>
 
 
-			<div class="form-group row">
-				<label for="parentArticle" class="col-sm-2 col-form-label col-form-label-sm">
-					Choose Parent Article: 
-				</label> 
-				<select th:field="*{parentId}"
-					class="form-control form-control-sm col-sm-4 " id="parentArticle">
-					
-					<option th:if="${articles != null}" 
-						th:each="item : ${articles}" 
-						th:value="${item.id}" 
-						th:text="${item.name}"></option>		
-				</select>
-			</div>
-			<div class="col-sm-6"  style="float:left;">
-				
-				<a class="btn btn-danger" th:href="@{/admin/article}" >Back</a>
-				<button type="submit"  style="float:right;" id="submitEdit" class="btn btn-success" th:text="Save"></button>
-			
-				
-			</div>
-		</form>
-	</div>
+        <div class="form-group row">
+            <label for="parentArticle" class="col-sm-2 col-form-label col-form-label-sm">
+                Choose Parent Article:
+            </label>
+            <select th:field="*{parentId}"
+                    class="form-control form-control-sm col-sm-4 " id="parentArticle">
+
+                <option th:if="${articles != null}"
+                        th:each="item : ${articles}"
+                        th:value="${item.id}"
+                        th:text="${item.name}"></option>
+            </select>
+        </div>
+        <div class="col-sm-6" style="float:left;">
+
+            <a class="btn btn-danger" th:href="@{/admin/article}">Back</a>
+            <button type="submit" style="float:right;" id="submitEdit" class="btn btn-success" th:text="Save"></button>
+
+
+        </div>
+    </form>
+</div>
 </body>
 </html>

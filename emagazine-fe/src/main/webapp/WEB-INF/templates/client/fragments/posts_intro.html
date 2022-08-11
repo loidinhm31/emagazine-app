@@ -1,25 +1,25 @@
-<div th:fragment="postIntros" 
-	th:each="item : ${postIntros}"
-	class="base-box blog-post default-blog-post bp-horizontal-share post type-post status-publish format-standard has-post-thumbnail category-money tag-momizat tag-ordpress tag-templates tag-themes tag-tutorial">
-	<div class="bp-entry">
-		<div class="bp-head">
-			<h2>
-				<a th:href="@{/post(id=${item.id})}" th:text="${item.title}">Post
-					Title</a>
-			</h2>
-		</div>
-	</div>
+<div th:fragment="postIntros"
+     th:each="item : ${postIntros}"
+     class="base-box blog-post default-blog-post bp-horizontal-share post type-post status-publish format-standard has-post-thumbnail category-money tag-momizat tag-ordpress tag-templates tag-themes tag-tutorial">
+    <div class="bp-entry">
+        <div class="bp-head">
+            <h2>
+                <a th:href="@{/post(id=${item.id})}" th:text="${item.title}">Post
+                    Title</a>
+            </h2>
+        </div>
+    </div>
 
-	<div class="row">
-		<div class="col-3 post-thumbnail-div">
-			<a th:href="@{/post(id=${item.id})}"> <img
-				th:src="${item.thumbnail}" class="img-thumbnail">
-			</a>
-		</div>
-		<div class="col-9">
-			<p class="desc-thumbnail" th:text="${item.shortDescription}">Post
-				Content</p>
-		</div>
-		<div class="clear"></div>
-	</div>
+    <div class="row">
+        <div class="col-3 post-thumbnail-div">
+            <a th:href="@{/post(id=${item.id})}"> <img
+                    th:src="${item.thumbnail}" class="img-thumbnail">
+            </a>
+        </div>
+        <div class="col-9">
+            <p class="desc-thumbnail" th:text="${item.shortDescription}">Post
+                Content</p>
+        </div>
+        <div class="clear"></div>
+    </div>
 </div>

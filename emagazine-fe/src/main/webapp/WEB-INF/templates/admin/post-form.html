@@ -3,114 +3,114 @@
 <head th:replace="admin/admin-fragments:: head"></head>
 <body>
 
-	<div th:replace="admin/admin-fragments :: navbar-admin"></div>
+<div th:replace="admin/admin-fragments :: navbar-admin"></div>
 
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col col-sm-12">
-				<div class="container">
-					<h2 class="border-bottom">Create Post</h2>
-					
-					<div class="content mb-5">
-						<form th:action="@{/admin/post/submit}" th:object="${postRequest}" 
-							method="POST" enctype="multipart/form-data">
-							<div class="form-group row">
-								<label for="postId"
-									class="col-sm-2 col-form-label col-form-label-sm">
-									Post ID 
-								</label>
-								<div class="col-sm-10">	
-									<input type="text"
-									class="form-control col-sm-4" th:field="*{id}" id="articleId"
-									readonly>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="titleInput"
-									class="col-sm-2 col-form-label col-form-label-sm">Title</label>
-								<div class="col-sm-10">
-									<input th:field="*{title}" type="text"
-										class="form-control form-control-sm" id="titleInput"
-										placeholder="">
-									<p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
-										class="mx-2 text-danger">Incorrect Short</p>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="categoryInput"
-									class="col-sm-2 col-form-label col-form-label-sm">Article</label>
-								<div class="col-sm-10">
-									<select th:field="*{articleId}"
-										class="form-control form-control-sm col-sm-4 "
-										id="parentArticle">
-										<option th:if="${articles != null}"
-											th:each="item : ${articles}" 
-											th:value="${item.id}"
-											th:text="${item.name}">
-										</option>
-									</select>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col col-sm-12">
+            <div class="container">
+                <h2 class="border-bottom">Create Post</h2>
 
-								</div>
-							</div>
-							
-							<div class="form-group row">
-								<label for="descriptionInput"
-									class="col-sm-2 col-form-label col-form-label-sm">Short Description</label>
-								<div class="col-sm-10">
-									<input th:field="*{shortDescription}" type="text"
-										class="form-control form-control-sm" id="descriptionInput"
-										placeholder="">
-									<p th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}"
-										class="mx-2 text-danger">Incorrect Short</p>
-								</div>
-							</div>
-							
-							<div class="form-group row">
-								<label for="thumbnail"
-									class="col-sm-2 col-form-label col-form-label-sm">Link Thumbnail</label>
-								<div class="col-sm-10">
-									<input th:field="*{thumbnail}" type="text"
-										class="form-control form-control-sm" id="thumbnail"
-										placeholder="">
-								</div>
-							</div>
-							
-							<div class="form-group row">
-								<label for="inputFile"
-									class="col-sm-2 col-form-label col-form-label-sm">Upload Thumbnail</label>
-								<div class="input-group col-sm-10">								
-									<input type="file" id="inputFile" name="file-upload"
-										class="form-control-file"> 
-								</div>
-							</div>
+                <div class="content mb-5">
+                    <form th:action="@{/admin/post/submit}" th:object="${postRequest}"
+                          method="POST" enctype="multipart/form-data">
+                        <div class="form-group row">
+                            <label for="postId"
+                                   class="col-sm-2 col-form-label col-form-label-sm">
+                                Post ID
+                            </label>
+                            <div class="col-sm-10">
+                                <input type="text"
+                                       class="form-control col-sm-4" th:field="*{id}" id="articleId"
+                                       readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="titleInput"
+                                   class="col-sm-2 col-form-label col-form-label-sm">Title</label>
+                            <div class="col-sm-10">
+                                <input th:field="*{title}" type="text"
+                                       class="form-control form-control-sm" id="titleInput"
+                                       placeholder="">
+                                <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+                                   class="mx-2 text-danger">Incorrect Short</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="categoryInput"
+                                   class="col-sm-2 col-form-label col-form-label-sm">Article</label>
+                            <div class="col-sm-10">
+                                <select th:field="*{articleId}"
+                                        class="form-control form-control-sm col-sm-4 "
+                                        id="parentArticle">
+                                    <option th:if="${articles != null}"
+                                            th:each="item : ${articles}"
+                                            th:value="${item.id}"
+                                            th:text="${item.name}">
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="descriptionInput"
+                                   class="col-sm-2 col-form-label col-form-label-sm">Short Description</label>
+                            <div class="col-sm-10">
+                                <input th:field="*{shortDescription}" type="text"
+                                       class="form-control form-control-sm" id="descriptionInput"
+                                       placeholder="">
+                                <p th:if="${#fields.hasErrors('shortDescription')}" th:errors="*{shortDescription}"
+                                   class="mx-2 text-danger">Incorrect Short</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="thumbnail"
+                                   class="col-sm-2 col-form-label col-form-label-sm">Link Thumbnail</label>
+                            <div class="col-sm-10">
+                                <input th:field="*{thumbnail}" type="text"
+                                       class="form-control form-control-sm" id="thumbnail"
+                                       placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="inputFile"
+                                   class="col-sm-2 col-form-label col-form-label-sm">Upload Thumbnail</label>
+                            <div class="input-group col-sm-10">
+                                <input type="file" id="inputFile" name="file-upload"
+                                       class="form-control-file">
+                            </div>
+                        </div>
 
 
-							<div class="form-group row">
-								<label for="contentInput"
-									class="col-sm-2 col-form-label col-form-label-sm">Content</label>
-								<div class="col-sm-10">
+                        <div class="form-group row">
+                            <label for="contentInput"
+                                   class="col-sm-2 col-form-label col-form-label-sm">Content</label>
+                            <div class="col-sm-10">
 									<textarea th:field="*{content}"
-										class="form-control" id="contentInput" rows="50"
-										cols="20" required></textarea>
-										
-									<p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"
-									class="mx-2 text-danger">Incorrect Content</p>	
-								</div>
-								
-								<script>
-									CKEDITOR.replace(contentInput);
-								</script>
-								
-							</div>
+                                              class="form-control" id="contentInput" rows="50"
+                                              cols="20" required></textarea>
 
-							
-							<button type="submit" value="Submit" class="btn btn-primary">Submit</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                                <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"
+                                   class="mx-2 text-danger">Incorrect Content</p>
+                            </div>
+
+                            <script>
+                                CKEDITOR.replace(contentInput);
+                            </script>
+
+                        </div>
+
+
+                        <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>

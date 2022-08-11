@@ -1,83 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Log in</title>
+    <meta charset="UTF-8">
+    <title>Log in</title>
 
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<!-- Bootstrap -->
-<link th:rel="stylesheet"
-	th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}" />
+    <!-- Bootstrap -->
+    <link th:rel="stylesheet"
+          th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}"/>
 
 </head>
 <body>
 
 
-	<div class="container-fluid pb-5 mb-5">
-		<div class="row my-3">
+<div class="container-fluid pb-5 mb-5">
+    <div class="row my-3">
 
-			<!-- Sign in Section -->
-			<div class="col-md-6 text-center">
-				<h1>LOG IN TO MY WEBSITE</h1>
+        <!-- Sign in Section -->
+        <div class="col-md-6 text-center">
+            <h1>LOG IN TO MY WEBSITE</h1>
 
-				<div th:if="${param.logout != null}">
-					<p class="alert alert-success">You have been logged out</p>
-				</div>
-				
-				<div th:if="${error != null}">
-					<p th:text="${error}" class="alert alert-danger"></p>
-				</div>
-				
-				<!-- Login form -->
-				<form th:action="@{/authentication-user}" th:object="${loginRequest}"
-					class="form-signin"
-					method="POST">
+            <div th:if="${param.logout != null}">
+                <p class="alert alert-success">You have been logged out</p>
+            </div>
 
-					<label for="inputUserName" class="sr-only">Username</label> 
-					<input th:field="*{username}"
-						type="text" id="inputUserName" class="form-control my-3"
-						placeholder="User name" required autofocus>
+            <div th:if="${error != null}">
+                <p th:text="${error}" class="alert alert-danger"></p>
+            </div>
 
-					<label for="inputPassword" class="sr-only">Password</label> 
-					<input th:field="*{password}"
-						type="password" id="inputPassword" class="form-control my-3"
-						placeholder="Password" required name="password">
+            <!-- Login form -->
+            <form th:action="@{/authentication-user}" th:object="${loginRequest}"
+                  class="form-signin"
+                  method="POST">
 
+                <label for="inputUserName" class="sr-only">Username</label>
+                <input th:field="*{username}"
+                       type="text" id="inputUserName" class="form-control my-3"
+                       placeholder="User name" required autofocus>
 
-					<div class="checkbox mb-3">
-						<label> <input type="checkbox" value="remember-me">
-							Keep me logged in
-						</label>
-					</div>
-					<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
-						in</button>
-					<p class="mt-5 mb-3 text-muted">&copy 2021-2022</p>
-				</form>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input th:field="*{password}"
+                       type="password" id="inputPassword" class="form-control my-3"
+                       placeholder="Password" required name="password">
 
 
-				<!-- Forgot Password -->
-				<p>
-					Or <a href="#">Forgot password</a>
-				</p>
-				<!-- Sign up a new account -->
-				<p>
-					Don't have account? 
-					<a href="#">Sign Up</a><br>
-			</div>
+                <div class="checkbox mb-3">
+                    <label> <input type="checkbox" value="remember-me">
+                        Keep me logged in
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign
+                    in
+                </button>
+                <p class="mt-5 mb-3 text-muted">&copy 2021-2022</p>
+            </form>
 
-			<!-- Information Section -->
-			<div class="col-md-6">
-				<div class="card card-box shadow">
-					<h1 class="text-center">Welcome Back!</h1>
-					<p class="text-center">To keep connected with us please login
-						with your personal info</p>
-				</div>
-			</div>
-		</div>
-	</div>
 
+            <!-- Forgot Password -->
+            <p>
+                Or <a href="#">Forgot password</a>
+            </p>
+            <!-- Sign up a new account -->
+            <p>
+                Don't have account?
+                <a href="#">Sign Up</a><br>
+        </div>
+
+        <!-- Information Section -->
+        <div class="col-md-6">
+            <div class="card card-box shadow">
+                <h1 class="text-center">Welcome Back!</h1>
+                <p class="text-center">To keep connected with us please login
+                    with your personal info</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>

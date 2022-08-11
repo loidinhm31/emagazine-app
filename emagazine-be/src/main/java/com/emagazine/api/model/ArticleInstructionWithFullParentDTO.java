@@ -1,46 +1,45 @@
 package com.emagazine.api.model;
 
 public class ArticleInstructionWithFullParentDTO {
-	private Long id;
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private boolean isRoot;
-	
-	private ArticleInstructionDTO parentArticle;
+    private boolean isRoot;
 
-	public Long getId() {
-		return id;
-	}
+    private ArticleInstructionDTO parentArticle;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public boolean isRoot() {
-		return isRoot;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setRoot(boolean isRoot) {
-		this.isRoot = isRoot;
-	}
+    public boolean isRoot() {
+        return isRoot;
+    }
 
-	public ArticleInstructionDTO getParentArticle() {
-		return parentArticle;
-	}
+    public void setRoot(boolean isRoot) {
+        this.isRoot = isRoot;
+    }
 
-	public void setParentArticle(ArticleInstructionDTO parentArticle) {
-		this.parentArticle = parentArticle;
-	}
+    public ArticleInstructionDTO getParentArticle() {
+        return parentArticle;
+    }
 
-	
-	
+    public void setParentArticle(ArticleInstructionDTO parentArticle) {
+        this.parentArticle = parentArticle;
+    }
+
+
 }

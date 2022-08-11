@@ -26,76 +26,76 @@ import com.emagazine.web.service.LoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class LoginServiceImpl implements LoginService{
-	
-	@Autowired
-	private RestTemplate restTemplate;
-	
+public class LoginServiceImpl implements LoginService {
 
-	@Override
-	public String excecuteLogin(LoginRequest loginRequest) {
-		String url = RestAPI.URL + "/login";
-		
-		HttpHeaders header = new HttpHeaders();
-		header.setContentType(MediaType.APPLICATION_JSON);
-		
-		HttpEntity<LoginRequest> entity = new HttpEntity<>(loginRequest, header);
-		
-		ResponseEntity<?> responseEntity = null;
-		
-		try {
-			responseEntity = restTemplate.exchange(url, 
-					HttpMethod.POST, entity, LoginRequest.class);
-			
-		} catch (HttpClientErrorException e) {
-			throw new RuntimeException("Cannot found username");
-		}
-		
-		
-		if (responseEntity != null && responseEntity.getStatusCode() == HttpStatus.OK) {
-			
-			String authorizationHeader = responseEntity.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-			String token = authorizationHeader.replace("Bearer", "");
-			
-			String decodeString = decodeToken(token);
-			
-			boolean isVerify = verifyUser(decodeString);
-			
-			if (isVerify) {
-				return authorizationHeader;
-			}
-		}
-	
-		return null;
-	}
-	
-	
-	private String decodeToken(String token) {
+    @Autowired
+    private RestTemplate restTemplate;
 
-		String[] tokenSplit = token.split("\\.");
-		String tokenPayload = tokenSplit[1]; 
-		
-		Base64 base64 = new Base64(true);
-		String decodePayload = new String(base64.decode(tokenPayload.getBytes()));
-		
-		return decodePayload;
-	}
-	
-	private boolean verifyUser(String ObjectJson) {
-		try {
-			User user = new ObjectMapper().readValue(ObjectJson, User.class);
-			
-			UserDetails userDetails = new CustomUserDetails(user);
-			
-			UsernamePasswordAuthenticationToken authentication = 
-					new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-			
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-				
-			return true;
-		} catch (IOException e) {
-			return false;
-		}
-	}
-	
+
+    @Override
+    public String excecuteLogin(LoginRequest loginRequest) {
+        String url = RestAPI.URL + "/login";
+
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<LoginRequest> entity = new HttpEntity<>(loginRequest, header);
+
+        ResponseEntity<?> responseEntity = null;
+
+        try {
+            responseEntity = restTemplate.exchange(url,
+                    HttpMethod.POST, entity, LoginRequest.class);
+
+        } catch (HttpClientErrorException e) {
+            throw new RuntimeException("Cannot found username");
+        }
+
+
+        if (responseEntity != null && responseEntity.getStatusCode() == HttpStatus.OK) {
+
+            String authorizationHeader = responseEntity.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+            String token = authorizationHeader.replace("Bearer", "");
+
+            String decodeString = decodeToken(token);
+
+            boolean isVerify = verifyUser(decodeString);
+
+            if (isVerify) {
+                return authorizationHeader;
+            }
+        }
+
+        return null;
+    }
+
+
+    private String decodeToken(String token) {
+
+        String[] tokenSplit = token.split("\\.");
+        String tokenPayload = tokenSplit[1];
+
+        Base64 base64 = new Base64(true);
+        String decodePayload = new String(base64.decode(tokenPayload.getBytes()));
+
+        return decodePayload;
+    }
+
+    private boolean verifyUser(String ObjectJson) {
+        try {
+            User user = new ObjectMapper().readValue(ObjectJson, User.class);
+
+            UserDetails userDetails = new CustomUserDetails(user);
+
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
 }

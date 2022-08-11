@@ -23,81 +23,81 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/comments")
 public class CommentRestController {
-	
-	@Autowired
-	private CommentService commentService;
-	
-	@GetMapping
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	public List<CommentForListViewDTO> getAllComment(@RequestParam(required = false) String keyword){
-		return commentService.findAll(keyword);
-	}
-	
-	
-	@GetMapping("/{id}")
-	public CommentDTO getCommentsById(@PathVariable Long id) {
 
-		CommentDTO commentPOJO = commentService.findById(id);
+    @Autowired
+    private CommentService commentService;
 
-		if (commentPOJO == null) {
-			throw new ObjectNotFoundException("Not found comment for id: " + id);
-		}
-	
-		return commentPOJO;
-	}
-	
-	
-	@GetMapping("/{id}/post/admin")
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	public List<CommentForListViewDTO> getCommentsByPostIdForAdminPage(
-			@PathVariable("id") Long postId,
-			@RequestParam(required = false) String keyword) {
-		
-		List<CommentForListViewDTO> commentPOJO = commentService.findByPostIdForAdmin(postId, keyword);
+    @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public List<CommentForListViewDTO> getAllComment(@RequestParam(required = false) String keyword) {
+        return commentService.findAll(keyword);
+    }
 
-		System.out.println(postId);
-		
-		if (commentPOJO == null) {
-			throw new ObjectNotFoundException("Not found comments for id: " + postId);
-		}
-	
-		
-		return commentPOJO;
-	}
-	
-	
-	@GetMapping("/{id}/post")
-	public List<CommentDTO> getCommentsByPostId(@PathVariable Long id) {
 
-		List<CommentDTO> commentPOJO = commentService.findByPostId(id);
+    @GetMapping("/{id}")
+    public CommentDTO getCommentsById(@PathVariable Long id) {
 
-		if (commentPOJO == null) {
-			throw new ObjectNotFoundException("Not found comments for id: " + id);
-		}
-	
-		
-		return commentPOJO;
-	}
-	
-	
-	@PostMapping
-	public CommentRequestDTO addComment(@RequestBody CommentRequestDTO commentDTO) {
-		commentService.save(commentDTO);
-		
-		return commentDTO;
-	}
-	
-	
-	@DeleteMapping("/{id}")
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	public Map<String, Boolean> deleteComment(@PathVariable(value = "id") Long id) {
-		// check is exist
-		commentService.findById(id);
+        CommentDTO commentPOJO = commentService.findById(id);
 
-		commentService.delete(id);
-		// map response result
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", Boolean.TRUE);
-		return response;
-	}
+        if (commentPOJO == null) {
+            throw new ObjectNotFoundException("Not found comment for id: " + id);
+        }
+
+        return commentPOJO;
+    }
+
+
+    @GetMapping("/{id}/post/admin")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public List<CommentForListViewDTO> getCommentsByPostIdForAdminPage(
+            @PathVariable("id") Long postId,
+            @RequestParam(required = false) String keyword) {
+
+        List<CommentForListViewDTO> commentPOJO = commentService.findByPostIdForAdmin(postId, keyword);
+
+        System.out.println(postId);
+
+        if (commentPOJO == null) {
+            throw new ObjectNotFoundException("Not found comments for id: " + postId);
+        }
+
+
+        return commentPOJO;
+    }
+
+
+    @GetMapping("/{id}/post")
+    public List<CommentDTO> getCommentsByPostId(@PathVariable Long id) {
+
+        List<CommentDTO> commentPOJO = commentService.findByPostId(id);
+
+        if (commentPOJO == null) {
+            throw new ObjectNotFoundException("Not found comments for id: " + id);
+        }
+
+
+        return commentPOJO;
+    }
+
+
+    @PostMapping
+    public CommentRequestDTO addComment(@RequestBody CommentRequestDTO commentDTO) {
+        commentService.save(commentDTO);
+
+        return commentDTO;
+    }
+
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public Map<String, Boolean> deleteComment(@PathVariable(value = "id") Long id) {
+        // check is exist
+        commentService.findById(id);
+
+        commentService.delete(id);
+        // map response result
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
 }

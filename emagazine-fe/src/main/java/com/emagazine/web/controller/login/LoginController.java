@@ -15,49 +15,49 @@ import com.emagazine.web.service.LoginService;
 
 @Controller
 public class LoginController {
-	
-	@Autowired
-	private LoginService loginService;
-	
-	@GetMapping("/login")
-	public String showLogin(Model theModel) {
-		theModel.addAttribute("loginRequest", new LoginRequest());
-		
-		return "login";
-	}
-	
-	
-	@PostMapping("/authentication-user")
-	public String processLogin(@ModelAttribute("loginRequest") LoginRequest loginRequest,
-								Model theModel, HttpServletRequest request) {
-		try {
-			String authorization = loginService.excecuteLogin(loginRequest);
-			
-			if (authorization != null) {
-				HttpSession session = request.getSession();
-				session.setAttribute("authorization", authorization);
-			}
-		} catch (RuntimeException e) {
-			theModel.addAttribute("error", e.getMessage());
-			return "login";
-		}
-		
-		return "redirect:/admin";
-	}
-	
-	
-	@GetMapping("/logout")
-	public String processLogout(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		
-		session.invalidate();
 
-		return "redirect:/login?logout";
-	}
-	
-	@GetMapping("/access-denied")
-	public String showAccessDenied() {
-		
-		return "error/access_denied";
-	}
+    @Autowired
+    private LoginService loginService;
+
+    @GetMapping("/login")
+    public String showLogin(Model theModel) {
+        theModel.addAttribute("loginRequest", new LoginRequest());
+
+        return "login";
+    }
+
+
+    @PostMapping("/authentication-user")
+    public String processLogin(@ModelAttribute("loginRequest") LoginRequest loginRequest,
+                               Model theModel, HttpServletRequest request) {
+        try {
+            String authorization = loginService.excecuteLogin(loginRequest);
+
+            if (authorization != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("authorization", authorization);
+            }
+        } catch (RuntimeException e) {
+            theModel.addAttribute("error", e.getMessage());
+            return "login";
+        }
+
+        return "redirect:/admin";
+    }
+
+
+    @GetMapping("/logout")
+    public String processLogout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        session.invalidate();
+
+        return "redirect:/login?logout";
+    }
+
+    @GetMapping("/access-denied")
+    public String showAccessDenied() {
+
+        return "error/access_denied";
+    }
 }

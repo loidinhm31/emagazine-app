@@ -29,9 +29,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtConfig jwtConfig;
 
     @Autowired
-    public ApplicationSecurityConfig (UserService userService,
+    public ApplicationSecurityConfig(UserService userService,
                                      SecretKey secretKey,
-                                     JwtConfig jwtConfig) {    	
+                                     JwtConfig jwtConfig) {
         this.userService = userService;
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
@@ -40,12 +40,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-        	.sessionManagement()
-        		.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // stateless for jwt
-        	.and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // stateless for jwt
+                .and()
                 .authorizeRequests()
-        		.antMatchers("/api/**").authenticated()
-        .and()
+                .antMatchers("/api/**").authenticated()
+                .and()
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class);
     }
@@ -54,23 +54,22 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
-    
-    
+
+
     @Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-    
-    
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider authentication = new DaoAuthenticationProvider();
-        
-        authentication.setUserDetailsService(userService); 			// set the custom user details service
-        authentication.setPasswordEncoder(passwordEncoder());		// set the password encoder - bcrypt       
+
+        authentication.setUserDetailsService(userService);            // set the custom user details service
+        authentication.setPasswordEncoder(passwordEncoder());        // set the password encoder - bcrypt
         return authentication;
     }
-    
 
 
 }

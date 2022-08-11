@@ -17,49 +17,49 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class ChartDataServiceImpl implements ChartDataService {
 
-	@Autowired
-	RestTemplate restTemplate;
-	
-	@Override
-	public List<DataPieChart> getPieChartArtical() {
-		String url = RestAPI.URL + "/posts/piechart/data/month";
+    @Autowired
+    RestTemplate restTemplate;
 
-		try {
-			// Call API
-			ResponseEntity<DataPieChart[]> result = restTemplate.getForEntity(url, DataPieChart[].class);
-			List<DataPieChart> listData = Arrays.asList(result.getBody());
-			return listData;
-		} catch (HttpClientErrorException e) {
-			return null;
-		}
-	}
+    @Override
+    public List<DataPieChart> getPieChartArtical() {
+        String url = RestAPI.URL + "/posts/piechart/data/month";
 
-	@Override
-	public List<DataPieChart> getPieChartArticalHalfYear() {
-		String url = RestAPI.URL + "/posts/piechart/data/half-year";
+        try {
+            // Call API
+            ResponseEntity<DataPieChart[]> result = restTemplate.getForEntity(url, DataPieChart[].class);
+            List<DataPieChart> listData = Arrays.asList(result.getBody());
+            return listData;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
 
-		try {
-			// Call API
-			ResponseEntity<DataPieChart[]> result = restTemplate.getForEntity(url, DataPieChart[].class);
-			List<DataPieChart> listData = Arrays.asList(result.getBody());
-			return listData;
-		} catch (HttpClientErrorException e) {
-			return null;
-		}
-	}
+    @Override
+    public List<DataPieChart> getPieChartArticalHalfYear() {
+        String url = RestAPI.URL + "/posts/piechart/data/half-year";
 
-	@Override
-	public Map<String, Integer> getMapDataColumnChart() {
-		String url = RestAPI.URL + "/posts/column-chart/data/half-year";
+        try {
+            // Call API
+            ResponseEntity<DataPieChart[]> result = restTemplate.getForEntity(url, DataPieChart[].class);
+            List<DataPieChart> listData = Arrays.asList(result.getBody());
+            return listData;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
 
-		try {
-			// Call API
-			ResponseEntity<?> result = restTemplate.getForEntity(url, LinkedHashMap.class);
-			Map<String, Integer> map = (Map<String, Integer>) result.getBody();
-			return map;
-		} catch (HttpClientErrorException e) {
-			return null;
-		}
-	}
+    @Override
+    public Map<String, Integer> getMapDataColumnChart() {
+        String url = RestAPI.URL + "/posts/column-chart/data/half-year";
+
+        try {
+            // Call API
+            ResponseEntity<?> result = restTemplate.getForEntity(url, LinkedHashMap.class);
+            Map<String, Integer> map = (Map<String, Integer>) result.getBody();
+            return map;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
 
 }

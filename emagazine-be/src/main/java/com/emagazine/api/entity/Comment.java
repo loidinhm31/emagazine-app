@@ -16,84 +16,81 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 @Table(name = "comments")
 public class Comment {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
-	private Long id;
-	
-	@Column(name="username")
-	private String username;
-	
-	@Column(name="user_email")
-	private String userEmail;
-	
-	@Column(name="content")
-	private String content;
-	
-	@Column(name="date_create", updatable = false, insertable = true)
-	@CreationTimestamp
-	private Date dateCreate;
-	
-	@ManyToOne
-	@JoinColumn(name="post_id", nullable=false)
-	private Post post;
-	
-	public Comment() {
-		
-	}
 
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "username")
+    private String username;
 
+    @Column(name = "user_email")
+    private String userEmail;
 
-	public String getUsername() {
-		return username;
-	}
+    @Column(name = "content")
+    private String content;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    @Column(name = "date_create", updatable = false, insertable = true)
+    @CreationTimestamp
+    private Date dateCreate;
 
-	public String getUserEmail() {
-		return userEmail;
-	}
+    @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
+    public Comment() {
 
-	public String getContent() {
-		return content;
-	}
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Date getDateCreate() {
-		return dateCreate;
-	}
-
-	public void setDateCreate(Date dateCreate) {
-		this.dateCreate = dateCreate;
-	}
-
-	public Post getPost() {
-		return post;
-	}
-
-	public void setPost(Post post) {
-		this.post = post;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 
-	
-	
-	
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+
 }

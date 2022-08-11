@@ -7,14 +7,14 @@ import com.google.common.net.HttpHeaders;
 
 @ConfigurationProperties(prefix = "application.jwt")
 @Configuration
-public class JwtConfig {	
-	
+public class JwtConfig {
+
     private String secretKey;
     private String tokenPrefix;
     private Integer tokenExpirationAfterDays;
-    
+
     public JwtConfig() {
-    	
+
     }
 
     public String getSecretKey() {
@@ -36,7 +36,7 @@ public class JwtConfig {
     public Integer getTokenExpirationAfterDays() {
         return tokenExpirationAfterDays;
     }
-    
+
     public void setTokenExpirationAfterDays(Integer tokenExpirationAfterDays) {
         this.tokenExpirationAfterDays = tokenExpirationAfterDays;
     }

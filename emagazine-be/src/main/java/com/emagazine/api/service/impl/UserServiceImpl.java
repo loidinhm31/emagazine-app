@@ -14,38 +14,37 @@ import com.emagazine.api.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
-	@Autowired
-	private UserRepository userRepository;
 
-	@Override
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+    @Autowired
+    private UserRepository userRepository;
 
-	}
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
 
-	@Override
-	public User findById(Long id) {
-		Optional<User> user = userRepository.findById(id);
-		
-		if (user.isPresent()) {
-			return user.get();
-		} 
-		
-		return null;
-	}
+    }
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username);
+    @Override
+    public User findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
 
-		if (user == null) {
-			throw new UsernameNotFoundException(username);
-		}
+        if (user.isPresent()) {
+            return user.get();
+        }
 
-		return new CustomUserDetail(user);
-	}
+        return null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+
+        return new CustomUserDetail(user);
+    }
 
 
-	
 }

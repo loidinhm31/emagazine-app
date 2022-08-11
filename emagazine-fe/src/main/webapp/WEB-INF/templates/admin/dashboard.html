@@ -2,165 +2,164 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="admin/admin-fragments:: head"></head>
 <body>
-	<main>
-		<div th:replace="admin/admin-fragments :: navbar-admin"></div>
+<main>
+    <div th:replace="admin/admin-fragments :: navbar-admin"></div>
 
 
-		<div class="container">
-			<div class="row" style="margin-top: 50px;">
-				<div id="containerPieChart"
-					style="width: 450px; height: 350px; margin: 0 auto"></div>
-				<div class="hr-vertical"></div>
-				<div id="containerPieChart2"
-					style="width: 450px; height: 350px; margin: 0 auto"></div>
-			</div>
-			<hr style="margin: 50px" />
-			<div id="containerColumnChart"
-				style="width: 550px; height: 400px; margin: 0 auto"></div>
-		</div>
+    <div class="container">
+        <div class="row" style="margin-top: 50px;">
+            <div id="containerPieChart"
+                 style="width: 450px; height: 350px; margin: 0 auto"></div>
+            <div class="hr-vertical"></div>
+            <div id="containerPieChart2"
+                 style="width: 450px; height: 350px; margin: 0 auto"></div>
+        </div>
+        <hr style="margin: 50px"/>
+        <div id="containerColumnChart"
+             style="width: 550px; height: 400px; margin: 0 auto"></div>
+    </div>
 
-	</main>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<!-- Latest compiled and minified JavaScript -->
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/modules/exporting.js"></script>
-	<!-- Custom JS -->
-	<script th:src="@{/js/admin.js}"></script>
-	
-	
-	
-	<script th:inline="javascript">
+</main>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<!-- Custom JS -->
+<script th:src="@{/js/admin.js}"></script>
 
 
-	$(function(){
-		var map = [[${mapPieChart}]];
-		var series = [];
-		
-		var seriesObject = {
-				name: 'Post Number',
-				colorByPoint: true,
-				data : map 
-		};
-		series.push(seriesObject);
-		drawPieChart(series);
-		
-		var mapHalfYear = [[${mapPieChartHalfYear}]];
-		var series2 = [];
-		
-		var seriesObject2 = {
-				name: 'Post Number',
-				colorByPoint: true,
-				data : mapHalfYear 
-		};
-		series2.push(seriesObject2);
-		drawPieChartHalfYear(series2);
-		
-		function drawPieChartHalfYear(series){
-			Highcharts.chart('containerPieChart2', {
-				chart : {
-					type : 'pie',
-					options3d : {
-						enabled : true,
-						alpha : 50,
-						beta : 0
-					}
-				},
-				title : {
-					text : "Article's Post last half year"
-				},
-				tooltip : {
-					pointFormat : '{series.name}: <b>{point.y}</b>'
-				},
-				plotOptions : {
-					pie : {
-						allowPointSelect : true,
-						cursor : 'pointer',
-						depth : 35,
-						dataLabels : {
-							enabled : true,
-							format : '{point.name}'
-						}
-					}
-				},
-				series : series
-			});
-		}
-		
-	function drawPieChart(series){
-		Highcharts.chart('containerPieChart', {
-			chart : {
-				type : 'pie',
-				options3d : {
-					enabled : true,
-					alpha : 50,
-					beta : 0
-				}
-			},
-			title : {
-				text : "Article's Post In Last Month"
-			},
-			tooltip : {
-				pointFormat : '{series.name}: <b>{point.y}</b>'
-			},
-			plotOptions : {
-				pie : {
-					allowPointSelect : true,
-					cursor : 'pointer',
-					depth : 35,
-					dataLabels : {
-						enabled : true,
-						format : '{point.name}'
-					}
-				}
-			},
-			series : series
-		});
-	}
-	
-	Highcharts.chart('containerColumnChart', {
-		chart: {
-		type: 'column'
-		},
-		title: {
-		text: 'Post summary'
-		},
-		subtitle: {
-		text: 'All post in the last 6 month'
-		},
-		xAxis: {
-		categories: [[${postCount.keySet()}]],
-		crosshair: true
-		},
-		yAxis: {
-		min: 0,
-		max: 30,
-		title: {
-		text: 'Number'
-		}
-		},
-		tooltip: {
-		headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-		pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-		'<td style="padding:0"><b>{point.y} </b></td></tr>',
-		footerFormat: '</table>',
-		shared: true,
-		useHTML: true
-		},
-		plotOptions: {
-		column: {
-		pointPadding: 0.2,
-		borderWidth: 0
-		}
-		},
-		series: [{
-		name: 'Post count',
-		data: [[${postCount.values()}]]
-		}]
-		});
-		});
+<script th:inline="javascript">
+
+
+    $(function () {
+        var map = [[${mapPieChart}]];
+        var series = [];
+
+        var seriesObject = {
+            name: 'Post Number',
+            colorByPoint: true,
+            data: map
+        };
+        series.push(seriesObject);
+        drawPieChart(series);
+
+        var mapHalfYear = [[${mapPieChartHalfYear}]];
+        var series2 = [];
+
+        var seriesObject2 = {
+            name: 'Post Number',
+            colorByPoint: true,
+            data: mapHalfYear
+        };
+        series2.push(seriesObject2);
+        drawPieChartHalfYear(series2);
+
+        function drawPieChartHalfYear(series) {
+            Highcharts.chart('containerPieChart2', {
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 50,
+                        beta: 0
+                    }
+                },
+                title: {
+                    text: "Article's Post last half year"
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y}</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }
+                },
+                series: series
+            });
+        }
+
+        function drawPieChart(series) {
+            Highcharts.chart('containerPieChart', {
+                chart: {
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 50,
+                        beta: 0
+                    }
+                },
+                title: {
+                    text: "Article's Post In Last Month"
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.y}</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '{point.name}'
+                        }
+                    }
+                },
+                series: series
+            });
+        }
+
+        Highcharts.chart('containerColumnChart', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Post summary'
+            },
+            subtitle: {
+                text: 'All post in the last 6 month'
+            },
+            xAxis: {
+                categories: [[${postCount.keySet()}]],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                max: 30,
+                title: {
+                    text: 'Number'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y} </b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Post count',
+                data: [[${postCount.values()}]]
+            }]
+        });
+    });
 </script>
 </body>
 </html>

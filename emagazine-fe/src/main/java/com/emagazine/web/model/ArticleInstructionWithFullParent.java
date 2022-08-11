@@ -3,60 +3,59 @@ package com.emagazine.web.model;
 import com.emagazine.web.utils.Slugify;
 
 public class ArticleInstructionWithFullParent {
-	private Long id;
-	
-	private String name;
-	
-	private boolean isRoot;
-	
-	private ArticleInstructionWithFullParent parentArticle;
-	
-	public String getCode() {
-		return Slugify.convert(name);
-	}
-	
-	public ArticleInstructionWithFullParent() {
-		
-	}
-	
+    private Long id;
 
-	public ArticleInstructionWithFullParent(Long id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+    private String name;
 
-	public Long getId() {
-		return id;
-	}
+    private boolean isRoot;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private ArticleInstructionWithFullParent parentArticle;
 
-	public String getName() {
-		return name;
-	}
+    public String getCode() {
+        return Slugify.convert(name);
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public ArticleInstructionWithFullParent() {
 
-	public boolean isRoot() {
-		return isRoot;
-	}
+    }
 
-	public void setRoot(boolean isRoot) {
-		this.isRoot = isRoot;
-	}
 
-	public ArticleInstructionWithFullParent getParentArticle() {
-		return parentArticle;
-	}
+    public ArticleInstructionWithFullParent(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
-	public void setParentArticle(ArticleInstructionWithFullParent parentArticle) {
-		this.parentArticle = parentArticle;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	
-	
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(boolean isRoot) {
+        this.isRoot = isRoot;
+    }
+
+    public ArticleInstructionWithFullParent getParentArticle() {
+        return parentArticle;
+    }
+
+    public void setParentArticle(ArticleInstructionWithFullParent parentArticle) {
+        this.parentArticle = parentArticle;
+    }
+
+
 }

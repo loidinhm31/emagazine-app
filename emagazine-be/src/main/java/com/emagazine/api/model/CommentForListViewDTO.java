@@ -3,61 +3,61 @@ package com.emagazine.api.model;
 import java.util.Date;
 
 public class CommentForListViewDTO {
-	private Long id;
-	
-	private String username;
-	
-	private String userEmail;
-	
-	private Date dateCreate;
-	
-	private PostInstructionDTO post;
+    private Long id;
 
-	public Long getId() {
-		return id;
-	}
+    private String username;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private String userEmail;
 
-	public String getUsername() {
-		return username;
-	}
+    private Date dateCreate;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    private PostInstructionDTO post;
 
-	public String getUserEmail() {
-		return userEmail;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Date getDateCreate() {
-		return dateCreate;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setDateCreate(Date dateCreate) {
-		this.dateCreate = dateCreate;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public PostInstructionDTO getPost() {
-		return post;
-	}
+    public String getUserEmail() {
+        return userEmail;
+    }
 
-	public void setPost(PostInstructionDTO post) {
-		this.post = post;
-	}
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
-	@Override
-	public String toString() {
-		return "CommentForListViewDTO [id=" + id + ", username=" + username + ", userEmail=" + userEmail
-				+ ", dateCreate=" + dateCreate + ", post=" + post + "]";
-	}
-	
-	
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public PostInstructionDTO getPost() {
+        return post;
+    }
+
+    public void setPost(PostInstructionDTO post) {
+        this.post = post;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentForListViewDTO [id=" + id + ", username=" + username + ", userEmail=" + userEmail
+                + ", dateCreate=" + dateCreate + ", post=" + post + "]";
+    }
+
+
 }

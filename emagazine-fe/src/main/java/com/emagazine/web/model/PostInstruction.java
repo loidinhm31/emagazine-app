@@ -3,61 +3,60 @@ package com.emagazine.web.model;
 import java.util.Date;
 
 public class PostInstruction {
-	private Long id;
+    private Long id;
 
-	private String title;
+    private String title;
 
-	private String thumbnail;
+    private String thumbnail;
 
-	private String shortDescription;
-	
-	private Date dateCreate;
-	
+    private String shortDescription;
 
-	public PostInstruction() {
-	
-	}
+    private Date dateCreate;
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public PostInstruction() {
 
-	public String getTitle() {
-		return title;
-	}
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getThumbnail() {
-		return thumbnail;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public String getShortDescription() {
-		return shortDescription;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setShortDescription(String shortDescription) {
-		this.shortDescription = shortDescription;
-	}
+    public String getThumbnail() {
+        return thumbnail;
+    }
 
-	public Date getDateCreate() {
-		return dateCreate;
-	}
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 
-	public void setDateCreate(Date dateCreate) {
-		this.dateCreate = dateCreate;
-	}
-	
-	
-	
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+
 }

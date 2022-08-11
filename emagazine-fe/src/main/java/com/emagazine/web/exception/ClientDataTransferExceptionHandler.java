@@ -13,26 +13,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ControllerAdvice
 public class ClientDataTransferExceptionHandler {
 
-	// Exception handler to catch any exception (catch all)
-	@ExceptionHandler
-	public ModelAndView handleException(HttpClientErrorException exc) {
+    // Exception handler to catch any exception (catch all)
+    @ExceptionHandler
+    public ModelAndView handleException(HttpClientErrorException exc) {
 
-		
-		String errString = exc.getResponseBodyAsString();
-		
-		ErrorResponse errorResponse = null;
-		try {
-			errorResponse = new ObjectMapper().readValue(errString, ErrorResponse.class);
-			
-		} catch (IOException e) {
-			
-		}
-		
-		ModelAndView errorView = new ModelAndView();
-		errorView.setViewName("error/404");
-		errorView.addObject("errorData", errorResponse.getMessage());
-		
-		return errorView;
-	}
+
+        String errString = exc.getResponseBodyAsString();
+
+        ErrorResponse errorResponse = null;
+        try {
+            errorResponse = new ObjectMapper().readValue(errString, ErrorResponse.class);
+
+        } catch (IOException e) {
+
+        }
+
+        ModelAndView errorView = new ModelAndView();
+        errorView.setViewName("error/404");
+        errorView.addObject("errorData", errorResponse.getMessage());
+
+        return errorView;
+    }
 
 }

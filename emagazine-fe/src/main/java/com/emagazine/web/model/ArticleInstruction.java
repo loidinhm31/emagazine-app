@@ -2,41 +2,39 @@ package com.emagazine.web.model;
 
 
 public class ArticleInstruction {
-	private Long id;
-	
-	private String name;
-	
-	private boolean isRoot;
+    private Long id;
 
-	public ArticleInstruction() {
-	
-	}
+    private String name;
 
-	public Long getId() {
-		return id;
-	}
+    private boolean isRoot;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public ArticleInstruction() {
 
-	public String getName() {
-		return name;
-	}
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public boolean isRoot() {
-		return isRoot;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setRoot(boolean isRoot) {
-		this.isRoot = isRoot;
-	}
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	
+    public boolean isRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(boolean isRoot) {
+        this.isRoot = isRoot;
+    }
+
 
 }

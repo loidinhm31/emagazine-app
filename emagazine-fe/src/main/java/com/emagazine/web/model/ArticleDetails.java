@@ -7,72 +7,71 @@ import com.emagazine.web.utils.Slugify;
 
 public class ArticleDetails {
 
-	private Long id;
-	
-	private String name;
-	
-	private boolean isRoot;
-	
-	private ArticleInstructionWithFullParent parentArticle;
-	
-	private List<ArticleDetails> childArticles;
-	
+    private Long id;
 
-	public ArticleDetails() {
-		
-	}
-	
-	
-	public Long getId() {
-		return id;
-	}
+    private String name;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private boolean isRoot;
 
-	public String getName() {
-		return name;
-	}
+    private ArticleInstructionWithFullParent parentArticle;
 
-	public void setName(String name) {
-		this.name = name;
-	}
-		
-	public String getCode() {
-		return Slugify.convert(name);
-	}
-
-	
-	
-	public boolean isRoot() {
-		return isRoot;
-	}
+    private List<ArticleDetails> childArticles;
 
 
-	public void setRoot(boolean isRoot) {
-		this.isRoot = isRoot;
-	}
+    public ArticleDetails() {
 
-	public ArticleInstructionWithFullParent getParentArticle() {
-		return parentArticle;
-	}
+    }
 
 
-	public void setParentArticle(ArticleInstructionWithFullParent parentArticle) {
-		this.parentArticle = parentArticle;
-	}
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return Slugify.convert(name);
+    }
 
 
-	public List<ArticleDetails> getChildArticles() {
-		return childArticles;
-	}
+    public boolean isRoot() {
+        return isRoot;
+    }
 
-	public void setChildArticles(List<ArticleDetails> childArticles) {
-		this.childArticles = childArticles;
-	}
 
-	@Override
+    public void setRoot(boolean isRoot) {
+        this.isRoot = isRoot;
+    }
+
+    public ArticleInstructionWithFullParent getParentArticle() {
+        return parentArticle;
+    }
+
+
+    public void setParentArticle(ArticleInstructionWithFullParent parentArticle) {
+        this.parentArticle = parentArticle;
+    }
+
+
+    public List<ArticleDetails> getChildArticles() {
+        return childArticles;
+    }
+
+    public void setChildArticles(List<ArticleDetails> childArticles) {
+        this.childArticles = childArticles;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
@@ -87,8 +86,5 @@ public class ArticleDetails {
         return hash;
     }
 
-    
-    
-    
-    
+
 }

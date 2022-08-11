@@ -40,286 +40,288 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 public class PostServiceImpl implements PostService {
 
-	@Autowired
-	private RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
-	@Override
-	public List<PostInstruction> fetchPostsByArticleId(Long articleId) {
-		String url = RestAPI.URL + "/posts";
-		
-		// Build parameter
-		UriComponentsBuilder builderUri = UriComponentsBuilder
-				.fromHttpUrl(url)
-				.queryParam("article-id", articleId);
-			
+    @Override
+    public List<PostInstruction> fetchPostsByArticleId(Long articleId) {
+        String url = RestAPI.URL + "/posts";
 
-		// Build URI
-		URI uri = builderUri.build().encode().toUri();
+        // Build parameter
+        UriComponentsBuilder builderUri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .queryParam("article-id", articleId);
 
-		try {
-			ResponseEntity<PostInstruction[]> result = 
-					restTemplate.getForEntity(uri, PostInstruction[].class);
-			
-			// Modify a list, backed by the original array
-			List<PostInstruction> posts = 
-					new ArrayList<>(Arrays.asList(result.getBody()));
-			return posts;
-		} catch (HttpClientErrorException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	
-	@Override
-	public Page<Post> fetchPostByArticleId(Long articleId, String keyword, Pageable pageable, HttpSession session) {
-		
-		int pageSize = pageable.getPageSize();
-		int currentPage = pageable.getPageNumber();
-		
-		String url = RestAPI.URL + "/posts/details";
-		
-		// Build parameter
-		UriComponentsBuilder builderUri = UriComponentsBuilder
-				.fromHttpUrl(url)
-				.queryParam("article-id", articleId)
-				.queryParam("page", currentPage)
-				.queryParam("size", pageSize);
-		
-		// Send JWT token in header
-		HttpHeaders headers = new HttpHeaders();
-		String token = (String) session.getAttribute("authorization");
-		headers.add(HttpHeaders.AUTHORIZATION, token);
-		
-		HttpEntity<Post> requestEntity = new HttpEntity<>(headers);		
-		
-		// Set default value for keyword
-		if(keyword == null) {
-			keyword = "";
-		}	
-		builderUri.queryParam("keyword", keyword);
-		
-		// Build URI
-		URI uri = builderUri.build().encode().toUri();
-	
-		ParameterizedTypeReference<RestPageHelper<Post>> responseType =
-				new ParameterizedTypeReference<>() {};
-		
-		try {
-			ResponseEntity<RestPageHelper<Post>> result =
-					restTemplate.exchange(uri, HttpMethod.GET, requestEntity, responseType);
 
-			RestPageHelper<Post> posts = result.getBody();
-			return posts;
-		} catch (HttpClientErrorException e) {
-			return null;
-		}
-	}
-	
+        // Build URI
+        URI uri = builderUri.build().encode().toUri();
 
-	@Override
-	public Map<String, List<PostInstruction>> fetchHomePosts() {
-		String uri = RestAPI.URL + "/posts/top";
+        try {
+            ResponseEntity<PostInstruction[]> result =
+                    restTemplate.getForEntity(uri, PostInstruction[].class);
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
+            // Modify a list, backed by the original array
+            List<PostInstruction> posts =
+                    new ArrayList<>(Arrays.asList(result.getBody()));
+            return posts;
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-		HttpEntity<String> entity = new HttpEntity<String>(headers);
 
-		ParameterizedTypeReference<LinkedHashMap<String, List<PostInstruction>>> responseType = 
-				new ParameterizedTypeReference<LinkedHashMap<String, List<PostInstruction>>>() {};
-		
-		try {
-			ResponseEntity<LinkedHashMap<String, List<PostInstruction>>> result = restTemplate.exchange(uri, HttpMethod.GET,
-					entity, responseType);
-			
-			return result.getBody();
-		} catch (HttpClientErrorException e) {
-			return null;
-		}
-	}
+    @Override
+    public Page<Post> fetchPostByArticleId(Long articleId, String keyword, Pageable pageable, HttpSession session) {
 
-	@Override
-	public List<PostInstruction> fetchTopPostsForReview(Long articleId) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
 
-		String uri = RestAPI.URL + "/posts/reviews/" + articleId;
-		
-		try {
-			ResponseEntity<PostInstruction[]> result = restTemplate.getForEntity(uri, PostInstruction[].class);
+        String url = RestAPI.URL + "/posts/details";
 
-			List<PostInstruction> posts = Arrays.asList(result.getBody());
-			return posts;
-		} catch(HttpClientErrorException e) {	
-			return null;
-		}		
-	}
+        // Build parameter
+        UriComponentsBuilder builderUri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .queryParam("article-id", articleId)
+                .queryParam("page", currentPage)
+                .queryParam("size", pageSize);
 
-	
-	@Override
-	public Post fetchPostsById(Long id) {
-		String uri = RestAPI.URL + "/posts/" + id;
-		
-		try {
-			ResponseEntity<Post> result = restTemplate.getForEntity(uri, Post.class);
+        // Send JWT token in header
+        HttpHeaders headers = new HttpHeaders();
+        String token = (String) session.getAttribute("authorization");
+        headers.add(HttpHeaders.AUTHORIZATION, token);
 
-			Post post = result.getBody();			
-			return post;
-		} catch (HttpClientErrorException e) {			
-			return null;
-		}
-	}
+        HttpEntity<Post> requestEntity = new HttpEntity<>(headers);
 
-	
-	@Override
-	public Page<PostInstruction> fetchPostsByParentArticle(Long parentId, Pageable pageable) {
+        // Set default value for keyword
+        if (keyword == null) {
+            keyword = "";
+        }
+        builderUri.queryParam("keyword", keyword);
 
-		int pageSize = pageable.getPageSize();
-		int currentPage = pageable.getPageNumber();
+        // Build URI
+        URI uri = builderUri.build().encode().toUri();
 
-		String url = RestAPI.URL + "/posts/parent";
-		
-		// Build parameter
-		UriComponentsBuilder builderUri = UriComponentsBuilder
-				.fromHttpUrl(url)
-				.queryParam("parent-id", parentId)
-				.queryParam("page", currentPage)
-				.queryParam("size", pageSize);
-		
-		// Build URI
-		URI uri = builderUri.build().encode().toUri();
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
+        ParameterizedTypeReference<RestPageHelper<Post>> responseType =
+                new ParameterizedTypeReference<>() {
+                };
 
-		HttpEntity<String> entity = new HttpEntity<>(headers);
+        try {
+            ResponseEntity<RestPageHelper<Post>> result =
+                    restTemplate.exchange(uri, HttpMethod.GET, requestEntity, responseType);
 
-		ParameterizedTypeReference<RestPageHelper<PostInstruction>> responseType =
-				new ParameterizedTypeReference<>() {};
-	
-		try {
-			ResponseEntity<RestPageHelper<PostInstruction>> result =
-					restTemplate.exchange(uri, HttpMethod.GET, entity, responseType);
+            RestPageHelper<Post> posts = result.getBody();
+            return posts;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
 
-			RestPageHelper<PostInstruction> posts = result.getBody();
-			return posts;
-		} catch (HttpClientErrorException e) {
-			return null;
-		}
-	}
 
-	
-	@Override
-	public boolean saveOrUpdate(PostRequest thePost, HttpSession session) {
-		String uri = RestAPI.URL + "/posts";
-		
-		// Send JWT token in header
-		HttpHeaders headers = new HttpHeaders();
-		String token = (String) session.getAttribute("authorization");
-		headers.add(HttpHeaders.AUTHORIZATION, token);
-	
-		HttpMethod httpMethod = thePost.getId() == null ? HttpMethod.POST : HttpMethod.PUT;
-		
-		HttpEntity<PostRequest> requestEntity = new HttpEntity<>(thePost, headers);
-		
-		// Call API
-		ResponseEntity<PostRequest> responseEntity = restTemplate.exchange(uri, httpMethod, requestEntity, PostRequest.class);
-	
-		if (responseEntity.getStatusCode() == HttpStatus.OK) {
-			return true;
-		}
-		return false;
-	}
-	
-	
-	@Override
-	public String uploadImage(MultipartFile multipartFile, HttpSession session) {
-		
-		if (multipartFile == null) return null;
-		
-		String url = RestAPI.URL + "/posts/thumbnails/upload";	
-		
-		String token = (String) session.getAttribute("authorization");
-		
-		// Send JWT token in header
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-		headers.add(HttpHeaders.AUTHORIZATION, token);
-				
-		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+    @Override
+    public Map<String, List<PostInstruction>> fetchHomePosts() {
+        String uri = RestAPI.URL + "/posts/top";
 
-		try {
-			body.add("thumbnail", parseFile(multipartFile));
-		} catch (IOException | MaxUploadSizeExceededException e) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-			return null;
-		}
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
 
-		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        ParameterizedTypeReference<LinkedHashMap<String, List<PostInstruction>>> responseType =
+                new ParameterizedTypeReference<LinkedHashMap<String, List<PostInstruction>>>() {
+                };
 
-		ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
+        try {
+            ResponseEntity<LinkedHashMap<String, List<PostInstruction>>> result = restTemplate.exchange(uri, HttpMethod.GET,
+                    entity, responseType);
 
-		return response.getStatusCode() == HttpStatus.CREATED ? response.getBody() : null;
-	}
-	
-	private Resource parseFile(MultipartFile multipartFile) throws IOException {
-		StringBuilder fileName = 
-				new StringBuilder(String.valueOf(FilenameUtils.getName(multipartFile.getOriginalFilename()).hashCode()))
-					.append(".")
-					.append(FilenameUtils.getExtension(multipartFile.getOriginalFilename()));
-		
-		Path file = Files.createTempFile(System.currentTimeMillis() + "_" , fileName.toString());
-		Files.write(file, multipartFile.getBytes());
-		
-		return new FileSystemResource(file.toFile());
-	}
+            return result.getBody();
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
 
-	
-	@Override
-	public List<PostInstruction> fetchPostByComment(HttpSession session) {
-		String url = RestAPI.URL + "/posts/comments/censor";
-		
-		try {
-			
-			
-			// Send JWT token in header
-			String token = (String) session.getAttribute("authorization");
-			HttpHeaders headers = new HttpHeaders();
-			headers.add(HttpHeaders.AUTHORIZATION, token);
-			
-			HttpEntity<PostInstruction[]> requestEntity = new HttpEntity<>(headers);
-			
-			ResponseEntity<PostInstruction[]> result = 
-					restTemplate.exchange(url, HttpMethod.GET, requestEntity, PostInstruction[].class);
-			
-			List<PostInstruction> posts = Arrays.asList(Objects.requireNonNull(result.getBody()));
-			
-			return posts;
-		} catch(HttpClientErrorException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	
-	
-	@Override
-	public boolean deleteById(Long id, HttpSession session) {
-		String url = RestAPI.URL + "/posts/" + id;
-		
-		// Send JWT token in header
-		HttpHeaders header = new HttpHeaders();
-		String token = (String) session.getAttribute("authorization");
-		header.add(HttpHeaders.AUTHORIZATION, token);
-		
-		HttpEntity<ArticleRequest> requestEntity = new HttpEntity<>(header);
-		
-		// Call API
-		ResponseEntity<?> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, HashMap.class);
-		
-		if (responseEntity.getStatusCode() == HttpStatus.OK) {
-			return true;
-		}		
-		return false;
-	}
+    @Override
+    public List<PostInstruction> fetchTopPostsForReview(Long articleId) {
+
+        String uri = RestAPI.URL + "/posts/reviews/" + articleId;
+
+        try {
+            ResponseEntity<PostInstruction[]> result = restTemplate.getForEntity(uri, PostInstruction[].class);
+
+            List<PostInstruction> posts = Arrays.asList(result.getBody());
+            return posts;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
+
+
+    @Override
+    public Post fetchPostsById(Long id) {
+        String uri = RestAPI.URL + "/posts/" + id;
+
+        try {
+            ResponseEntity<Post> result = restTemplate.getForEntity(uri, Post.class);
+
+            Post post = result.getBody();
+            return post;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
+
+
+    @Override
+    public Page<PostInstruction> fetchPostsByParentArticle(Long parentId, Pageable pageable) {
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+
+        String url = RestAPI.URL + "/posts/parent";
+
+        // Build parameter
+        UriComponentsBuilder builderUri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .queryParam("parent-id", parentId)
+                .queryParam("page", currentPage)
+                .queryParam("size", pageSize);
+
+        // Build URI
+        URI uri = builderUri.build().encode().toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ParameterizedTypeReference<RestPageHelper<PostInstruction>> responseType =
+                new ParameterizedTypeReference<>() {
+                };
+
+        try {
+            ResponseEntity<RestPageHelper<PostInstruction>> result =
+                    restTemplate.exchange(uri, HttpMethod.GET, entity, responseType);
+
+            RestPageHelper<PostInstruction> posts = result.getBody();
+            return posts;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
+
+
+    @Override
+    public boolean saveOrUpdate(PostRequest thePost, HttpSession session) {
+        String uri = RestAPI.URL + "/posts";
+
+        // Send JWT token in header
+        HttpHeaders headers = new HttpHeaders();
+        String token = (String) session.getAttribute("authorization");
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+
+        HttpMethod httpMethod = thePost.getId() == null ? HttpMethod.POST : HttpMethod.PUT;
+
+        HttpEntity<PostRequest> requestEntity = new HttpEntity<>(thePost, headers);
+
+        // Call API
+        ResponseEntity<PostRequest> responseEntity = restTemplate.exchange(uri, httpMethod, requestEntity, PostRequest.class);
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public String uploadImage(MultipartFile multipartFile, HttpSession session) {
+
+        if (multipartFile == null) return null;
+
+        String url = RestAPI.URL + "/posts/thumbnails/upload";
+
+        String token = (String) session.getAttribute("authorization");
+
+        // Send JWT token in header
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+        try {
+            body.add("thumbnail", parseFile(multipartFile));
+        } catch (IOException | MaxUploadSizeExceededException e) {
+
+            return null;
+        }
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
+
+        return response.getStatusCode() == HttpStatus.CREATED ? response.getBody() : null;
+    }
+
+    private Resource parseFile(MultipartFile multipartFile) throws IOException {
+        StringBuilder fileName =
+                new StringBuilder(String.valueOf(FilenameUtils.getName(multipartFile.getOriginalFilename()).hashCode()))
+                        .append(".")
+                        .append(FilenameUtils.getExtension(multipartFile.getOriginalFilename()));
+
+        Path file = Files.createTempFile(System.currentTimeMillis() + "_", fileName.toString());
+        Files.write(file, multipartFile.getBytes());
+
+        return new FileSystemResource(file.toFile());
+    }
+
+
+    @Override
+    public List<PostInstruction> fetchPostByComment(HttpSession session) {
+        String url = RestAPI.URL + "/posts/comments/censor";
+
+        try {
+
+
+            // Send JWT token in header
+            String token = (String) session.getAttribute("authorization");
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.AUTHORIZATION, token);
+
+            HttpEntity<PostInstruction[]> requestEntity = new HttpEntity<>(headers);
+
+            ResponseEntity<PostInstruction[]> result =
+                    restTemplate.exchange(url, HttpMethod.GET, requestEntity, PostInstruction[].class);
+
+            List<PostInstruction> posts = Arrays.asList(Objects.requireNonNull(result.getBody()));
+
+            return posts;
+        } catch (HttpClientErrorException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    @Override
+    public boolean deleteById(Long id, HttpSession session) {
+        String url = RestAPI.URL + "/posts/" + id;
+
+        // Send JWT token in header
+        HttpHeaders header = new HttpHeaders();
+        String token = (String) session.getAttribute("authorization");
+        header.add(HttpHeaders.AUTHORIZATION, token);
+
+        HttpEntity<ArticleRequest> requestEntity = new HttpEntity<>(header);
+
+        // Call API
+        ResponseEntity<?> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, HashMap.class);
+
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            return true;
+        }
+        return false;
+    }
 
 }

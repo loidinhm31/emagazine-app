@@ -1,49 +1,49 @@
 package com.emagazine.web.model;
 
 public class ArticleInstructionWithParentId {
-	private Long id;
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private boolean isRoot;
-	
-	private Long parentId;
+    private boolean isRoot;
 
-	public ArticleInstructionWithParentId() {
-		
-	}
+    private Long parentId;
 
-	public Long getId() {
-		return id;
-	}
+    public ArticleInstructionWithParentId() {
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public boolean isRoot() {
-		return isRoot;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setRoot(boolean isRoot) {
-		this.isRoot = isRoot;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Long getParentId() {
-		return parentId;
-	}
+    public boolean isRoot() {
+        return isRoot;
+    }
 
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
-	
-	
+    public void setRoot(boolean isRoot) {
+        this.isRoot = isRoot;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+
 }

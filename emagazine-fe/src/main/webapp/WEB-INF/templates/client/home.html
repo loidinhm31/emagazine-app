@@ -2,74 +2,76 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="client/fragments/head :: head"/>
 <body>
-	<div th:replace="client/fragments/header :: header"></div>
+<div th:replace="client/fragments/header :: header"></div>
 
-	<div th:replace="client/fragments/navigation :: nav"></div>
+<div th:replace="client/fragments/navigation :: nav"></div>
 
-	<main>
-		<div class="boxed-content-wrapper clearfix">
-			<div class="inner" style="margin-top: 20px;">
-				<div class="main_container">
-					<div class="main-col" id="main_container">
-					
-						<div th:each="entry : ${postMap}" th:if="${!entry.value.empty}"  class="news-box  base-box nb-style3">
-							<header class="nb-header">
-								<h2 class="nb-title">
-									<span th:text="${entry.key}"></span>
-								</h2>
-							</header>
-							<div class="nb-content">
-								<div class="recent-news">
-									<div class="news-image">
-										<a th:href="@{/post(id=${entry.value[0].id})}">
-											<img th:src="${entry.value[0].thumbnail}" width="284" height="180">
-										</a>
-									</div>
-									<div class="news-summary">
-										<h3>
-											<a th:href="@{/post(id=${entry.value[0].id})}" th:text="${entry.value[0].title}"></a>
-										</h3>
-										<p th:text="${entry.value[0].shortDescription}"></p>
-									</div>
-								</div>
-								<div class="older-articles">
-									<ul>
-										<li th:if="${stat.index != 0}" th:each="post, stat : ${entry.value}">
-											<a th:href="@{/post(id=${post.id})}">
-												<img class="thumbnail-img" th:src="${post.thumbnail}" th:text="${post.title}">
-											</a>
-										</li>
-									</ul>
-								</div>
-								
-							</div>
-							<footer class="nb-footer">
-									<a th:if="${entryStat.index != 0}" 
-										th:href="@{/page(id=${entryStat.index+1})}" 
-										class="show-more-ajax" th:title="${entry.key}" >
-										View more 
-										<i class="fas fa-long-arrow-alt-right"></i>
-									</a>
-							</footer>
-						</div>
-						
-						
-						<div class="clear"></div>
-					</div>
-					<div class="clear"></div>
-				</div>
-				<div class="sidebar main-sidebar" id="right_sidebar" style="position: relative; height: 1411px;">
-				
-				</div>
-				<div class="clear"></div>
-			</div>
-			
-		</div>
+<main>
+    <div class="boxed-content-wrapper clearfix">
+        <div class="inner" style="margin-top: 20px;">
+            <div class="main_container">
+                <div class="main-col" id="main_container">
+
+                    <div th:each="entry : ${postMap}" th:if="${!entry.value.empty}"
+                         class="news-box  base-box nb-style3">
+                        <header class="nb-header">
+                            <h2 class="nb-title">
+                                <span th:text="${entry.key}"></span>
+                            </h2>
+                        </header>
+                        <div class="nb-content">
+                            <div class="recent-news">
+                                <div class="news-image">
+                                    <a th:href="@{/post(id=${entry.value[0].id})}">
+                                        <img th:src="${entry.value[0].thumbnail}" width="284" height="180">
+                                    </a>
+                                </div>
+                                <div class="news-summary">
+                                    <h3>
+                                        <a th:href="@{/post(id=${entry.value[0].id})}"
+                                           th:text="${entry.value[0].title}"></a>
+                                    </h3>
+                                    <p th:text="${entry.value[0].shortDescription}"></p>
+                                </div>
+                            </div>
+                            <div class="older-articles">
+                                <ul>
+                                    <li th:if="${stat.index != 0}" th:each="post, stat : ${entry.value}">
+                                        <a th:href="@{/post(id=${post.id})}">
+                                            <img class="thumbnail-img" th:src="${post.thumbnail}"
+                                                 th:text="${post.title}">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <footer class="nb-footer">
+                            <a th:if="${entryStat.index != 0}"
+                               th:href="@{/page(id=${entryStat.index+1})}"
+                               class="show-more-ajax" th:title="${entry.key}">
+                                View more
+                                <i class="fas fa-long-arrow-alt-right"></i>
+                            </a>
+                        </footer>
+                    </div>
 
 
-	</main>
-	<div th:replace="client/fragments/footer :: footer"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="sidebar main-sidebar" id="right_sidebar" style="position: relative; height: 1411px;">
 
+            </div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+
+
+</main>
+<div th:replace="client/fragments/footer :: footer"></div>
 
 
 </body>

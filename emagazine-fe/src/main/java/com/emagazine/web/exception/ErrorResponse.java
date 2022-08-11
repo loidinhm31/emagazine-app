@@ -2,50 +2,46 @@ package com.emagazine.web.exception;
 
 
 public class ErrorResponse extends Exception {
-	
-	private static final long serialVersionUID = 1L;
-	private int status;
-	private String message;
-	private long timeStamp;
 
-	
+    private static final long serialVersionUID = 1L;
+    private int status;
+    private String message;
+    private long timeStamp;
 
-	public ErrorResponse() {
-		
-	}
 
-	public ErrorResponse(int status, String message, long timeStamp) {
-		this.status = status;
-		this.message = message;
-		this.timeStamp = timeStamp;
-	}
+    public ErrorResponse() {
 
-	public int getStatus() {
-		return status;
-	}
+    }
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
+    public ErrorResponse(int status, String message, long timeStamp) {
+        this.status = status;
+        this.message = message;
+        this.timeStamp = timeStamp;
+    }
 
-	public String getMessage() {
-		return message;
-	}
+    public int getStatus() {
+        return status;
+    }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
-	public long getTimeStamp() {
-		return timeStamp;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setTimeStamp(long timeStamp) {
-		this.timeStamp = timeStamp;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	
-	
-	
-	
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+
 }

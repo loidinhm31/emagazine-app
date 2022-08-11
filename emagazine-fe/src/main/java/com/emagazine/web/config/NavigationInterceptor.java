@@ -14,19 +14,19 @@ import com.emagazine.web.model.ArticleDetails;
 
 @Component
 public class NavigationInterceptor implements HandlerInterceptor {
-	
-	@Autowired
-	private ArticleService articleService;
-	
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
-		
-		List<ArticleDetails> mainArticles = articleService.fetchMainArticles();
-		
-		request.setAttribute("articles", mainArticles);
-		
-		
-		return true;
-	}
+
+    @Autowired
+    private ArticleService articleService;
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
+
+        List<ArticleDetails> mainArticles = articleService.fetchMainArticles();
+
+        request.setAttribute("articles", mainArticles);
+
+
+        return true;
+    }
 }

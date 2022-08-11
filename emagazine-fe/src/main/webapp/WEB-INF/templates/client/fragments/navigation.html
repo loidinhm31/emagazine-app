@@ -1,72 +1,75 @@
 <div th:fragment="nav">
 
-	<nav id="navigation" itemtype="http://schema.org/SiteNavigationElement"
-		itemscope="itemscope" role="navigation"
-		class="dd-effect-slide navigation">
+    <nav id="navigation" itemtype="http://schema.org/SiteNavigationElement"
+         itemscope="itemscope" role="navigation"
+         class="dd-effect-slide navigation">
 
-		<div class="navigation-inner">
-			<div class="inner">
-				<ul id="menu-main-menu" class=" main-menu mom_visibility_desktop">
-					<li id="menu-item-87"
-						class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home mom_default_menu_item menu-item-iconsOnly menu-item-depth-0"><a
-						th:href="@{/}" title="home" class="no-arrow"><i
-							class="fas fa-home"></i><span class="icon_only_label"></span></a></li>
-
-
-
-					<li th:each="mainArticle : ${articles}"
-						class="menu-item menu-item-type-custom  menu-item-has-children menu-parent-item mom_mega menu-item-depth-0">
-
-						<a th:if="${mainArticle.root}" th:text="${mainArticle.name}"
-						href="#" title="Tutorials">Navigation</a>
-
-						<ul th:if="${mainArticle.root}"
-							class="sub-menu mom_mega_wrap mom_mega_col_5">
-
-							<li th:each="childArticle : ${mainArticle.childArticles}"
-								class="menu-item menu-item-type-custom  menu-item-has-children menu-parent-item mega_column mega_col_title menu-item-depth-1">
-								<a th:text="${childArticle.name}"
-								th:href="@{/page(id=${childArticle.id})}"> Nav-item
-							</a>
-
-								<ul>
-									<li th:each="item : ${childArticle.childArticles}"
-										class="menu-item mom_default_menu_item menu-item-depth-2">
-										<a th:text="${item.name}"
-										th:href="@{/sub(id=${item.id})}"></a>
-									</li>
-
-								</ul> <i class="responsive-caret"></i>
-							</li>
+        <div class="navigation-inner">
+            <div class="inner">
+                <ul id="menu-main-menu" class=" main-menu mom_visibility_desktop">
+                    <li id="menu-item-87"
+                        class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home mom_default_menu_item menu-item-iconsOnly menu-item-depth-0">
+                        <a
+                                th:href="@{/}" title="home" class="no-arrow"><i
+                                class="fas fa-home"></i><span class="icon_only_label"></span></a></li>
 
 
-						</ul> <i class="responsive-caret"></i>
+                    <li th:each="mainArticle : ${articles}"
+                        class="menu-item menu-item-type-custom  menu-item-has-children menu-parent-item mom_mega menu-item-depth-0">
+
+                        <a th:if="${mainArticle.root}" th:text="${mainArticle.name}"
+                           href="#" title="Tutorials">Navigation</a>
+
+                        <ul th:if="${mainArticle.root}"
+                            class="sub-menu mom_mega_wrap mom_mega_col_5">
+
+                            <li th:each="childArticle : ${mainArticle.childArticles}"
+                                class="menu-item menu-item-type-custom  menu-item-has-children menu-parent-item mega_column mega_col_title menu-item-depth-1">
+                                <a th:text="${childArticle.name}"
+                                   th:href="@{/page(id=${childArticle.id})}"> Nav-item
+                                </a>
+
+                                <ul>
+                                    <li th:each="item : ${childArticle.childArticles}"
+                                        class="menu-item mom_default_menu_item menu-item-depth-2">
+                                        <a th:text="${item.name}"
+                                           th:href="@{/sub(id=${item.id})}"></a>
+                                    </li>
+
+                                </ul>
+                                <i class="responsive-caret"></i>
+                            </li>
 
 
-					</li><!-- Root Article -->
+                        </ul>
+                        <i class="responsive-caret"></i>
 
 
-					<li th:each="mainArticle : ${articles}"
-						class="menu-item menu-item-has-children menu-parent-item mom_default_menu_item menu-item-depth-0">
+                    </li><!-- Root Article -->
 
-						<a th:unless="${mainArticle.root}" th:text="${mainArticle.name}"
-						th:href="@{/page(id=${mainArticle.id})}" rel="nofollow">
-							Navigation </a>
-						<ul th:unless="${mainArticle.root}" class="sub-menu ">
-							<li th:each="childArticle : ${mainArticle.childArticles}"
-								class="menu-item  menu-parent-item mom_default_menu_item menu-item-depth-1">
-								<a th:text="${childArticle.name}"
-								th:href="@{/sub(id=${childArticle.id})}">
-									Nav-item</a>
 
-							</li>
+                    <li th:each="mainArticle : ${articles}"
+                        class="menu-item menu-item-has-children menu-parent-item mom_default_menu_item menu-item-depth-0">
 
-						</ul> <i class="responsive-caret"></i>
-					</li><!-- Normal Article -->
+                        <a th:unless="${mainArticle.root}" th:text="${mainArticle.name}"
+                           th:href="@{/page(id=${mainArticle.id})}" rel="nofollow">
+                            Navigation </a>
+                        <ul th:unless="${mainArticle.root}" class="sub-menu ">
+                            <li th:each="childArticle : ${mainArticle.childArticles}"
+                                class="menu-item  menu-parent-item mom_default_menu_item menu-item-depth-1">
+                                <a th:text="${childArticle.name}"
+                                   th:href="@{/sub(id=${childArticle.id})}">
+                                    Nav-item</a>
 
-				</ul>
-			</div>
-		</div>
+                            </li>
 
-	</nav>
+                        </ul>
+                        <i class="responsive-caret"></i>
+                    </li><!-- Normal Article -->
+
+                </ul>
+            </div>
+        </div>
+
+    </nav>
 </div>

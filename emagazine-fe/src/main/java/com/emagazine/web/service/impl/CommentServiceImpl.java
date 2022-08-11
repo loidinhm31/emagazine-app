@@ -26,143 +26,143 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-	@Autowired
-	RestTemplate restTemplate;
+    @Autowired
+    RestTemplate restTemplate;
 
-	@Override
-	public void saveComment(CommentRequest theComment) {
-		String url = RestAPI.URL + "/comments";
+    @Override
+    public void saveComment(CommentRequest theComment) {
+        String url = RestAPI.URL + "/comments";
 
-		// Create header
-		HttpHeaders header = new HttpHeaders();
-		header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        // Create header
+        HttpHeaders header = new HttpHeaders();
+        header.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
-		HttpEntity<CommentRequest> requestEntity = new HttpEntity<CommentRequest>(theComment, header);
+        HttpEntity<CommentRequest> requestEntity = new HttpEntity<CommentRequest>(theComment, header);
 
-		// Call API
-		restTemplate.exchange(url, HttpMethod.POST, requestEntity, CommentRequest.class);
+        // Call API
+        restTemplate.exchange(url, HttpMethod.POST, requestEntity, CommentRequest.class);
 
-	}
+    }
 
-	@Override
-	public List<Comment> fetchCommentsForPost(Long postId) {
-		String url = RestAPI.URL + "/comments/" + postId + "/post";
+    @Override
+    public List<Comment> fetchCommentsForPost(Long postId) {
+        String url = RestAPI.URL + "/comments/" + postId + "/post";
 
-		try {
-			// Call API
-			ResponseEntity<Comment[]> result = restTemplate.getForEntity(url, Comment[].class);
-			List<Comment> comments = Arrays.asList(result.getBody());
-			return comments;
-		} catch (HttpClientErrorException e) {
-			return null;
-		}
+        try {
+            // Call API
+            ResponseEntity<Comment[]> result = restTemplate.getForEntity(url, Comment[].class);
+            List<Comment> comments = Arrays.asList(result.getBody());
+            return comments;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
 
-	}
+    }
 
-	@Override
-	public List<CommentForListView> findAll(String keyword, HttpSession session) {
-		String url = RestAPI.URL + "/comments";
-		
-		// Build parameter
-		UriComponentsBuilder builderUri = UriComponentsBuilder
-				.fromHttpUrl(url)
-				.queryParam("keyword", keyword);
+    @Override
+    public List<CommentForListView> findAll(String keyword, HttpSession session) {
+        String url = RestAPI.URL + "/comments";
 
-		// Build URI
-		URI uri = builderUri.build().encode().toUri();
-		
-		// Send JWT token in header
-		HttpHeaders headers = new HttpHeaders();
-		String token = (String) session.getAttribute("authorization");
-		headers.add(HttpHeaders.AUTHORIZATION, token);
-		
-		HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-		
-		try {			
-			// Call API
-			ResponseEntity<CommentForListView[]> result = 
-					restTemplate.exchange(uri, HttpMethod.GET, requestEntity,
-							CommentForListView[].class);
-			List<CommentForListView> comments = Arrays.asList(result.getBody());
-			
-			return comments;
-		} catch (HttpClientErrorException e) {
-			return null;
-		}
-	}
+        // Build parameter
+        UriComponentsBuilder builderUri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .queryParam("keyword", keyword);
 
-	
-	@Override
-	public boolean deleteById(Long id, HttpSession session) {
-		String url = RestAPI.URL + "/comments/" + id;
-		
-		// Build parameter
-		UriComponentsBuilder builderUri = UriComponentsBuilder
-				.fromHttpUrl(url)
-				.queryParam("id", id);
+        // Build URI
+        URI uri = builderUri.build().encode().toUri();
 
-		// Build URI
-		URI uri = builderUri.build().encode().toUri();
-		
-		// Send JWT token in header
-		HttpHeaders headers = new HttpHeaders();
-		String token = (String) session.getAttribute("authorization");
-		headers.add(HttpHeaders.AUTHORIZATION, token);
-		
-		HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-	
-		// Call API
-		ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.DELETE, requestEntity, String.class);
-		
-		if (result.getStatusCode() == HttpStatus.OK) {
-			return true;
-		}	
-		return false;
-	}
+        // Send JWT token in header
+        HttpHeaders headers = new HttpHeaders();
+        String token = (String) session.getAttribute("authorization");
+        headers.add(HttpHeaders.AUTHORIZATION, token);
 
-	
-	@Override
-	public Comment findById(Long id) {
-		String url = RestAPI.URL + "/comments/" + id;
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 
-		ResponseEntity<Comment> result = restTemplate.getForEntity(url, Comment.class);
+        try {
+            // Call API
+            ResponseEntity<CommentForListView[]> result =
+                    restTemplate.exchange(uri, HttpMethod.GET, requestEntity,
+                            CommentForListView[].class);
+            List<CommentForListView> comments = Arrays.asList(result.getBody());
 
-		Comment theComment = result.getBody();
+            return comments;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
 
-		return theComment;
-	}
 
-	@Override
-	public List<CommentForListView> findByPostIdForAdminPage(Long id, String keyword,
-			HttpSession session) {
-		String url = RestAPI.URL + "/comments/" + id + "/post/admin";
-		
-		// Build parameter
-		UriComponentsBuilder builderUri = UriComponentsBuilder
-				.fromHttpUrl(url)
-				.queryParam("keyword", keyword);
+    @Override
+    public boolean deleteById(Long id, HttpSession session) {
+        String url = RestAPI.URL + "/comments/" + id;
 
-		// Build URI
-		URI uri = builderUri.build().encode().toUri();
-		
-		// Send JWT token in header
-		HttpHeaders headers = new HttpHeaders();
-		String token = (String) session.getAttribute("authorization");
-		headers.add(HttpHeaders.AUTHORIZATION, token);
+        // Build parameter
+        UriComponentsBuilder builderUri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .queryParam("id", id);
 
-		HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-		
-		try {
-			// Call API
-			ResponseEntity<CommentForListView[]> result = 
-					restTemplate.exchange(uri, HttpMethod.GET, requestEntity,
-					CommentForListView[].class);
-			
-			List<CommentForListView> comments = Arrays.asList(result.getBody());
-			return comments;
-		} catch (HttpClientErrorException e) {
-			return null;
-		}
-	}
+        // Build URI
+        URI uri = builderUri.build().encode().toUri();
+
+        // Send JWT token in header
+        HttpHeaders headers = new HttpHeaders();
+        String token = (String) session.getAttribute("authorization");
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+
+        // Call API
+        ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.DELETE, requestEntity, String.class);
+
+        if (result.getStatusCode() == HttpStatus.OK) {
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public Comment findById(Long id) {
+        String url = RestAPI.URL + "/comments/" + id;
+
+        ResponseEntity<Comment> result = restTemplate.getForEntity(url, Comment.class);
+
+        Comment theComment = result.getBody();
+
+        return theComment;
+    }
+
+    @Override
+    public List<CommentForListView> findByPostIdForAdminPage(Long id, String keyword,
+                                                             HttpSession session) {
+        String url = RestAPI.URL + "/comments/" + id + "/post/admin";
+
+        // Build parameter
+        UriComponentsBuilder builderUri = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .queryParam("keyword", keyword);
+
+        // Build URI
+        URI uri = builderUri.build().encode().toUri();
+
+        // Send JWT token in header
+        HttpHeaders headers = new HttpHeaders();
+        String token = (String) session.getAttribute("authorization");
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+
+        try {
+            // Call API
+            ResponseEntity<CommentForListView[]> result =
+                    restTemplate.exchange(uri, HttpMethod.GET, requestEntity,
+                            CommentForListView[].class);
+
+            List<CommentForListView> comments = Arrays.asList(result.getBody());
+            return comments;
+        } catch (HttpClientErrorException e) {
+            return null;
+        }
+    }
 
 }

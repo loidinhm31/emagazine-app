@@ -3,162 +3,167 @@
 <head th:replace="admin/admin-fragments:: head"></head>
 <body>
 
-	<div th:replace="admin/admin-fragments :: navbar-admin"></div>
+<div th:replace="admin/admin-fragments :: navbar-admin"></div>
 
-	<div class="container-fluid mt-3">
-		<div class="row">
-			<div class="col col-sm-2">
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col col-sm-2">
 
-				<div class="card shadow">
-					
-					<h3 class="card-header">
-						<a th:href="@{/admin/post}"
-							style="text-decoration: none; color: orange; font-weight:bold">Articles</a>
-					</h3>
+            <div class="card shadow">
 
-					<ul style="list-style-type: none">
-						<li th:each="mainArticle : ${articles}"
-							class="nav-left-dropend dropdown-item dropdown-submenu p-0">
+                <h3 class="card-header">
+                    <a th:href="@{/admin/post}"
+                       style="text-decoration: none; color: orange; font-weight:bold">Articles</a>
+                </h3>
 
-							<a th:text="${mainArticle.name}"
-							th:href="@{/admin/post/{article-id}(article-id=${mainArticle.id})}" class="dropdown-item">
-								Navigation </a>
+                <ul style="list-style-type: none">
+                    <li th:each="mainArticle : ${articles}"
+                        class="nav-left-dropend dropdown-item dropdown-submenu p-0">
 
-							<ul class="dropdown-menu mt-2 rounded-0 white border-0 z-depth-1"
-								style="list-style-type: none">
-								<li th:each="childArticle : ${mainArticle.childArticles}"
-									class="dropdown-item dropdown-submenu p-0"><a
-									th:text="${childArticle.name}"
-									th:href="@{/admin/post/{id}(id=${childArticle.id})}"
-									class="dropdown-toggle dropdown-item w-100"> Nav-item</a>
+                        <a th:text="${mainArticle.name}"
+                           th:href="@{/admin/post/{article-id}(article-id=${mainArticle.id})}" class="dropdown-item">
+                            Navigation </a>
 
-									<ul class="dropdown-menu  rounded-0 white border-0 z-depth-1">
-										<li
-											th:each="childArticleLevel2 : ${childArticle.childArticles}"
-											class="dropdown-item p-0"><a
-											th:text="${childArticleLevel2.name}"
-											th:href="@{/admin/post/{id}(id=${childArticleLevel2.id})}"
-											class="dropdown-item w-100"> Nav-item</a></li>
+                        <ul class="dropdown-menu mt-2 rounded-0 white border-0 z-depth-1"
+                            style="list-style-type: none">
+                            <li th:each="childArticle : ${mainArticle.childArticles}"
+                                class="dropdown-item dropdown-submenu p-0"><a
+                                    th:text="${childArticle.name}"
+                                    th:href="@{/admin/post/{id}(id=${childArticle.id})}"
+                                    class="dropdown-toggle dropdown-item w-100"> Nav-item</a>
 
-									</ul></li>
+                                <ul class="dropdown-menu  rounded-0 white border-0 z-depth-1">
+                                    <li
+                                            th:each="childArticleLevel2 : ${childArticle.childArticles}"
+                                            class="dropdown-item p-0"><a
+                                            th:text="${childArticleLevel2.name}"
+                                            th:href="@{/admin/post/{id}(id=${childArticleLevel2.id})}"
+                                            class="dropdown-item w-100"> Nav-item</a></li>
 
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-			<div class="col col-md-10 pl-0">
-				
-					<div class="d-flex justify-content-between">
-						<h2>Posts</h2>
-						<a class="btn btn-success" th:href="@{/admin/post/form}"
-							type="button"><i
-							class="fas fa-pencil-alt"></i> <span th:text="Create"></span> </a>
-					</div>
-					<div class="search-layout">
-						<form th:if="${currId == null}" class="form-inline"
-							th:action="@{/admin/post}">
-							<input class="form-control mr-sm-2" name="keyword" type="search"
-								placeholder="Search" aria-label="Search">
-							<button class="btn btn-outline-success my-2 my-sm-0"
-								type="submit">Search</button>
-						</form>
-						<form th:if="${currId != null}" class="form-inline"
-							th:action="@{/admin/post/{id}(id=${currId})}">
-							<input class="form-control mr-sm-2" name="keyword" type="search"
-								placeholder="Search" aria-label="Search">
-							<button class="btn btn-outline-success my-2 my-sm-0"
-								type="submit">Search</button>
-						</form>
-					</div>
-					
-					<h5 th:if="${listPost == null or listPost.empty}" style="color:red; text-align: center;">Not found any posts!</h5>	
-					
-					<table th:if="${listPost != null and !listPost.empty}" class="table table-bordered table-hover table-responsive mt-3">
-						<thead>
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col">Title</th>
-								<th scope="col">Thumbnail</th>
-								<th scope="col">Short Description</th>
-								<th scope="col">Article</th>
-								<th scope="col">Date Create</th>
-								<th scope="col">Date Update</th>
-								<th scope="col">Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="post, rowStat: ${listPost}">
-								<td th:text="${rowStat.index}"></td>
-								<td style="word-wrap: break-word;min-width: 200px;max-width: 200px;white-space:normal;">
-									<p class="text-info" th:text="${'ID: ' + post.id}"></p>
-									<p th:text="${post.title}"></p>
-								</td>
-									
-								<td>
-									<div class="card" style="min-width: 100px;max-width: 100px">
-										<img class="card-img" alt="" th:src="${post.thumbnail}">
-									</div>
-									
-								</td>
-								<td th:text="${post.shortDescription}"
-									style="word-wrap: break-word;min-width: 250px;max-width: 250px;white-space:normal;"></td>
-								<td th:text="${post.article.name}"
-									style="word-wrap: break-word;min-width: 200px;max-width: 200px;white-space:normal;"></td>
-								<td th:text="${post.dateCreate}"></td>
-								<td th:text="${post.dateUpdate}"></td>
-								<td>						
-									<a class="btn btn-info btn-sm my-1"
-										th:href="@{/admin/post/form(post-id=${post.id})}">
-										Detail
-									</a>
-									
-									<a class="btn btn-danger btn-sm"
-										th:href="@{/admin/post/delete/{post-id}(post-id=${post.id})}">
-										Delete
-									</a>
-								</td>
-							</tr>
+                                </ul>
+                            </li>
 
-						</tbody>
-					</table>
-					
-					<nav th:if="${listPost != null and listPost.totalPages > 0}" aria-label="pagination">
-						<ul class="pagination">
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-							<li class="page-item" th:appendclass="${listPost.number == 0} ? 'disabled' : ''">
-								<a th:if="${!listPost.first}" th:text="'<'"
-								th:href="@{/admin/post(page=${pageNumbers[listPost.number] - 1})}"
-								class="page-link">Previous</a>
-								
-							</li>
+        <div class="col col-md-10 pl-0">
 
-							<li class="page-item" th:each="pageNumber : ${pageNumbers}">
-								<a th:if="${pageNumber == listPost.number + 1}" 
-									th:text=${pageNumber}
-									class="page-link active">
-								</a>
-								<a th:if="${pageNumber != listPost.number + 1}"
-								 	th:href="@{/admin/post(page=${pageNumber})}" 
-									th:text=${pageNumber} class="page-link disable">
-									Page Link
-								</a>
-							</li>
+            <div class="d-flex justify-content-between">
+                <h2>Posts</h2>
+                <a class="btn btn-success" th:href="@{/admin/post/form}"
+                   type="button"><i
+                        class="fas fa-pencil-alt"></i> <span th:text="Create"></span> </a>
+            </div>
+            <div class="search-layout">
+                <form th:if="${currId == null}" class="form-inline"
+                      th:action="@{/admin/post}">
+                    <input class="form-control mr-sm-2" name="keyword" type="search"
+                           placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0"
+                            type="submit">Search
+                    </button>
+                </form>
+                <form th:if="${currId != null}" class="form-inline"
+                      th:action="@{/admin/post/{id}(id=${currId})}">
+                    <input class="form-control mr-sm-2" name="keyword" type="search"
+                           placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0"
+                            type="submit">Search
+                    </button>
+                </form>
+            </div>
 
-							<li th:class="${listPost.number + 1 >= listPost.totalPages} ? 'disabled' : ''">
-								<a th:if="${!listPost.last}" th:text="'>'"
-								th:href="@{/admin/post(page=${pageNumbers[listPost.number] + 1})}" class="page-link">Next</a>
-									
-							</li>
-						</ul>
+            <h5 th:if="${listPost == null or listPost.empty}" style="color:red; text-align: center;">Not found any
+                posts!</h5>
 
-					</nav><!-- Pagination -->
-					
-				</div>
-			</div>
-		</div>
-	
+            <table th:if="${listPost != null and !listPost.empty}"
+                   class="table table-bordered table-hover table-responsive mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Thumbnail</th>
+                    <th scope="col">Short Description</th>
+                    <th scope="col">Article</th>
+                    <th scope="col">Date Create</th>
+                    <th scope="col">Date Update</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="post, rowStat: ${listPost}">
+                    <td th:text="${rowStat.index}"></td>
+                    <td style="word-wrap: break-word;min-width: 200px;max-width: 200px;white-space:normal;">
+                        <p class="text-info" th:text="${'ID: ' + post.id}"></p>
+                        <p th:text="${post.title}"></p>
+                    </td>
+
+                    <td>
+                        <div class="card" style="min-width: 100px;max-width: 100px">
+                            <img class="card-img" alt="" th:src="${post.thumbnail}">
+                        </div>
+
+                    </td>
+                    <td th:text="${post.shortDescription}"
+                        style="word-wrap: break-word;min-width: 250px;max-width: 250px;white-space:normal;"></td>
+                    <td th:text="${post.article.name}"
+                        style="word-wrap: break-word;min-width: 200px;max-width: 200px;white-space:normal;"></td>
+                    <td th:text="${post.dateCreate}"></td>
+                    <td th:text="${post.dateUpdate}"></td>
+                    <td>
+                        <a class="btn btn-info btn-sm my-1"
+                           th:href="@{/admin/post/form(post-id=${post.id})}">
+                            Detail
+                        </a>
+
+                        <a class="btn btn-danger btn-sm"
+                           th:href="@{/admin/post/delete/{post-id}(post-id=${post.id})}">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <nav th:if="${listPost != null and listPost.totalPages > 0}" aria-label="pagination">
+                <ul class="pagination">
+
+                    <li class="page-item" th:appendclass="${listPost.number == 0} ? 'disabled' : ''">
+                        <a th:if="${!listPost.first}" th:text="'<'"
+                           th:href="@{/admin/post(page=${pageNumbers[listPost.number] - 1})}"
+                           class="page-link">Previous</a>
+
+                    </li>
+
+                    <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                        <a th:if="${pageNumber == listPost.number + 1}"
+                           th:text=${pageNumber}
+                           class="page-link active">
+                        </a>
+                        <a th:if="${pageNumber != listPost.number + 1}"
+                           th:href="@{/admin/post(page=${pageNumber})}"
+                           th:text=${pageNumber} class="page-link disable">
+                            Page Link
+                        </a>
+                    </li>
+
+                    <li th:class="${listPost.number + 1 >= listPost.totalPages} ? 'disabled' : ''">
+                        <a th:if="${!listPost.last}" th:text="'>'"
+                           th:href="@{/admin/post(page=${pageNumbers[listPost.number] + 1})}" class="page-link">Next</a>
+
+                    </li>
+                </ul>
+
+            </nav><!-- Pagination -->
+
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
