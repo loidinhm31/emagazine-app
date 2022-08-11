@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title th:text="${pageTitle}"></title>
+	
+	<!-- Bootstrap -->
+	<link th:rel="stylesheet"
+		th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}" />
+	
+	<!-- Custom CSS -->
+	<link th:rel="stylesheet" th:href="@{/css/admin.css}" type="text/css" />
+	
+	<!-- Font awesome -->
+	<link th:rel="stylesheet"
+		th:href="@{/webjars/font-awesome/5.15.2/css/all.min.css}">
+	
+	<script th:src="@{/libs/ckeditor/ckeditor.js}"></script>
+</head>
+<body>
+
+	<div th:fragment="navbar-admin">
+		<header>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<div class="navbar-brand">
+					<a th:href="@{/admin}" title="freetuts"> <img
+						th:src="@{/img/logo.png}"
+						alt="freetuts" style="max-width: 160px; margin-top: -10px" />
+					</a>
+				</div>
+				
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse ml-auto justify-content-end"
+					id="navbarNavDropdown">
+					
+					<ul class="navbar-nav">
+						<li class="nav-item"
+							th:classappend="${activeCss} eq 'dashboard' ? 'active'">
+							<a class="nav-link"
+							th:href="@{/admin/dashboard}">Dashboard <span class="sr-only">(current)</span>
+						</a></li>
+						
+						<li class="nav-item"><a class="nav-link"
+							th:classappend="${activeCss} eq 'article' ? 'active'"
+							th:href="@{/admin/article}">Article</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:classappend="${activeCss} eq 'post' ? 'active'"
+							th:href="@{/admin/post}">Post</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:classappend="${activeCss} eq 'comment' ? 'active'"
+							th:href="@{/admin/comment}">Comment</a></li>
+						
+						<li th:if="${session.authorization != null}" class="nav-item">
+							<a class="nav-link"
+								th:href="@{/logout}">Logout</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+	</div>
+
+	
+	<div th:fragment="post">
+		<div class="card shadow">
+			<h5 class="card-header">
+				<a th:href="@{/admin/comment}"
+					style="text-decoration: none; color: orange; font-weight: bold">Post</a>
+			</h5>
+			
+			<div class="list-group list-group-flush"
+				th:each="post: ${posts}">
+				<a th:if="${currId == post.id}"
+					class="list-group-item list-group-item-action active btn btn-primary"
+					th:href="@{/admin/comment/{id}/post(id=${post.id})}"
+					style="text-decoration: none; color: orange"> 
+					<span th:text="${post.title}"></span> 
+					
+				</a> 
+				<a th:if="${currId != post.id}"
+					class="list-group-item list-group-item-action btn btn-primary"
+					th:href="@{/admin/comment/{id}/post(id=${post.id})}"
+					style="text-decoration: none; color: black" role="button"> 
+					<span th:text="${post.title}"></span>
+				</a>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

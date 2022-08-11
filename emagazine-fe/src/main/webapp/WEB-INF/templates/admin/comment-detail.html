@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/admin-fragments :: head"></head>
+<body>
+	<div th:replace="admin/admin-fragments :: navbar-admin"></div>
+	<div class="container mt-3">
+		<h2 th:text="${title}"></h2>
+		<div class="main-col" id="main_container">
+			<div id="main_comment_list">
+
+				<div class="comment even thread-even depth-1 single-comment"
+					style="list-style-type: none">
+					<div class="comment-wrap base-box">
+
+						<div class="comment-content ">
+							<img src="https://freetuts.net/public/logo/main-logo.png"
+								class="avatar user-65-avatar avatar-60 photo"
+								style="float: left" width="60" height="60" alt="main logo png">
+							<div class="comment-detail-content" style="padding-left: 70px">
+								<div >
+									<h4 th:text="${comment.username}"></h4>
+									<h6 th:text="${comment.userEmail}"></h6>
+									<span class="comment-meta"
+										th:text="${#dates.format(comment.dateCreate, 'dd-MM-yyyy - hh:mm:ss')}"></span>
+								</div>
+								<div class="comment-text">
+									<div th:remove="tag" th:utext="${comment.content}"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+
+			</div>
+			<div class="col-sm-6" style="float: left;">
+				<a class="btn btn-danger" th:href="@{/admin/comment}">Back</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
