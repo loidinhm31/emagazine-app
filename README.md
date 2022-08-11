@@ -23,4 +23,4 @@ Port: `7070`
 
 Context-path: `/api/v1`
 
-URL: `localhost:7070/api/v1**`
+URL: `localhost:7070/api/v1/**`
