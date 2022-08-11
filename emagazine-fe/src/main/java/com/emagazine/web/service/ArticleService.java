@@ -28,5 +28,5 @@ public interface ArticleService {
 
 //	ArticleRequest fetchArticleForRequest(Long id);
 
-    List<ArticleInstructionWithFullParent> fetchAllChildsByArticleId(Long id, String keyword, HttpSession session);
+    List<ArticleInstructionWithFullParent> fetchAllChildrenByArticleId(Long id, String keyword, HttpSession session);
 }

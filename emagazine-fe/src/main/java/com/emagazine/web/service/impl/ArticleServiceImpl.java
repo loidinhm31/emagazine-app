@@ -82,7 +82,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public List<ArticleInstructionWithFullParent> fetchAllChildsByArticleId(
+    public List<ArticleInstructionWithFullParent> fetchAllChildrenByArticleId(
             Long articleId,
             String keyword,
             HttpSession session) {
