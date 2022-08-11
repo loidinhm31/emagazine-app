@@ -15,8 +15,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByArticleId(Long articleId);
 
     @Query(nativeQuery = true,
-            value = "SELECT * FROM posts P WHERE (P.title LIKE %:keyword% OR P.short_description LIKE %:keyword%)"
-                    + " AND P.article_id IN :ids ORDER BY P.date_create DESC")
+            value = "SELECT * FROM `posts` as p " +
+                    "WHERE (p.title LIKE %:keyword% OR p.short_description LIKE %:keyword%) "
+                    + "AND p.article_id IN :ids " +
+                    "ORDER BY p.date_create DESC")
     Page<Post> findByArticleIdInAndMultipleConditions(@Param("ids") List<Long> idOfArticles,
                                                       @Param("keyword") String keyword, Pageable pageable);
 
