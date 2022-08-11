@@ -25,7 +25,7 @@ public interface PostService {
 
     Page<PostDetailsDTO> findByParentArticleId(Long articleId, int page, int size);
 
-    Page<PostDetailsDTO> findAllPostsIncludeChildsByArticleId(Long articleId, int page, int size, String keyword);
+    Page<PostDetailsDTO> findAllPostsIncludeChildrenByArticleId(Long articleId, int page, int size, String keyword);
 
     void save(PostRequestDTO postRequest);
 

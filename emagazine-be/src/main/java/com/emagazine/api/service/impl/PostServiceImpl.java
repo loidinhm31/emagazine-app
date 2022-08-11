@@ -75,8 +75,8 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public Page<PostDetailsDTO> findAllPostsIncludeChildsByArticleId(Long articleId,
-                                                                     int page, int size, String keyword) {
+    public Page<PostDetailsDTO> findAllPostsIncludeChildrenByArticleId(Long articleId,
+                                                                       int page, int size, String keyword) {
         // Set default value for keyword
         if (keyword == null) {
             keyword = "";

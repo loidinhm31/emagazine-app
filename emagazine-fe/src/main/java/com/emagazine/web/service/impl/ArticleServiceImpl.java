@@ -87,7 +87,7 @@ public class ArticleServiceImpl implements ArticleService {
             String keyword,
             HttpSession session) {
 
-        String url = RestAPI.URL + "/articles/childs/" + articleId;
+        String url = RestAPI.URL + "/articles/child/" + articleId;
 
         UriComponentsBuilder builderUri = UriComponentsBuilder
                 .fromHttpUrl(url)

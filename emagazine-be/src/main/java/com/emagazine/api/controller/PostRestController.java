@@ -66,7 +66,7 @@ public class PostRestController {
             @RequestParam(required = false) String keyword) {
 
         Page<PostDetailsDTO> listPost =
-                postService.findAllPostsIncludeChildsByArticleId(id, page, size, keyword);
+                postService.findAllPostsIncludeChildrenByArticleId(id, page, size, keyword);
 
         if (listPost.isEmpty()) {
             throw new ObjectNotFoundException("Not available post(s) for article id: " + id);

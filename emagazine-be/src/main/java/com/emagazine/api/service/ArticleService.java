@@ -22,7 +22,7 @@ public interface ArticleService {
 
     ArticleInstructionWithParentIdDTO findByIdForInstruction(Long id);
 
-    List<ArticleInstructionWithFullParentDTO> findAllChildsById(Long id, String keyword);
+    List<ArticleInstructionWithFullParentDTO> findAllChildrenById(Long id, String keyword);
 
     void delete(Long id);
 

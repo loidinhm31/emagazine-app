@@ -77,18 +77,18 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
-    public List<ArticleInstructionWithFullParentDTO> findAllChildsById(Long articleId, String keyword) {
+    public List<ArticleInstructionWithFullParentDTO> findAllChildrenById(Long articleId, String keyword) {
         if (keyword == null) {
             keyword = "";
         }
         List<ArticleInstructionWithFullParentDTO> listChild = new ArrayList<>();
         ArticleDetailsDTO article = findById(articleId);
 
-        listChild = getAllChilds(article, listChild, keyword);
+        listChild = getAllChildren(article, listChild, keyword);
         return listChild;
     }
 
-    private List<ArticleInstructionWithFullParentDTO> getAllChilds(ArticleDetailsDTO article, List<ArticleInstructionWithFullParentDTO> listArticle, String keyword) {
+    private List<ArticleInstructionWithFullParentDTO> getAllChildren(ArticleDetailsDTO article, List<ArticleInstructionWithFullParentDTO> listArticle, String keyword) {
 
         List<ArticleDetailsDTO> listArticlesDetail = article.getChildArticles();
         if (listArticlesDetail != null) {
@@ -97,7 +97,7 @@ public class ArticleServiceImpl implements ArticleService {
                 if (articleInstruction.getName().toUpperCase().contains(keyword.toUpperCase())) {
                     listArticle.add(articleInstruction);
                 }
-                listArticle = getAllChilds(articleDetails, listArticle, keyword);
+                listArticle = getAllChildren(articleDetails, listArticle, keyword);
             }
         }
         return listArticle;

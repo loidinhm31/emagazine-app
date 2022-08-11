@@ -77,12 +77,12 @@ public class ArticleRestController {
     }
 
 
-    @GetMapping("/childs/{id}")
+    @GetMapping("/child/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<ArticleInstructionWithFullParentDTO> getChildArticle(
             @PathVariable Long id,
             @RequestParam(required = false) String keyword) {
-        return articleService.findAllChildsById(id, keyword);
+        return articleService.findAllChildrenById(id, keyword);
     }
 
 
