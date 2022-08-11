@@ -1,15 +1,11 @@
 package com.emagazine.web.controller.client;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import com.emagazine.web.model.ArticleDetails;
 import com.emagazine.web.model.Post;
 import com.emagazine.web.model.PostInstruction;
 import com.emagazine.web.service.ArticleService;
 import com.emagazine.web.service.PostService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class PageController {
@@ -124,23 +126,23 @@ public class PageController {
         // Get posts of the current article
         List<PostInstruction> posts = postService.fetchPostsByArticleId(articleId);
 
-
-        Post thePost = null;
-        if (posts != null) {
+        Post thePost;
+        if (CollectionUtils.isNotEmpty(posts)) {
             // Get 0 index post (post for the current article)
             thePost = postService.fetchPostsById(posts.get(0).getId());
 
             // Then remove 0 index post, add list of posts for table of content
             posts.remove(0);
+        } else {
+            theModel.addAttribute("errorData", "CONTENT IS NOT AVAILABLE");
+            return "error/404";
         }
 
         // Get current article
         ArticleDetails currArticle = articleService.fetchArticle(articleId);
 
-
         // Get parent article
         ArticleDetails parentArticle = articleService.fetchArticle(currArticle.getParentArticle().getId());
-
 
         theModel.addAttribute("title", thePost.getTitle());
         theModel.addAttribute("parentArticle", parentArticle);
