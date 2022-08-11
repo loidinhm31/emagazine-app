@@ -3,7 +3,10 @@ package com.emagazine.api.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.emagazine.api.entity.Post;
+import com.emagazine.api.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +20,23 @@ import com.emagazine.api.repository.ArticleRepository;
 import com.emagazine.api.service.ArticleService;
 import com.emagazine.api.utils.ObjectMapperUtils;
 
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
 
+    private final ArticleRepository articleRepository;
+
+
+    private final PostRepository postRepository;
+
+    @Autowired
+    public ArticleServiceImpl(ArticleRepository articleRepository, PostRepository postRepository) {
+        this.articleRepository = articleRepository;
+        this.postRepository = postRepository;
+    }
 
     @Override
     public List<ArticleDetailsDTO> findMainArticles() {
@@ -140,13 +154,21 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void delete(Long id) {
-
         Optional<Article> theArticle = articleRepository.findById(id);
 
         if (theArticle.isPresent()) {
-            articleRepository.deleteById(id);
+            // Find all children of this article
+            List<Article> articles = articleRepository.findByParentId(theArticle.get().getId());
+
+            // Find all posts from these articles
+            List<Long> articleIds = articles.stream()
+                    .map(Article::getId)
+                    .collect(Collectors.toList());
+            articleIds.add(theArticle.get().getId());
+            List<Post> posts = postRepository.findAllByArticleIds(articleIds);
+
+            postRepository.deleteAll(posts);
+            articleRepository.deleteAll(articles);
         }
-
     }
-
 }

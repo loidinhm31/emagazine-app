@@ -62,7 +62,7 @@ public class PostServiceImpl implements PostService {
 
             // Modify a list, backed by the original array
             List<PostInstruction> posts =
-                    new ArrayList<>(Arrays.asList(result.getBody()));
+                    new ArrayList<>(Arrays.asList(Objects.requireNonNull(result.getBody())));
             return posts;
         } catch (HttpClientErrorException e) {
             e.printStackTrace();
@@ -227,10 +227,7 @@ public class PostServiceImpl implements PostService {
         // Call API
         ResponseEntity<PostRequest> responseEntity = restTemplate.exchange(uri, httpMethod, requestEntity, PostRequest.class);
 
-        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            return true;
-        }
-        return false;
+        return responseEntity.getStatusCode() == HttpStatus.OK;
     }
 
 

@@ -152,10 +152,7 @@ public class ArticleServiceImpl implements ArticleService {
         // Call API
         ResponseEntity<?> responseEntity = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, HashMap.class);
 
-        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            return true;
-        }
-        return false;
+        return responseEntity.getStatusCode() == HttpStatus.OK;
     }
 
 

@@ -63,7 +63,7 @@ public class AdminArticleController {
                               @PathVariable("id") Long articleId, Model model, HttpServletRequest request) {
 
         List<ArticleInstructionWithFullParent> childArticles =
-                articleService.fetchAllChildsByArticleId(articleId, keyword, request.getSession());
+                articleService.fetchAllChildrenByArticleId(articleId, keyword, request.getSession());
 
         // Get name of the current article
         if (!childArticles.isEmpty()) {
@@ -161,8 +161,7 @@ public class AdminArticleController {
 
 
     @GetMapping("/delete/{id}")
-    public String deleteArtilce(@PathVariable("id") Long articleId,
-                                Model theModel,
+    public String deleteArticle(@PathVariable("id") Long articleId,
                                 RedirectAttributes redirectAttributes,
                                 HttpServletRequest request) {
 
