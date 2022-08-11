@@ -149,7 +149,7 @@ public class PostServiceImpl implements PostService {
         try {
             ResponseEntity<PostInstruction[]> result = restTemplate.getForEntity(uri, PostInstruction[].class);
 
-            List<PostInstruction> posts = Arrays.asList(result.getBody());
+            List<PostInstruction> posts = Arrays.asList(Objects.requireNonNull(result.getBody()));
             return posts;
         } catch (HttpClientErrorException e) {
             return null;
