@@ -43,7 +43,6 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
-
     @Override
     public List<ArticleInstruction> fetchSimpleMainArticle() {
         String url = RestAPI.URL + "/articles/heads/instructions";
@@ -54,7 +53,6 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticleInstruction> mainArticles = Arrays.asList(Objects.requireNonNull(result.getBody()));
         return mainArticles;
     }
-
 
     @Override
     public ArticleDetails fetchArticle(Long id) {
@@ -67,7 +65,6 @@ public class ArticleServiceImpl implements ArticleService {
         return theArticle;
     }
 
-
     @Override
     public List<ArticleInstructionWithFullParent> fetchArticles() {
         String url = RestAPI.URL + "/articles/";
@@ -79,7 +76,6 @@ public class ArticleServiceImpl implements ArticleService {
                 new ArrayList<>(Arrays.asList(result.getBody()));
         return articles;
     }
-
 
     @Override
     public List<ArticleInstructionWithFullParent> fetchAllChildrenByArticleId(
@@ -112,32 +108,6 @@ public class ArticleServiceImpl implements ArticleService {
         return childArticles;
     }
 
-
-//	@Override
-//	public ArticleInstructionWithFullParent fetchSimpleArticleWithParent(Long id) {
-//		String url = RestAPI.URL + "/articles/" + id;
-//
-//		ResponseEntity<ArticleInstructionWithFullParent> result = 
-//				restTemplate.getForEntity(url, ArticleInstructionWithFullParent.class);
-//
-//		ArticleInstructionWithFullParent theArticle = result.getBody();
-//
-//		return theArticle;
-//	}
-//	
-//	
-//	@Override
-//	public ArticleRequest fetchArticleForRequest(Long id) {
-//		String url = RestAPI.URL + "/articles/" + id + "/detail";
-//
-//		ResponseEntity<ArticleRequest> result = restTemplate.getForEntity(url, ArticleRequest.class);
-//
-//		ArticleRequest theArticle = result.getBody();
-//
-//		return theArticle;
-//	}
-
-
     @Override
     public boolean deleteById(Long id, HttpSession session) {
         String url = RestAPI.URL + "/articles/" + id;
@@ -154,7 +124,6 @@ public class ArticleServiceImpl implements ArticleService {
 
         return responseEntity.getStatusCode() == HttpStatus.OK;
     }
-
 
     @Override
     public boolean saveOrUpdate(ArticleRequest theArticle, HttpSession session) {
@@ -176,6 +145,6 @@ public class ArticleServiceImpl implements ArticleService {
             return true;
         }
         return false;
-
     }
 }
+
