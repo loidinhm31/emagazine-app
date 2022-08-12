@@ -7,13 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -331,28 +325,22 @@ public class PostServiceImpl implements PostService {
         cal.add(Calendar.MONTH, -6);
         Date startDate = cal.getTime();
 
+        List<Post> posts = postRepository.findByDateCreateGreaterThanEqualAndDateCreateLessThanEqual(startDate, endDate);
 
-        try {
-            List<Post> posts = postRepository.findByDateCreateGreaterThanEqualAndDateCreateLessThanEqual(startDate, endDate);
+        Map<String, Integer> mapData = new LinkedHashMap<>();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM");
+        Calendar tempCalendar = Calendar.getInstance();
+        for (Post post : posts) {
+            tempCalendar.setTimeInMillis(post.getDateCreate().getTime());
 
-            Map<String, Integer> map = new LinkedHashMap<String, Integer>();
-            SimpleDateFormat formater = new SimpleDateFormat("MMM");
-            for (Post post : posts) {
-                Calendar temp = Calendar.getInstance();
-                temp.setTimeInMillis(post.getDateCreate().getTime());
-                if (map.get(formater.format(temp.getTime())) == null) {
-                    map.put(formater.format(temp.getTime()), 1);
-                } else {
-                    map.put(formater.format(temp.getTime()), map.get(formater.format(temp.getTime())) + 1);
-
-                }
+            String monthStr = dateFormatter.format(tempCalendar.getTime());
+            if (Objects.isNull(mapData.get(monthStr))) {
+                mapData.put(monthStr, 1);
+            } else {
+                mapData.put(monthStr, mapData.get(monthStr) + 1);
             }
-
-            return map;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return null;
+        return mapData;
     }
 
     public List<Date> getListMonth() {
