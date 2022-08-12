@@ -364,7 +364,7 @@ public class PostServiceImpl implements PostService {
     public Map<String, Integer> getColumnChartData() {
         Date endDate = new Date();
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -6);
+        cal.add(Calendar.MONTH, -MAX_MONTH);
         Date startDate = cal.getTime();
 
         List<Post> posts = postRepository.findByDateCreateGreaterThanEqualAndDateCreateLessThanEqual(startDate, endDate);
