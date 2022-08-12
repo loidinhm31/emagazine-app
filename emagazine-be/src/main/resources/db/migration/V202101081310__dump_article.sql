@@ -38,34 +38,6 @@ VALUES
 
 
 Update articles set is_root = true where id = 5 Or id = 6 Or id = 7 Or id = 8 Or id = 16 Or id = 17 Or id = 18 Or id = 19 Or id = 20;
---
--- Table structure for table `posts`
---
-CREATE TABLE IF NOT EXISTS `posts`
-(id BIGINT NOT NULL AUTO_INCREMENT,
-title VARCHAR(255) NULL,
-thumbnail VARCHAR(255) NULL,
-short_description TEXT NULL,
-content TEXT NULL,
-date_create date NOT NULL,
-article_id BIGINT NOT NULL,
-
-PRIMARY KEY (id),
-CONSTRAINT `fk_posts_articles` FOREIGN KEY (article_id) REFERENCES articles(id)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT charset=latin1;
-
-
-CREATE TABLE IF NOT EXISTS `comments`
-(id BIGINT NOT NULL AUTO_INCREMENT,
-content TEXT NOT NULL,
-username VARCHAR(255) NOT NULL,
-user_email VARCHAR(255) NOT NULL,
-post_id BIGINT NOT NULL,
-
-PRIMARY KEY (id),
-FOREIGN KEY (post_id) REFERENCES posts(id)
-);
-
 
 -- SELECT a.id, a.name
 -- FROM articles a
