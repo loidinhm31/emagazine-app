@@ -21,6 +21,8 @@ import com.emagazine.api.model.ArticleInstructionWithFullParentDTO;
 import com.emagazine.api.model.ArticleInstructionWithParentIdDTO;
 import com.emagazine.api.model.ArticleRequestDTO;
 
+import static com.emagazine.api.constant.Constant.NOT_FOUND_ARTICLE_MESSAGE;
+
 @RestController
 @RequestMapping("/articles")
 public class ArticleRestController {
@@ -52,7 +54,7 @@ public class ArticleRestController {
         ArticleInstructionWithParentIdDTO theArticle = articleService.findByIdForInstruction(id);
 
         if (theArticle == null) {
-            throw new ObjectNotFoundException("Not found article");
+            throw new ObjectNotFoundException(NOT_FOUND_ARTICLE_MESSAGE);
         }
 
         return theArticle;
@@ -64,7 +66,7 @@ public class ArticleRestController {
         ArticleDetailsDTO theArticle = articleService.findArticleById(id);
 
         if (theArticle == null) {
-            throw new ObjectNotFoundException("Not found article");
+            throw new ObjectNotFoundException(NOT_FOUND_ARTICLE_MESSAGE);
         }
 
         return theArticle;
