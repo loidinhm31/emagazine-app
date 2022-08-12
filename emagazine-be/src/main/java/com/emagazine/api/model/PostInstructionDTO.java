@@ -14,6 +14,7 @@ public class PostInstructionDTO {
 
     private String shortDescription;
 
+    private Integer countView;
 
     public PostInstructionDTO() {
 
@@ -51,5 +52,11 @@ public class PostInstructionDTO {
         this.shortDescription = shortDescription;
     }
 
+    public Integer getCountView() {
+        return countView;
+    }
 
+    public void setCountView(Integer countView) {
+        this.countView = countView;
+    }
 }
