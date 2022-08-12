@@ -105,29 +105,88 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public Map<String, List<PostInstructionDTO>> findTopPostOfAllChildArticles() {
-        Map<String, List<PostInstructionDTO>> map = new LinkedHashMap<String, List<PostInstructionDTO>>();
+    public Map<String, List<PostInstructionDTO>> findTopPostOfNonRootArticles() {
+        Map<String, List<PostInstructionDTO>> mapData = new LinkedHashMap<>();
 
-        // Loop top article with id 1-4
-        for (int i = 1; i < 5; i++) {
-            List<Long> listArticleId = new ArrayList<Long>();
-            List<PostInstructionDTO> postInstructions;
+        List<Long> articleIds = articleRepository.findByTopNotRootAndView(10);
+        List<Post> postList = postRepository.findTop100ByArticleIds(articleIds);
 
-            Optional<Article> theArticle = articleRepository.findById(Long.valueOf(i));
+        Calendar todayCalendar = Calendar.getInstance();
+        todayCalendar.setTime(new Date());
+        Calendar postCalendar = Calendar.getInstance();
+        for (int i = 0; i < postList.size(); i++) {
+            Post post = postList.get(i);
+            postCalendar.setTime(postList.get(i).getDateCreate());
 
-            if (theArticle.isPresent()) {
+            if (Objects.nonNull(post.getCountView()) && post.getCountView() > 0) {
+                if (postCalendar.get(Calendar.MONTH) == todayCalendar.get(Calendar.MONTH)) {
+                    PostInstructionDTO postInstructionDTO = ObjectMapperUtils.map(post, PostInstructionDTO.class);
 
-                // add comment
-                listArticleId = getIdOfChildArticles(listArticleId, theArticle.get());
+                    String articleName = post.getArticle().getName();
+                    if (Objects.isNull(mapData.get(articleName))) {
+                        List<PostInstructionDTO> postInstructionList = new ArrayList<>();
+                        postInstructionList.add(postInstructionDTO);
+                        mapData.put(articleName, postInstructionList);
+                    } else {
+                        List<PostInstructionDTO> postInstructionList = mapData.get(articleName);
+                        postInstructionList.add(postInstructionDTO);
+                        mapData.put(articleName, postInstructionList);
+                    }
+                } else if (todayCalendar.get(Calendar.MONTH) - postCalendar.get(Calendar.MONTH) == 1) {
+                    // Post was created in last month must have the rank in top 20
+                    if (i <= 20) {
+                        PostInstructionDTO postInstructionDTO = ObjectMapperUtils.map(post, PostInstructionDTO.class);
 
-                List<Post> listPost = postRepository.findTop5ByArticleIdInOrderByDateCreateDesc(listArticleId);
+                        String articleName = post.getArticle().getName();
+                        if (Objects.isNull(mapData.get(articleName))) {
+                            List<PostInstructionDTO> postInstructionList = new ArrayList<>();
+                            postInstructionList.add(postInstructionDTO);
+                            mapData.put(articleName, postInstructionList);
+                        } else {
+                            List<PostInstructionDTO> postInstructionList = mapData.get(articleName);
+                            postInstructionList.add(postInstructionDTO);
+                            mapData.put(articleName, postInstructionList);
+                        }
+                    }
+                } else {
+                    // Post was not created from previous months must have the rank in top 10 and article in top 5
+                    int articleRank = articleIds.indexOf(post.getArticle().getId());
+                    if (i <= 10 && articleRank <= 5) {
+                        PostInstructionDTO postInstructionDTO = ObjectMapperUtils.map(post, PostInstructionDTO.class);
 
-                postInstructions = ObjectMapperUtils.mapAll(listPost, PostInstructionDTO.class);
+                        String articleName = post.getArticle().getName();
+                        if (Objects.isNull(mapData.get(articleName))) {
+                            List<PostInstructionDTO> postInstructionList = new ArrayList<>();
+                            postInstructionList.add(postInstructionDTO);
+                            mapData.put(articleName, postInstructionList);
+                        } else {
+                            List<PostInstructionDTO> postInstructionList = mapData.get(articleName);
+                            postInstructionList.add(postInstructionDTO);
+                            mapData.put(articleName, postInstructionList);
+                        }
+                    }
+                }
+            } else {
+                // Post is not have the rank will be compared by rank of the article in top 3
+                int articleRank = articleIds.indexOf(post.getArticle().getId());
+                if (articleRank <= 3) {
+                    PostInstructionDTO postInstructionDTO = ObjectMapperUtils.map(post, PostInstructionDTO.class);
 
-                map.put(theArticle.get().getName(), postInstructions);
+                    String articleName = post.getArticle().getName();
+                    if (Objects.isNull(mapData.get(articleName))) {
+                        List<PostInstructionDTO> postInstructionList = new ArrayList<>();
+                        postInstructionList.add(postInstructionDTO);
+                        mapData.put(articleName, postInstructionList);
+                    } else {
+                        List<PostInstructionDTO> postInstructionList = mapData.get(articleName);
+                        postInstructionList.add(postInstructionDTO);
+                        mapData.put(articleName, postInstructionList);
+                    }
+                }
             }
+
         }
-        return map;
+        return mapData;
     }
 
     private List<Long> getIdOfChildArticles(List<Long> idOfChildArticles, Article theArticle) {

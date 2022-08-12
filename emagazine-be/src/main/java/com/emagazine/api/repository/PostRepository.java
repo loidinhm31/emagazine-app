@@ -16,14 +16,18 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByArticleId(Long articleId);
 
     @Query(nativeQuery = true,
-            value = "SELECT * FROM `posts` as p " +
+            value = "SELECT * FROM `posts` p " +
                     "WHERE (p.title LIKE %:keyword% OR p.short_description LIKE %:keyword%) "
                     + "AND p.article_id IN :ids " +
                     "ORDER BY p.date_create DESC")
     Page<Post> findByArticleIdInAndMultipleConditions(@Param("ids") List<Long> idOfArticles,
                                                       @Param("keyword") String keyword, Pageable pageable);
 
-    List<Post> findTop5ByArticleIdInOrderByDateCreateDesc(List<Long> articleId);
+    @Query(value = "SELECT * FROM `posts` p " +
+            "WHERE p.article_id IN :articleIds " +
+            "ORDER BY p.count_view DESC, p.date_create DESC " +
+            "LIMIT 100", nativeQuery = true)
+    List<Post> findTop100ByArticleIds(List<Long> articleIds);
 
     List<Post> findFirst3ByArticleIdOrderByDateCreate(Long articleId);
 

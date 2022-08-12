@@ -18,7 +18,16 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findAllByNameContainingIgnoreCase(String name);
 
     @Query(value = "SELECT * FROM `articles` a " +
-            "WHERE a.parent_id = :parentId ", nativeQuery = true)
+            "WHERE a.parent_id = :parentId", nativeQuery = true)
     List<Article> findByParentId(@Param("parentId") Long parentId);
 
+    @Query(value = "SELECT count_top.id " +
+            "FROM (SELECT a.*, sum(p.count_view) AS count_top_view " +
+            "      FROM posts p " +
+            "               INNER JOIN articles a ON p.article_id = a.id " +
+            "      WHERE is_root = false " +
+            "      GROUP BY a.id " +
+            "      ORDER BY count_top_view DESC " +
+            "      LIMIT :top) as count_top;", nativeQuery = true)
+    List<Long> findByTopNotRootAndView(@Param("top") int top);
 }

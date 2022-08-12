@@ -19,7 +19,11 @@ public interface PostService {
 
     List<PostDetailsDTO> findByArticleId(Long articleId);
 
-    Map<String, List<PostInstructionDTO>> findTopPostOfAllChildArticles();
+    /**
+     * Find Top Of Articles that have posts for these topics (non-root)
+     * @return
+     */
+    Map<String, List<PostInstructionDTO>> findTopPostOfNonRootArticles();
 
     List<PostInstructionDTO> findTop3PostsOfEachChildByParentArticleId(Long articleId);
 

@@ -76,7 +76,7 @@ public class PostRestController {
 
     @GetMapping("/top")
     public Map<String, List<PostInstructionDTO>> getTopPostOfAll() {
-        Map<String, List<PostInstructionDTO>> map = postService.findTopPostOfAllChildArticles();
+        Map<String, List<PostInstructionDTO>> map = postService.findTopPostOfNonRootArticles();
         if (map.isEmpty()) {
             throw new ObjectNotFoundException("Not found top posts of all");
         }

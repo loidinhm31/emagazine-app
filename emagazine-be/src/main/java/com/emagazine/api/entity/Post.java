@@ -38,6 +38,9 @@ public class Post {
     @Column(name = "content", columnDefinition = "LONGTEXT")
     private String content;
 
+    @Column(name = "count_view")
+    private Integer countView;
+
     @Column(name = "date_create", updatable = false, insertable = true)
     @CreationTimestamp
     private Date dateCreate;
@@ -131,5 +134,11 @@ public class Post {
         this.comments = comments;
     }
 
+    public Integer getCountView() {
+        return countView;
+    }
 
+    public void setCountView(Integer countView) {
+        this.countView = countView;
+    }
 }
