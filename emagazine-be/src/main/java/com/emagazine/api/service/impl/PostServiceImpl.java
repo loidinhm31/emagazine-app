@@ -284,8 +284,7 @@ public class PostServiceImpl implements PostService {
 
                 return filePath.toString();
             } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("Cannot upload file");
+                throw new RuntimeException("Cannot upload file", e);
             }
         }
         return null;
