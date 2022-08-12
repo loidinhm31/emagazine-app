@@ -68,7 +68,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleDetailsDTO findById(Long id) {
+    public ArticleDetailsDTO findArticleById(Long id) {
         Optional<Article> theArticle = articleRepository.findById(id);
 
         if (theArticle.isPresent()) {
@@ -96,7 +96,7 @@ public class ArticleServiceImpl implements ArticleService {
             keyword = "";
         }
         List<ArticleInstructionWithFullParentDTO> listChild = new ArrayList<>();
-        ArticleDetailsDTO article = findById(articleId);
+        ArticleDetailsDTO article = findArticleById(articleId);
 
         listChild = getAllChildren(article, listChild, keyword);
         return listChild;

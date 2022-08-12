@@ -12,7 +12,7 @@ public interface ArticleService {
 
     List<ArticleDetailsDTO> findMainArticles();
 
-    ArticleDetailsDTO findById(Long id);
+    ArticleDetailsDTO findArticleById(Long id);
 
     List<ArticleInstructionWithFullParentDTO> findAllArticles();
 

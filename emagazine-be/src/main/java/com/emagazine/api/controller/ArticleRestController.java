@@ -61,7 +61,7 @@ public class ArticleRestController {
 
     @GetMapping("/{id}")
     public ArticleDetailsDTO getArticle(@PathVariable Long id) {
-        ArticleDetailsDTO theArticle = articleService.findById(id);
+        ArticleDetailsDTO theArticle = articleService.findArticleById(id);
 
         if (theArticle == null) {
             throw new ObjectNotFoundException("Not found article");
