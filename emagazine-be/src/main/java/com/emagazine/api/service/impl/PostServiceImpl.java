@@ -265,33 +265,29 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public String uploadImageFile(MultipartFile multipartFile) {
-        if (multipartFile.getOriginalFilename().length() > 0 && !multipartFile.isEmpty()) {
-
+        if (Objects.requireNonNull(multipartFile.getOriginalFilename()).length() > 0
+                && !multipartFile.isEmpty()) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
 
             Path uploadPath = FileSystems.getDefault().getPath("cdn", "thumbnails",
                     String.valueOf(calendar.get(Calendar.YEAR)));
 
-            try {
-
+            try (InputStream inputStream = multipartFile.getInputStream()) {
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
 
-                InputStream inputStream = multipartFile.getInputStream();
                 String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
 
                 return filePath.toString();
-
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException("Cannot upload file");
             }
         }
-
         return null;
     }
 
