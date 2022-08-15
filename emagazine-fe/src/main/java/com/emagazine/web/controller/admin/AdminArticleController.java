@@ -32,7 +32,6 @@ public class AdminArticleController {
     @Autowired
     private ArticleService articleService;
 
-
     // Convert trim input strings,
     // remove leading and trailing whitespace
     @InitBinder
@@ -77,11 +76,9 @@ public class AdminArticleController {
         return "admin/article";
     }
 
-
     @GetMapping(value = {"/detail", "/detail/{id}"})
     public String showArticleForm(@PathVariable("id") Optional<Long> articleId,
                                   Model theModel) {
-
         List<ArticleInstructionWithFullParent> articles = articleService.fetchArticles();
         // add a null parent into list
         ArticleInstructionWithFullParent nullArticle = new ArticleInstructionWithFullParent();
@@ -97,7 +94,6 @@ public class AdminArticleController {
 
             return "admin/article-form";
         } else {                // edit an article
-
             ArticleDetails currArticle = articleService.fetchArticle(articleId.get());
 
             // Then, remove current article from option list
@@ -113,19 +109,6 @@ public class AdminArticleController {
                             currArticle.getName(),
                             currArticle.isRoot(),
                             parentId);
-//			ArticleRequest theArticle =
-//					articles.stream()
-//							.map(a -> {
-//								Long parentId = null;
-//								if (currArticle.getParentArticle() != null) {
-//									parentId = currArticle.getParentArticle().getId();
-//								}
-//								a.setId(parentId);
-//								return a;
-//							})
-//							.filter(a -> a.getId().equals(articleId.get()))
-//							.flatMap()
-//							.collect(Collectors.reducing((a, b) -> null)).get();
 
             theModel.addAttribute("pageTitle", "Modify " + theArticle.getName());
             theModel.addAttribute("title", "Article Detail");
@@ -134,16 +117,13 @@ public class AdminArticleController {
         }
         theModel.addAttribute("articles", articles);
         return "admin/article-form";
-
     }
-
 
     @PostMapping("/submit")
     public String saveOrUpdateArticle(@Valid @ModelAttribute("theArticle") ArticleRequest theArticle,
                                       BindingResult bindingResult,
                                       Model theModel,
                                       HttpServletRequest request) {
-
         if (bindingResult.hasErrors()) {
 
             return "admin/article-form";
@@ -155,10 +135,8 @@ public class AdminArticleController {
             return "redirect:/admin/article/detail?article-id=" + theArticle.getId();
 
         }
-
         return "redirect:/admin/article";
     }
-
 
     @GetMapping("/delete/{id}")
     public String deleteArticle(@PathVariable("id") Long articleId,
@@ -171,5 +149,5 @@ public class AdminArticleController {
 
         return "redirect:/admin/article";
     }
-
 }
+

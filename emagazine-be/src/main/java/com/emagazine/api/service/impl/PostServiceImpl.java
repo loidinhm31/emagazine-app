@@ -1,22 +1,5 @@
 package com.emagazine.api.service.impl;
 
-import java.io.InputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.emagazine.api.entity.Article;
 import com.emagazine.api.entity.Comment;
 import com.emagazine.api.entity.Post;
@@ -29,18 +12,47 @@ import com.emagazine.api.repository.CommentRepository;
 import com.emagazine.api.repository.PostRepository;
 import com.emagazine.api.service.PostService;
 import com.emagazine.api.utils.ObjectMapperUtils;
+import com.emagazine.api.utils.StandardCalendarUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
+
+import static com.emagazine.api.constant.Constant.MAX_MONTH;
 
 @Service
 public class PostServiceImpl implements PostService {
+    private final Clock clock;
+
+    private final PostRepository postRepository;
+
+    private final ArticleRepository articleRepository;
+
+    private final CommentRepository commentRepository;
 
     @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private ArticleRepository articleRepository;
-
-    @Autowired
-    private CommentRepository commentRepository;
+    public PostServiceImpl(Clock clock, PostRepository postRepository,
+                           ArticleRepository articleRepository,
+                           CommentRepository commentRepository) {
+        this.clock = clock;
+        this.postRepository = postRepository;
+        this.articleRepository = articleRepository;
+        this.commentRepository = commentRepository;
+    }
 
     @Override
     public PostDetailsDTO findById(Long id) {
@@ -103,7 +115,6 @@ public class PostServiceImpl implements PostService {
         return null;
     }
 
-
     @Override
     public Map<String, List<PostInstructionDTO>> findTopPostOfNonRootArticles() {
         Map<String, List<PostInstructionDTO>> mapData = new LinkedHashMap<>();
@@ -111,82 +122,54 @@ public class PostServiceImpl implements PostService {
         List<Long> articleIds = articleRepository.findByTopNotRootAndView(10);
         List<Post> postList = postRepository.findTop100ByArticleIds(articleIds);
 
-        Calendar todayCalendar = Calendar.getInstance();
-        todayCalendar.setTime(new Date());
         Calendar postCalendar = Calendar.getInstance();
         for (int i = 0; i < postList.size(); i++) {
             Post post = postList.get(i);
             postCalendar.setTime(postList.get(i).getDateCreate());
 
+            Calendar todayCalendar = Calendar.getInstance();
+            todayCalendar.setTime(Date.from(LocalDateTime.now(clock)
+                    .atZone(ZoneId.systemDefault()).toInstant()));
+
             if (Objects.nonNull(post.getCountView()) && post.getCountView() > 0) {
-                if (postCalendar.get(Calendar.MONTH) == todayCalendar.get(Calendar.MONTH)) {
-                    PostInstructionDTO postInstructionDTO = ObjectMapperUtils.map(post, PostInstructionDTO.class);
-
-                    String articleName = post.getArticle().getName();
-                    if (Objects.isNull(mapData.get(articleName))) {
-                        List<PostInstructionDTO> postInstructionList = new ArrayList<>();
-                        postInstructionList.add(postInstructionDTO);
-                        mapData.put(articleName, postInstructionList);
-                    } else {
-                        List<PostInstructionDTO> postInstructionList = mapData.get(articleName);
-                        postInstructionList.add(postInstructionDTO);
-                        mapData.put(articleName, postInstructionList);
-                    }
-                } else if (todayCalendar.get(Calendar.MONTH) - postCalendar.get(Calendar.MONTH) == 1) {
-                    // Post was created in last month must have the rank in top 20
+                if (StandardCalendarUtils.compareStandardMonth(todayCalendar, postCalendar, 0)) {
+                    putPostIntoMapData(mapData, post);
+                } else if (StandardCalendarUtils.compareStandardMonth(todayCalendar, postCalendar, 1)) {
+                    // Post was created in last month must have the rank in top 5
                     if (i <= 20) {
-                        PostInstructionDTO postInstructionDTO = ObjectMapperUtils.map(post, PostInstructionDTO.class);
-
-                        String articleName = post.getArticle().getName();
-                        if (Objects.isNull(mapData.get(articleName))) {
-                            List<PostInstructionDTO> postInstructionList = new ArrayList<>();
-                            postInstructionList.add(postInstructionDTO);
-                            mapData.put(articleName, postInstructionList);
-                        } else {
-                            List<PostInstructionDTO> postInstructionList = mapData.get(articleName);
-                            postInstructionList.add(postInstructionDTO);
-                            mapData.put(articleName, postInstructionList);
-                        }
+                        putPostIntoMapData(mapData, post);
                     }
                 } else {
                     // Post was not created from previous months must have the rank in top 10 and article in top 5
-                    int articleRank = articleIds.indexOf(post.getArticle().getId());
+                    int articleRank = articleIds.indexOf(post.getArticle().getId()) + 1;
                     if (i <= 10 && articleRank <= 5) {
-                        PostInstructionDTO postInstructionDTO = ObjectMapperUtils.map(post, PostInstructionDTO.class);
-
-                        String articleName = post.getArticle().getName();
-                        if (Objects.isNull(mapData.get(articleName))) {
-                            List<PostInstructionDTO> postInstructionList = new ArrayList<>();
-                            postInstructionList.add(postInstructionDTO);
-                            mapData.put(articleName, postInstructionList);
-                        } else {
-                            List<PostInstructionDTO> postInstructionList = mapData.get(articleName);
-                            postInstructionList.add(postInstructionDTO);
-                            mapData.put(articleName, postInstructionList);
-                        }
+                        putPostIntoMapData(mapData, post);
                     }
                 }
             } else {
                 // Post is not have the rank will be compared by rank of the article in top 3
                 int articleRank = articleIds.indexOf(post.getArticle().getId());
                 if (articleRank <= 3) {
-                    PostInstructionDTO postInstructionDTO = ObjectMapperUtils.map(post, PostInstructionDTO.class);
-
-                    String articleName = post.getArticle().getName();
-                    if (Objects.isNull(mapData.get(articleName))) {
-                        List<PostInstructionDTO> postInstructionList = new ArrayList<>();
-                        postInstructionList.add(postInstructionDTO);
-                        mapData.put(articleName, postInstructionList);
-                    } else {
-                        List<PostInstructionDTO> postInstructionList = mapData.get(articleName);
-                        postInstructionList.add(postInstructionDTO);
-                        mapData.put(articleName, postInstructionList);
-                    }
+                    putPostIntoMapData(mapData, post);
                 }
             }
-
         }
         return mapData;
+    }
+
+    private void putPostIntoMapData(Map<String, List<PostInstructionDTO>> mapData, Post post) {
+        PostInstructionDTO postInstructionDTO = ObjectMapperUtils.map(post, PostInstructionDTO.class);
+
+        String articleName = post.getArticle().getName();
+        if (Objects.isNull(mapData.get(articleName))) {
+            List<PostInstructionDTO> postInstructionList = new ArrayList<>();
+            postInstructionList.add(postInstructionDTO);
+            mapData.put(articleName, postInstructionList);
+        } else {
+            List<PostInstructionDTO> postInstructionList = mapData.get(articleName);
+            postInstructionList.add(postInstructionDTO);
+            mapData.put(articleName, postInstructionList);
+        }
     }
 
     private List<Long> getIdOfChildArticles(List<Long> idOfChildArticles, Article theArticle) {
@@ -282,33 +265,28 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public String uploadImageFile(MultipartFile multipartFile) {
-        if (multipartFile.getOriginalFilename().length() > 0 && !multipartFile.isEmpty()) {
-
+        if (Objects.requireNonNull(multipartFile.getOriginalFilename()).length() > 0
+                && !multipartFile.isEmpty()) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
 
             Path uploadPath = FileSystems.getDefault().getPath("cdn", "thumbnails",
                     String.valueOf(calendar.get(Calendar.YEAR)));
 
-            try {
-
+            try (InputStream inputStream = multipartFile.getInputStream()) {
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
 
-                InputStream inputStream = multipartFile.getInputStream();
                 String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
 
                 return filePath.toString();
-
             } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("Cannot upload file");
+                throw new RuntimeException("Cannot upload file", e);
             }
         }
-
         return null;
     }
 
@@ -329,7 +307,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<DataPieChart> getDataPieChart(Date startDate, Date endDate) throws ParseException {
+    public List<DataPieChart> getDataPieChart(Date startDate, Date endDate) {
 
 
         List<Post> posts = postRepository.findByDateCreateGreaterThanEqualAndDateCreateLessThanEqual(startDate, endDate);
@@ -338,7 +316,7 @@ public class PostServiceImpl implements PostService {
             List<PostDetailsDTO> postJsons = ObjectMapperUtils.mapAll(posts, PostDetailsDTO.class);
 
             Map<String, Integer> mapData = getDataForPieChart(postJsons);
-            List<DataPieChart> listData = new ArrayList<DataPieChart>();
+            List<DataPieChart> listData = new ArrayList<>();
             for (Map.Entry<String, Integer> entry : mapData.entrySet()) {
                 listData.add(new DataPieChart(entry.getKey(), entry.getValue()));
             }
@@ -349,7 +327,7 @@ public class PostServiceImpl implements PostService {
     }
 
     private Map<String, Integer> getDataForPieChart(List<PostDetailsDTO> postJsons) {
-        Map<String, Integer> mapData = new LinkedHashMap<String, Integer>();
+        Map<String, Integer> mapData = new LinkedHashMap<>();
 
         for (PostDetailsDTO post : postJsons) {
             String article = post.getArticle().getName();
@@ -381,7 +359,7 @@ public class PostServiceImpl implements PostService {
     public Map<String, Integer> getColumnChartData() {
         Date endDate = new Date();
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -6);
+        cal.add(Calendar.MONTH, -MAX_MONTH);
         Date startDate = cal.getTime();
 
         List<Post> posts = postRepository.findByDateCreateGreaterThanEqualAndDateCreateLessThanEqual(startDate, endDate);

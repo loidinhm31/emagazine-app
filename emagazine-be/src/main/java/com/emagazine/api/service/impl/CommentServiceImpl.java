@@ -38,7 +38,6 @@ public class CommentServiceImpl implements CommentService {
         return null;
     }
 
-
     @Override
     public List<CommentDTO> findByPostId(Long postId) {
 
@@ -52,7 +51,6 @@ public class CommentServiceImpl implements CommentService {
 
         return null;
     }
-
 
     @Override
     public void save(CommentRequestDTO commentDTO) {
@@ -73,7 +71,6 @@ public class CommentServiceImpl implements CommentService {
 
     }
 
-
     @Override
     public List<CommentForListViewDTO> findAll(String keyword) {
 
@@ -84,12 +81,10 @@ public class CommentServiceImpl implements CommentService {
         return commentDTOs;
     }
 
-
     @Override
     public void delete(Long id) {
         commentRepository.deleteById(id);
     }
-
 
     @Override
     public List<CommentForListViewDTO> findByPostIdForAdmin(Long postId, String keyword) {
@@ -99,10 +94,7 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> comments = commentRepository.findByPostIdAndContentContainingIgnoreCaseOrderByDateCreateDesc(postId, keyword.trim());
 
         List<CommentForListViewDTO> commentDTOs = ObjectMapperUtils.mapAll(comments, CommentForListViewDTO.class);
-
-
-        System.out.println(commentDTOs.toString());
         return commentDTOs;
     }
-
 }
+

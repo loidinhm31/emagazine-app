@@ -48,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
                     HttpMethod.POST, entity, LoginRequest.class);
 
         } catch (HttpClientErrorException e) {
-            throw new RuntimeException("Cannot found username");
+            throw new RuntimeException("Cannot found username", e);
         }
 
 
